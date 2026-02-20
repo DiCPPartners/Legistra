@@ -1,0 +1,36 @@
+{
+  "name": "mymd-server",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development node --watch index.js",
+    "build": "echo 'No build step required'",
+    "health": "curl -s http://localhost:3001/api/health | jq",
+    "logs": "tail -f logs/combined.log"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.93.2",
+    "bullmq": "^5.67.2",
+    "canvas": "^3.2.1",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "ioredis": "^5.9.2",
+    "mammoth": "^1.8.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-lib": "^1.17.1",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^3.11.174",
+    "sharp": "^0.33.5",
+    "socket.io": "^4.7.5",
+    "uuid": "^10.0.0",
+    "winston": "^3.19.0"
+  }
+}

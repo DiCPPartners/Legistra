@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+build/
+
+# Environment variables (contengono API keys)
+.env
+.env.local
+.env.production
+chat-app/.env
+server/.env
+server/.env.production
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.sw?
+
+# Uploads (file utente)
+server/uploads/
+
+# Cursor/IDE
+.cursor/debug.log
+
+# Misc
+*.local

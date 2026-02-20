@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-[#0d0d0d] text-[#f5f5f5] antialiased;
+}
+
+::-webkit-scrollbar-track {
+  background: #e8edf5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c3cfe2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aab9d3;
+}
+
+/* Scrollbar personalizzata per MedicalLegalActions */
+.medical-actions-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.medical-actions-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin-top: 80px; /* Altezza approssimativa del header sticky */
+}
+
+.medical-actions-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.medical-actions-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+  background-clip: padding-box;
+}
+
+/* Per Firefox */
+.medical-actions-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}

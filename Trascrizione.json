@@ -1,0 +1,326 @@
+{
+  "name": "Trascrizione",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "YourMED",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*",
+          "binaryPropertyName": "=file[]"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -928,
+        32
+      ],
+      "id": "26ed8935-5513-4adf-b944-1d0b916a8b7d",
+      "name": "Webhook",
+      "webhookId": "c0ae9f6c-72fe-417b-848b-2717c1805527"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Agisci come un revisore tecnico di testo proveniente da una scansione OCR.  \nIl tuo compito è:\n- Non cambiare mai il contenuto, il significato o la struttura delle frasi.  \n- Mantieni il testo identico all’originale, ma rendilo leggibile e impaginato in modo ordinato (spaziatura, paragrafi, titoli, elenchi, ecc.).  \n- Correggi solo errori evidenti di battitura, ortografia o grammatica minori (es. lettere mancanti, accenti, maiuscole/minuscole).  \n- Non riscrivere o riformulare nessuna frase.  \n- Non aggiungere né rimuovere parole o segni di punteggiatura se non strettamente necessario alla leggibilità.  \n\nAlla fine restituisci il testo pulito e impaginato, senza commenti o spiegazioni.  \n\nBasati su queste informazioni:",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        528,
+        32
+      ],
+      "id": "86b2973b-114b-4832-82bb-be7c90ae8822",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "chatgpt-4o-latest"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        288
+      ],
+      "id": "65cc45db-5b27-4197-bcee-14f1c60971a2",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5vkp0bda90v7cOFB",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        880,
+        32
+      ],
+      "id": "9e006bfe-e718-4013-a479-2e290d828baa",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "$binary",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        32
+      ],
+      "id": "375e0492-a3d6-4868-8ecc-1d608af824db",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Estrae e concatena il testo OCR da tutti i PDF\nconst all = $input.all();\n\nconst combined = all.map(item => {\n  // cerca il testo OCR nel campo pages[0].markdown\n  if (item.json.pages && item.json.pages[0]?.markdown) {\n    return item.json.pages[0].markdown;\n  }\n  // fallback: altri campi comuni\n  return item.json.text || item.json.result || \"\";\n}).join(\"\\n\\n---\\n\\n\");\n\nreturn [{ json: { full_text: combined } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        32
+      ],
+      "id": "fb7e1c54-0bad-4df7-b997-3702863bd6ff",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Rinominare i campi binari di tutti gli item in 'file'\nconst items = $input.all();\nreturn items.map(item => {\n  const binKey = Object.keys(item.binary || {})[0];\n  if (binKey && binKey !== 'file') {\n    item.binary.file = item.binary[binKey];\n    delete item.binary[binKey];\n  }\n  return item;\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -528,
+        32
+      ],
+      "id": "4acd861f-beb3-4e4b-9f95-61a3b5d3dbaa",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "ocr"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -336,
+        32
+      ],
+      "id": "35b617aa-7785-4b25-93d6-38071b77a808",
+      "name": "Mistral OCR 1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1ElRl99nr2gX7MRu",
+          "name": "Mistral"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mistral.ai/v1/files/{{ $json.id }}/url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "expiry",
+              "value": "24"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -128,
+        32
+      ],
+      "id": "aae81803-b7b1-4ec4-a6f4-4dceb75e3cf0",
+      "name": "Mistral OCR 2",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1ElRl99nr2gX7MRu",
+          "name": "Mistral"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mistral.ai/v1/ocr",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"mistral-ocr-latest\",\n  \"document\": {\n    \"type\": \"document_url\",\n    \"document_url\": \"{{ $json.url }}\"\n  },\n  \"include_image_base64\": true\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        96,
+        32
+      ],
+      "id": "f3649434-e496-4227-9e90-a0b9cee7547f",
+      "name": "Mistral OCR 3",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1ElRl99nr2gX7MRu",
+          "name": "Mistral"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Mistral OCR 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral OCR 1": {
+      "main": [
+        [
+          {
+            "node": "Mistral OCR 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral OCR 2": {
+      "main": [
+        [
+          {
+            "node": "Mistral OCR 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral OCR 3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4a1d4714-84e5-4d9f-8e72-49ce15b625ad",
+  "meta": {
+    "instanceId": "3330076086be54bd06e0accaca29e05033fe421cd33c41544072cd428fce7964"
+  },
+  "id": "YIse93flXGu8RQBy",
+  "tags": []
+}
