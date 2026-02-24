@@ -1,37 +1,37 @@
 import { supabase } from './supabaseClient'
 import { generateCategoryPrompt } from './openai'
 
-// Categorie personalizzate predefinite create automaticamente per nuovi utenti
+// Categorie template predefinite create automaticamente per nuovi utenti
 export const PRESET_CUSTOM_CATEGORIES = [
   {
-    name: 'RC Auto',
-    description: 'Perizie e analisi per sinistri stradali e responsabilità civile auto',
-    icon: 'scale',
-    color: '#3b82f6',
-  },
-  {
-    name: 'Polizza Infortuni',
-    description: 'Valutazioni per polizze infortuni e coperture assicurative',
-    icon: 'certificate',
-    color: '#10b981',
-  },
-  {
-    name: 'Malpractice',
-    description: 'Analisi responsabilità professionale e deviazioni dagli standard di cura',
-    icon: 'certificate',
-    color: '#ef4444',
-  },
-  {
-    name: 'Invalidità Civile',
-    description: 'Valutazioni per invalidità civile e calcolo percentuali',
-    icon: 'user',
-    color: '#8b5cf6',
-  },
-  {
-    name: 'INAIL',
-    description: 'Perizie per infortuni sul lavoro e malattie professionali',
+    name: 'Atto di Citazione',
+    description: 'Modelli di atti di citazione in giudizio per cause civili',
     icon: 'document',
-    color: '#f59e0b',
+    color: '#7B1F34',
+  },
+  {
+    name: 'Comparsa di Risposta',
+    description: 'Modelli di comparse di costituzione e risposta',
+    icon: 'document',
+    color: '#2563eb',
+  },
+  {
+    name: 'Memoria Difensiva',
+    description: 'Modelli di memorie ex art. 183 c.p.c. e memorie di replica',
+    icon: 'document',
+    color: '#059669',
+  },
+  {
+    name: 'Ricorso',
+    description: 'Modelli di ricorsi (cautelare, d\'urgenza, per decreto ingiuntivo)',
+    icon: 'scale',
+    color: '#d97706',
+  },
+  {
+    name: 'Parere Legale',
+    description: 'Modelli di pareri pro veritate e consulenze legali',
+    icon: 'certificate',
+    color: '#7c3aed',
   },
 ]
 

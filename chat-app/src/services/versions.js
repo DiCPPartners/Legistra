@@ -235,11 +235,11 @@ export const ACTION_TYPE_LABELS = {
   'diritto-civile': 'Diritto Civile',
   'diritto-penale': 'Diritto Penale',
   'contrattualistica': 'Contrattualistica',
-  'malpractice': 'Malpractice',
-  'report-strutturato': 'Report Strutturato',
+  'malpractice': 'Responsabilità Professionale',
+  'report-strutturato': 'Bozza Atto',
   'confronto-documenti': 'Confronto Documenti',
-  'elementi-critici': 'Elementi Critici',
-  'analisi-contrattuale': 'Analisi Contrattuale'
+  'elementi-critici': 'Strategia Difensiva',
+  'analisi-contrattuale': 'Analisi Contratto'
 }
 
 export function getActionTypeLabel(actionType) {
