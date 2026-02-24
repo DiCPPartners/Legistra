@@ -92,6 +92,54 @@ export async function searchLegislationForContext(question) {
   }
 }
 
+/**
+ * Articoli vicini (prima e dopo) a un dato articolo
+ */
+export async function getNearbyArticles(codeId, articleNumber, range = 5) {
+  const res = await fetch(`${API_BASE}/nearby/${codeId}/${articleNumber}?range=${range}`)
+  if (!res.ok) return []
+  return await res.json()
+}
+
+/**
+ * Lookup rapido: parsa input tipo "2043 cc" o "art. 142 cpp" e restituisce l'articolo
+ */
+export async function quickLookup(input) {
+  if (!input?.trim()) return null
+
+  const clean = input.trim().toLowerCase()
+    .replace(/^art\.?\s*/i, '')
+    .replace(/\s+/g, ' ')
+
+  const codeAliases = {
+    'cc': 'cc', 'c.c.': 'cc', 'c.c': 'cc', 'civile': 'cc', 'codice civile': 'cc',
+    'cp': 'cp', 'c.p.': 'cp', 'c.p': 'cp', 'penale': 'cp', 'codice penale': 'cp',
+    'cpc': 'cpc', 'c.p.c.': 'cpc', 'c.p.c': 'cpc', 'procedura civile': 'cpc',
+    'cpp': 'cpp', 'c.p.p.': 'cpp', 'c.p.p': 'cpp', 'procedura penale': 'cpp',
+    'cost': 'cost', 'costituzione': 'cost',
+  }
+
+  // Pattern: "2043 cc" or "2043 c.c." or "142 cpp"
+  const match = clean.match(/^(\d+(?:\s*bis|ter|quater)?)\s+(.+)$/)
+    || clean.match(/^(.+?)\s+(\d+(?:\s*bis|ter|quater)?)$/)
+
+  if (!match) return null
+
+  let artNum, codeStr
+  if (/^\d/.test(match[1])) {
+    artNum = match[1].trim()
+    codeStr = match[2].trim()
+  } else {
+    codeStr = match[1].trim()
+    artNum = match[2].trim()
+  }
+
+  const codeId = codeAliases[codeStr]
+  if (!codeId) return null
+
+  return await getArticle(codeId, artNum)
+}
+
 export default {
   getCodes,
   searchLegislation,
@@ -99,4 +147,6 @@ export default {
   browseCode,
   getCodeStructure,
   searchLegislationForContext,
+  getNearbyArticles,
+  quickLookup,
 }

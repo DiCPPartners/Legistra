@@ -168,4 +168,33 @@ router.get('/structure/:codeId', async (req, res) => {
   }
 })
 
+/**
+ * GET /api/legislation/nearby/:codeId/:articleNumber?range=5
+ * Articoli vicini (prima e dopo) a un dato articolo
+ */
+router.get('/nearby/:codeId/:articleNumber', async (req, res) => {
+  const { codeId, articleNumber } = req.params
+  const range = Math.min(parseInt(req.query.range) || 5, 20)
+
+  try {
+    const artNum = parseInt(articleNumber)
+    const minArt = Math.max(1, artNum - range)
+    const maxArt = artNum + range
+
+    const { data, error } = await supabase
+      .from('legislation_articles')
+      .select('id, article_number, article_title, book, title, chapter')
+      .eq('code_id', codeId)
+      .gte('article_number', String(minArt))
+      .lte('article_number', String(maxArt))
+      .order('article_number')
+
+    if (error) throw error
+    res.json(data || [])
+  } catch (error) {
+    log.error('Nearby failed', { codeId, articleNumber, error: error.message })
+    res.status(500).json({ error: error.message })
+  }
+})
+
 export default router

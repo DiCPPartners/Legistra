@@ -110,6 +110,12 @@ const sanitizeMarkdown = (text) => {
   // 7. Pulisci trattini a inizio riga che non sono veri elenchi puntati
   cleaned = cleaned.replace(/^-([a-zà-ú])/gm, '– $1')
 
+  // 8. Evidenzia riferimenti normativi (art. 2043 c.c., artt. 1218-1223 c.c., etc.)
+  cleaned = cleaned.replace(
+    /\b((?:art(?:t)?\.?\s*\d+(?:\s*[-–]\s*\d+)?(?:\s*bis|ter|quater|quinquies|sexies)?)\s*(?:c\.c\.|c\.p\.|c\.p\.c\.|c\.p\.p\.|Cost\.|cod\.\s*civ\.|cod\.\s*pen\.|cod\.\s*proc\.\s*civ\.|cod\.\s*proc\.\s*pen\.))/gi,
+    '**$1**'
+  )
+
   return cleaned.trim()
 }
 

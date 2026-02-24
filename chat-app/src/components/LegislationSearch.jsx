@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { searchLegislation, getCodes, getArticle, browseCode } from '../services/legislation'
+import { searchLegislation, getCodes, getArticle, browseCode, getNearbyArticles, quickLookup } from '../services/legislation'
 import { exportToWord } from '../services/export'
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY ?? ''
@@ -15,10 +15,12 @@ export default function LegislationSearch({ onClose }) {
   const [selectedArticle, setSelectedArticle] = useState(null)
   const [loadingArticle, setLoadingArticle] = useState(false)
   const [copiedId, setCopiedId] = useState(null)
+  const [nearbyArticles, setNearbyArticles] = useState([])
   const [browseArticles, setBrowseArticles] = useState([])
   const [browseTotal, setBrowseTotal] = useState(0)
   const [browseOffset, setBrowseOffset] = useState(0)
   const [mode, setMode] = useState('search')
+  const [quickInput, setQuickInput] = useState('')
   const [memoText, setMemoText] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [showMemo, setShowMemo] = useState(false)
@@ -73,13 +75,46 @@ export default function LegislationSearch({ onClose }) {
   const handleViewArticle = useCallback(async (codeId, artNum) => {
     setLoadingArticle(true)
     try {
-      const article = await getArticle(codeId, artNum)
+      const [article, nearby] = await Promise.all([
+        getArticle(codeId, artNum),
+        getNearbyArticles(codeId, artNum, 5),
+      ])
       setSelectedArticle(article)
+      setNearbyArticles(nearby || [])
     } catch {
       setError('Articolo non trovato.')
     } finally {
       setLoadingArticle(false)
     }
+  }, [])
+
+  const handleQuickLookup = useCallback(async (e) => {
+    e?.preventDefault()
+    if (!quickInput.trim()) return
+    setLoadingArticle(true)
+    setError(null)
+    try {
+      const article = await quickLookup(quickInput.trim())
+      if (article) {
+        setSelectedArticle(article)
+        const nearby = await getNearbyArticles(article.code_id, article.article_number, 5)
+        setNearbyArticles(nearby || [])
+      } else {
+        setError('Formato non riconosciuto. Prova: "2043 cc", "art. 575 cp", "42 cost"')
+      }
+    } catch {
+      setError('Articolo non trovato.')
+    } finally {
+      setLoadingArticle(false)
+    }
+  }, [quickInput])
+
+  const formatCitation = useCallback((article) => {
+    const codeMap = { cc: 'c.c.', cp: 'c.p.', cpc: 'c.p.c.', cpp: 'c.p.p.', cost: 'Cost.' }
+    const code = codeMap[article.code_id] || article.code_id
+    let cite = `Art. ${article.article_number} ${code}`
+    if (article.article_title) cite += ` (${article.article_title})`
+    return cite
   }, [])
 
   const handleCopy = useCallback(async (text, id) => {
@@ -213,6 +248,23 @@ Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI
           </div>
         </form>
 
+        {/* Quick lookup bar */}
+        <form onSubmit={handleQuickLookup} className="border-b border-slate-100 px-6 py-2 bg-slate-50/50">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-400 whitespace-nowrap">Vai a:</span>
+            <input
+              type="text"
+              value={quickInput}
+              onChange={(e) => setQuickInput(e.target.value)}
+              placeholder="2043 cc, art. 575 cp, 42 cost..."
+              className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-700 placeholder:text-slate-300 focus:border-[#7B1F34] focus:outline-none focus:ring-1 focus:ring-[#7B1F34]"
+            />
+            <button type="submit" disabled={!quickInput.trim()} className="rounded-lg bg-[#7B1F34] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-30">
+              Apri
+            </button>
+          </div>
+        </form>
+
         {/* Code chips for browsing */}
         <div className="flex gap-2 px-6 py-3 border-b border-slate-100 overflow-x-auto">
           {codes.map(c => (
@@ -252,11 +304,48 @@ Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI
               </div>
             </div>
             <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{selectedArticle.article_text}</p>
-            {selectedArticle.normattiva_url && (
-              <a href={selectedArticle.normattiva_url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-xs text-[#7B1F34] hover:underline">
-                Verifica su Normattiva
-                <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-              </a>
+            {/* Actions bar */}
+            <div className="mt-3 flex items-center gap-2 flex-wrap">
+              <button
+                onClick={() => handleCopy(formatCitation(selectedArticle), 'citation')}
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#7B1F34] hover:text-[#7B1F34]"
+              >
+                {copiedId === 'citation' ? 'Copiato!' : 'Copia citazione'}
+              </button>
+              <button
+                onClick={() => handleCopy(`${formatCitation(selectedArticle)}\n\n${selectedArticle.article_text}`, 'full')}
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#7B1F34] hover:text-[#7B1F34]"
+              >
+                {copiedId === 'full' ? 'Copiato!' : 'Copia testo completo'}
+              </button>
+              {selectedArticle.normattiva_url && (
+                <a href={selectedArticle.normattiva_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#7B1F34] hover:text-[#7B1F34]">
+                  Normattiva
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                </a>
+              )}
+            </div>
+
+            {/* Nearby articles navigation */}
+            {nearbyArticles.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-slate-200">
+                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-2">Articoli vicini</p>
+                <div className="flex gap-1 flex-wrap">
+                  {nearbyArticles.map(na => (
+                    <button
+                      key={na.id}
+                      onClick={() => handleViewArticle(selectedArticle.code_id, na.article_number)}
+                      className={`rounded px-2 py-0.5 text-[11px] transition ${
+                        na.article_number === selectedArticle.article_number
+                          ? 'bg-[#7B1F34] text-white font-bold'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      {na.article_number}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         )}

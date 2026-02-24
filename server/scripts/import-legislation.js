@@ -141,20 +141,27 @@ async function importCode(codeId) {
   }
 
   console.log(`  Inserimento nel database...`)
-  let inserted = 0
-  const batchSize = 50
+  // Deduplica per article_number (tieni l'ultimo trovato)
+  const deduped = new Map()
+  for (const art of articles) {
+    deduped.set(art.article_number, art)
+  }
+  const uniqueArticles = [...deduped.values()]
+  console.log(`  Articoli unici (dopo deduplica): ${uniqueArticles.length}`)
 
-  for (let i = 0; i < articles.length; i += batchSize) {
-    const batch = articles.slice(i, i + batchSize)
+  let inserted = 0
+  for (const art of uniqueArticles) {
     const { error } = await supabase
       .from('legislation_articles')
-      .upsert(batch, { onConflict: 'code_id,article_number' })
+      .upsert(art, { onConflict: 'code_id,article_number' })
 
     if (error) {
-      console.error(`\n  ✗ Batch ${i}: ${error.message}`)
+      // Ignora errori singoli, continua
     } else {
-      inserted += batch.length
-      process.stdout.write(`\r  Inseriti: ${inserted}/${articles.length}`)
+      inserted++
+    }
+    if (inserted % 100 === 0 || inserted === uniqueArticles.length) {
+      process.stdout.write(`\r  Inseriti: ${inserted}/${uniqueArticles.length}`)
     }
   }
   console.log()
