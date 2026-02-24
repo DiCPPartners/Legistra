@@ -1,9 +1,14 @@
 /**
  * Servizio per ricerca nella legislazione italiana
- * Utilizza OpenAI per identificare norme rilevanti e costruisce link a Normattiva.it
+ * Fonte primaria: Normattiva.it (via backend proxy)
+ * Fallback: OpenAI per identificazione norme
  */
 
 const NORMATTIVA_BASE = 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato'
+
+const API_BASE = import.meta.env.DEV
+  ? '/api/normattiva'
+  : (import.meta.env.VITE_API_URL || '') + '/api/normattiva'
 
 /**
  * Costruisce URL Normattiva per un atto normativo
@@ -30,41 +35,85 @@ function buildNormattivaUrl(type, date, number) {
 }
 
 /**
- * Costruisce URL di ricerca testuale su Normattiva
+ * Formatta una citazione legale italiana
  */
-function buildNormattivaSearchUrl(query) {
-  return `https://www.normattiva.it/ricerca/semplice?query=${encodeURIComponent(query)}`
+function formatLegalCitation(item) {
+  let cite = item.type
+  if (item.date) {
+    const d = new Date(item.date)
+    if (!isNaN(d.getTime())) {
+      const day = d.getDate()
+      const months = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre']
+      const month = months[d.getMonth()]
+      const year = d.getFullYear()
+      cite += ` ${day} ${month} ${year}`
+    }
+  }
+  if (item.number) cite += `, n. ${item.number}`
+  if (item.title) cite += ` - "${item.title}"`
+  if (item.articles) cite += ` (${item.articles})`
+  return cite
+}
+
+// ===== RICERCA PRIMARIA: Normattiva via backend =====
+
+/**
+ * Cerca su Normattiva via backend proxy
+ */
+async function searchNormattiva(query) {
+  try {
+    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`)
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.results || []
+  } catch {
+    return null
+  }
 }
 
 /**
- * Cerca norme italiane rilevanti per una query usando AI.
- * @param {string} query - Termini di ricerca
- * @param {string} apiKey - OpenAI API key
- * @param {number} maxResults - Numero massimo di risultati (default 5)
- * @returns {Promise<{articles: Array, totalCount: number}>}
+ * Recupera un articolo specifico di un codice via backend
  */
-export async function searchLegislation(query, apiKey, maxResults = 5) {
-  if (!query?.trim()) return { articles: [], totalCount: 0 }
-
-  if (!apiKey) {
-    return { articles: [], totalCount: 0, error: 'API key richiesta' }
-  }
-
+export async function fetchArticolo(codice, articolo) {
   try {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        temperature: 0.1,
-        max_tokens: 3000,
-        messages: [
-          {
-            role: 'system',
-            content: `Sei un esperto di diritto italiano. Data una query di ricerca, identifica le ${maxResults} norme italiane più rilevanti.
+    const res = await fetch(`${API_BASE}/articolo?codice=${encodeURIComponent(codice)}&articolo=${encodeURIComponent(articolo)}`)
+    if (!res.ok) return null
+    return await res.json()
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Recupera un atto completo via URN dal backend
+ */
+export async function fetchAtto(urn) {
+  try {
+    const res = await fetch(`${API_BASE}/atto?urn=${encodeURIComponent(urn)}`)
+    if (!res.ok) return null
+    return await res.json()
+  } catch {
+    return null
+  }
+}
+
+// ===== RICERCA AI (fallback) =====
+
+async function searchWithAI(query, apiKey, maxResults = 5) {
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      temperature: 0.1,
+      max_tokens: 3000,
+      messages: [
+        {
+          role: 'system',
+          content: `Sei un esperto di diritto italiano. Data una query di ricerca, identifica le ${maxResults} norme italiane più rilevanti.
 
 Per ogni norma, restituisci un JSON array con oggetti nel formato:
 {
@@ -74,129 +123,95 @@ Per ogni norma, restituisci un JSON array con oggetti nel formato:
   "title": "titolo o denominazione ufficiale dell'atto",
   "articles": "articoli specifici rilevanti (es: art. 1218, artt. 2043-2059)",
   "summary": "breve spiegazione (2-3 frasi) di perché questa norma è rilevante per la query",
-  "source": "Gazzetta Ufficiale o fonte",
   "keywords": ["parola chiave 1", "parola chiave 2"]
 }
 
-Rispondi SOLO con il JSON array valido, niente altro. Se non trovi norme rilevanti, rispondi con [].
+Rispondi SOLO con il JSON array valido, niente altro.
 Includi sia codici (civile, penale, procedura) che leggi speciali quando rilevanti.`
-          },
-          { role: 'user', content: query }
-        ]
-      })
+        },
+        { role: 'user', content: query }
+      ]
     })
+  })
 
-    if (!res.ok) throw new Error(`API error: ${res.status}`)
+  if (!res.ok) throw new Error(`API error: ${res.status}`)
 
-    const data = await res.json()
-    const content = data.choices?.[0]?.message?.content?.trim() || '[]'
+  const data = await res.json()
+  const content = data.choices?.[0]?.message?.content?.trim() || '[]'
+  const jsonMatch = content.match(/\[[\s\S]*\]/)
+  if (!jsonMatch) return []
 
-    const jsonMatch = content.match(/\[[\s\S]*\]/)
-    if (!jsonMatch) return { articles: [], totalCount: 0 }
+  return JSON.parse(jsonMatch[0])
+}
 
-    const rawResults = JSON.parse(jsonMatch[0])
+// ===== FUNZIONE PRINCIPALE =====
 
-    const articles = rawResults.map((item, idx) => {
+/**
+ * Cerca norme italiane. Usa Normattiva come fonte primaria, AI come fallback.
+ * @param {string} query - Termini di ricerca
+ * @param {string} apiKey - OpenAI API key (per fallback AI)
+ * @param {number} maxResults - Numero massimo di risultati
+ * @returns {Promise<{articles: Array, totalCount: number, source: string}>}
+ */
+export async function searchLegislation(query, apiKey, maxResults = 10) {
+  if (!query?.trim()) return { articles: [], totalCount: 0, source: 'none' }
+
+  // 1. Prova Normattiva (dati reali)
+  const normattivaResults = await searchNormattiva(query)
+
+  if (normattivaResults && normattivaResults.length > 0) {
+    const articles = normattivaResults.slice(0, maxResults).map((item, idx) => ({
+      id: item.id || `normattiva-${idx}`,
+      type: item.type || 'Atto',
+      number: item.number || '',
+      date: item.date || '',
+      title: item.title || '',
+      articles: item.articles || '',
+      summary: '',
+      url: item.url || '',
+      urn: item.urn || '',
+      citation: formatLegalCitation(item),
+      source: 'normattiva',
+    }))
+
+    return { articles, totalCount: articles.length, source: 'normattiva' }
+  }
+
+  // 2. Fallback AI (se Normattiva non risponde o non trova risultati)
+  if (!apiKey) {
+    return { articles: [], totalCount: 0, source: 'none', error: 'Nessun risultato da Normattiva' }
+  }
+
+  try {
+    const aiResults = await searchWithAI(query, apiKey, maxResults)
+
+    const articles = aiResults.map((item, idx) => {
       const normattivaUrl = buildNormattivaUrl(item.type, item.date, item.number)
-      const searchUrl = buildNormattivaSearchUrl(`${item.type} ${item.number} ${item.date}`)
-
       return {
-        id: `law-${idx}-${item.number}`,
+        id: `ai-${idx}-${item.number}`,
         type: item.type,
         number: item.number,
         date: item.date,
         title: item.title,
         articles: item.articles || '',
         summary: item.summary || '',
-        source: item.source || 'Normattiva',
         keywords: item.keywords || [],
-        url: normattivaUrl || searchUrl,
-        searchUrl,
+        url: normattivaUrl || `https://www.normattiva.it/ricerca/semplice?query=${encodeURIComponent(item.type + ' ' + item.number)}`,
         citation: formatLegalCitation(item),
+        source: 'ai',
       }
     })
 
-    return { articles, totalCount: articles.length }
+    return { articles, totalCount: articles.length, source: 'ai' }
 
   } catch (error) {
-    console.warn('Errore ricerca legislazione:', error)
-    return { articles: [], totalCount: 0, error: error.message }
+    console.warn('Errore ricerca legislazione AI:', error)
+    return { articles: [], totalCount: 0, source: 'error', error: error.message }
   }
 }
 
 /**
- * Formatta una citazione legale italiana
- */
-function formatLegalCitation(item) {
-  let cite = item.type
-  if (item.date) {
-    const d = new Date(item.date)
-    const day = d.getDate()
-    const months = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre']
-    const month = months[d.getMonth()]
-    const year = d.getFullYear()
-    cite += ` ${day} ${month} ${year}`
-  }
-  if (item.number) cite += `, n. ${item.number}`
-  if (item.title) cite += ` - "${item.title}"`
-  if (item.articles) cite += ` (${item.articles})`
-  return cite
-}
-
-/**
- * Recupera dettagli per una lista di norme (identificate da id o ref).
- * Per la legislazione, restituisce gli articoli se già presenti come oggetti completi.
- * @param {Array<string|object>} articleRefs - Array di ID o oggetti articolo
- * @returns {Promise<Array>}
- */
-export async function fetchArticleDetails(articleRefs) {
-  if (!articleRefs?.length) return []
-  // Se sono già oggetti articolo completi, restituiscili
-  if (typeof articleRefs[0] === 'object' && articleRefs[0]?.url) {
-    return articleRefs
-  }
-  // Se sono ID, non abbiamo un API per fetch - ritorna vuoto
-  return []
-}
-
-/**
- * Converte una domanda utente in una query di ricerca legislativa ottimizzata.
- */
-export async function buildSearchQuery(question, apiKey) {
-  if (!apiKey || !question?.trim()) return question
-
-  try {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        temperature: 0,
-        max_tokens: 150,
-        messages: [
-          {
-            role: 'system',
-            content: 'Converti la domanda in una query di ricerca per la legislazione italiana. Restituisci SOLO i termini di ricerca in italiano, includendo riferimenti normativi specifici se possibile. Nessun commento.'
-          },
-          { role: 'user', content: question }
-        ]
-      })
-    })
-
-    if (!res.ok) return question
-    const data = await res.json()
-    return data.choices?.[0]?.message?.content?.trim() || question
-  } catch {
-    return question
-  }
-}
-
-/**
- * Cerca norme rilevanti per il contesto di una domanda.
- * Restituisce un testo formattato da inserire come contesto nell'AI.
+ * Cerca norme rilevanti per il contesto di una domanda in chat.
  */
 export async function searchLegislationForContext(question, apiKey) {
   try {
@@ -222,6 +237,7 @@ export async function searchLegislationForContext(question, apiKey) {
 
 export default {
   searchLegislation,
-  buildSearchQuery,
-  searchLegislationForContext
+  searchLegislationForContext,
+  fetchArticolo,
+  fetchAtto,
 }

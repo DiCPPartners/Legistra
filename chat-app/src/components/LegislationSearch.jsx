@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { searchLegislation } from '../services/legislation'
+import { searchLegislation, fetchArticolo } from '../services/legislation'
 import { exportToWord } from '../services/export'
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY ?? ''
@@ -109,7 +109,10 @@ export default function LegislationSearch({ onClose }) {
   const [totalCount, setTotalCount] = useState(0)
   const [isSearching, setIsSearching] = useState(false)
   const [error, setError] = useState(null)
+  const [source, setSource] = useState(null)
   const [copiedId, setCopiedId] = useState(null)
+  const [articleText, setArticleText] = useState(null)
+  const [loadingArticle, setLoadingArticle] = useState(false)
   const [reviewText, setReviewText] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [showReview, setShowReview] = useState(false)
@@ -136,9 +139,10 @@ export default function LegislationSearch({ onClose }) {
     setResults([])
 
     try {
-      const { articles, totalCount: total } = await searchLegislation(query.trim(), OPENAI_API_KEY, 20)
+      const { articles, totalCount: total, source: src } = await searchLegislation(query.trim(), OPENAI_API_KEY, 20)
       setResults(articles)
       setTotalCount(total)
+      setSource(src)
       if (articles.length === 0) setError('Nessun risultato trovato.')
     } catch (err) {
       setError('Errore nella ricerca. Riprova.')
@@ -391,6 +395,17 @@ Genera il memo legale completo, in italiano.`
           </div>
         </form>
 
+        {/* Article text viewer */}
+        {articleText && (
+          <div className="border-b border-slate-200 bg-slate-50 px-6 py-3">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold text-[#2f9aa7]">{articleText.codice?.toUpperCase()} — Art. {articleText.articolo}</span>
+              <button onClick={() => setArticleText(null)} className="text-xs text-slate-400 hover:text-slate-600">Chiudi</button>
+            </div>
+            <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto">{articleText.text}</p>
+          </div>
+        )}
+
         {/* Results */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
           {error && (
@@ -401,12 +416,24 @@ Genera il memo legale completo, in italiano.`
 
           {results.length > 0 && (
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-xs text-slate-500">
-                {totalCount > results.length
-                  ? `${results.length} di ${totalCount.toLocaleString('it-IT')} risultati`
-                  : `${results.length} risultati`
-                }
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-xs text-slate-500">
+                  {totalCount > results.length
+                    ? `${results.length} di ${totalCount.toLocaleString('it-IT')} risultati`
+                    : `${results.length} risultati`
+                  }
+                </p>
+                {source && (
+                  <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                    source === 'normattiva' 
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+                      : 'bg-amber-50 text-amber-700 border border-amber-200'
+                  }`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${source === 'normattiva' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                    {source === 'normattiva' ? 'Normattiva.it' : 'AI'}
+                  </span>
+                )}
+              </div>
               <button
                 onClick={handleGenerateReview}
                 disabled={isGenerating}

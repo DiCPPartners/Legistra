@@ -188,6 +188,10 @@ app.set('io', io)
 
 app.use('/api/documents', documentRoutes)
 
+// Normattiva proxy per ricerca legislazione
+const normattivaRoutes = (await import('./routes/normattiva.js')).default
+app.use('/api/normattiva', normattivaRoutes)
+
 // Email routes
 app.post('/api/email/welcome', async (req, res) => {
   try {

@@ -15,6 +15,10 @@ export default defineConfig({
         target: 'http://localhost:3001',
         changeOrigin: true,
       },
+      '/api/normattiva': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
       // WebSocket proxy
       '/socket.io': {
         target: 'http://localhost:3001',
