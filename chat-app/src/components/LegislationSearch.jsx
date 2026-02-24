@@ -248,40 +248,6 @@ Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI
           </div>
         </form>
 
-        {/* Quick lookup bar */}
-        <form onSubmit={handleQuickLookup} className="border-b border-slate-100 px-6 py-2 bg-slate-50/50">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-400 whitespace-nowrap">Vai a:</span>
-            <input
-              type="text"
-              value={quickInput}
-              onChange={(e) => setQuickInput(e.target.value)}
-              placeholder="2043 cc, art. 575 cp, 42 cost..."
-              className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-700 placeholder:text-slate-300 focus:border-[#7B1F34] focus:outline-none focus:ring-1 focus:ring-[#7B1F34]"
-            />
-            <button type="submit" disabled={!quickInput.trim()} className="rounded-lg bg-[#7B1F34] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-30">
-              Apri
-            </button>
-          </div>
-        </form>
-
-        {/* Code chips for browsing */}
-        <div className="flex gap-2 px-6 py-3 border-b border-slate-100 overflow-x-auto">
-          {codes.map(c => (
-            <button
-              key={c.id}
-              onClick={() => handleBrowse(c.id)}
-              className={`flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition ${
-                mode === 'browse' && selectedCode === c.id
-                  ? 'bg-[#7B1F34] text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
-            >
-              {c.name}
-              {c.articles_count > 0 && <span className="ml-1 opacity-60">({c.articles_count})</span>}
-            </button>
-          ))}
-        </div>
 
         {/* Article detail viewer */}
         {selectedArticle && (
@@ -304,49 +270,43 @@ Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI
               </div>
             </div>
             <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{selectedArticle.article_text}</p>
-            {/* Actions bar */}
-            <div className="mt-3 flex items-center gap-2 flex-wrap">
-              <button
-                onClick={() => handleCopy(formatCitation(selectedArticle), 'citation')}
-                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#7B1F34] hover:text-[#7B1F34]"
-              >
-                {copiedId === 'citation' ? 'Copiato!' : 'Copia citazione'}
-              </button>
-              <button
-                onClick={() => handleCopy(`${formatCitation(selectedArticle)}\n\n${selectedArticle.article_text}`, 'full')}
-                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#7B1F34] hover:text-[#7B1F34]"
-              >
-                {copiedId === 'full' ? 'Copiato!' : 'Copia testo completo'}
-              </button>
-              {selectedArticle.normattiva_url && (
-                <a href={selectedArticle.normattiva_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:border-[#7B1F34] hover:text-[#7B1F34]">
-                  Normattiva
+            {selectedArticle.normattiva_url && (
+              <div className="mt-3">
+                <a href={selectedArticle.normattiva_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-[#7B1F34] hover:underline">
+                  Verifica su Normattiva
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                 </a>
-              )}
-            </div>
-
-            {/* Nearby articles navigation */}
-            {nearbyArticles.length > 0 && (
-              <div className="mt-3 pt-3 border-t border-slate-200">
-                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-2">Articoli vicini</p>
-                <div className="flex gap-1 flex-wrap">
-                  {nearbyArticles.map(na => (
-                    <button
-                      key={na.id}
-                      onClick={() => handleViewArticle(selectedArticle.code_id, na.article_number)}
-                      className={`rounded px-2 py-0.5 text-[11px] transition ${
-                        na.article_number === selectedArticle.article_number
-                          ? 'bg-[#7B1F34] text-white font-bold'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                      }`}
-                    >
-                      {na.article_number}
-                    </button>
-                  ))}
-                </div>
               </div>
             )}
+
+            {/* Prev / Next navigation */}
+            {nearbyArticles.length > 0 && (() => {
+              const currentIdx = nearbyArticles.findIndex(na => na.article_number === selectedArticle.article_number)
+              const prev = currentIdx > 0 ? nearbyArticles[currentIdx - 1] : null
+              const next = currentIdx < nearbyArticles.length - 1 ? nearbyArticles[currentIdx + 1] : null
+              return (
+                <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
+                  {prev ? (
+                    <button
+                      onClick={() => handleViewArticle(selectedArticle.code_id, prev.article_number)}
+                      className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 transition"
+                    >
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                      <span>Art. {prev.article_number}</span>
+                    </button>
+                  ) : <span />}
+                  {next ? (
+                    <button
+                      onClick={() => handleViewArticle(selectedArticle.code_id, next.article_number)}
+                      className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 transition"
+                    >
+                      <span>Art. {next.article_number}</span>
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                  ) : <span />}
+                </div>
+              )
+            })()}
           </div>
         )}
 

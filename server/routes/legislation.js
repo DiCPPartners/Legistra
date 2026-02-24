@@ -10,6 +10,13 @@ import { createContextLogger } from '../services/logger.js'
 const router = express.Router()
 const log = createContextLogger('Legislation')
 
+const sortByArticleNumber = (a, b) => {
+  const numA = parseInt(a.article_number) || 0
+  const numB = parseInt(b.article_number) || 0
+  if (numA !== numB) return numA - numB
+  return (a.article_number || '').localeCompare(b.article_number || '')
+}
+
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '',
   process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || ''
@@ -106,8 +113,6 @@ router.get('/browse/:codeId', async (req, res) => {
       .from('legislation_articles')
       .select('id, article_number, article_title, book, title, chapter, section', { count: 'exact' })
       .eq('code_id', codeId)
-      .order('article_number', { ascending: true })
-      .range(parseInt(offset) || 0, (parseInt(offset) || 0) + (parseInt(limit) || 50) - 1)
 
     if (book) query = query.eq('book', book)
     if (title) query = query.eq('title', title)
@@ -117,8 +122,13 @@ router.get('/browse/:codeId', async (req, res) => {
 
     if (error) throw error
 
+    const sorted = (data || []).sort(sortByArticleNumber)
+    const off = parseInt(offset) || 0
+    const lim = parseInt(limit) || 50
+    const paged = sorted.slice(off, off + lim)
+
     res.json({
-      articles: data || [],
+      articles: paged,
       total: count || 0,
       code: codeId,
     })
@@ -138,9 +148,8 @@ router.get('/structure/:codeId', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('legislation_articles')
-      .select('book, title, chapter, section')
+      .select('article_number, book, title, chapter, section')
       .eq('code_id', codeId)
-      .order('article_number')
 
     if (error) throw error
 
@@ -178,19 +187,20 @@ router.get('/nearby/:codeId/:articleNumber', async (req, res) => {
 
   try {
     const artNum = parseInt(articleNumber)
-    const minArt = Math.max(1, artNum - range)
-    const maxArt = artNum + range
 
     const { data, error } = await supabase
       .from('legislation_articles')
       .select('id, article_number, article_title, book, title, chapter')
       .eq('code_id', codeId)
-      .gte('article_number', String(minArt))
-      .lte('article_number', String(maxArt))
-      .order('article_number')
 
     if (error) throw error
-    res.json(data || [])
+
+    const sorted = (data || []).sort(sortByArticleNumber)
+    const currentIdx = sorted.findIndex(a => parseInt(a.article_number) === artNum || a.article_number === articleNumber)
+    const start = Math.max(0, currentIdx - range)
+    const end = Math.min(sorted.length, currentIdx + range + 1)
+    
+    res.json(sorted.slice(start, end))
   } catch (error) {
     log.error('Nearby failed', { codeId, articleNumber, error: error.message })
     res.status(500).json({ error: error.message })
