@@ -131,7 +131,7 @@ const createBubbleClasses = (isUser, isEditing) => {
   const base =
     'relative rounded-2xl px-3 py-3 sm:px-5 sm:py-4 shadow-lg border transition-all backdrop-blur-sm'
   if (isEditing) {
-    return `${base} bg-gradient-to-br from-white via-slate-50/90 to-white text-slate-900 border-[#2f9aa7] ring-2 ring-[#2f9aa7]/20`
+    return `${base} bg-gradient-to-br from-white via-slate-50/90 to-white text-slate-900 border-[#7B1F34] ring-2 ring-[#7B1F34]/20`
   }
   return isUser
     ? `${base} bg-gradient-to-br from-white via-slate-50/90 to-white text-slate-900 border-slate-200/50 select-none`
@@ -141,8 +141,8 @@ const createBubbleClasses = (isUser, isEditing) => {
 const Loader = () => (
   <div className="flex items-center gap-3 text-sm text-slate-600">
     <span className="relative flex h-3 w-3">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2f9aa7]/60 opacity-75" />
-      <span className="relative inline-flex h-3 w-3 rounded-full bg-[#2f9aa7]" />
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7B1F34]/60 opacity-75" />
+      <span className="relative inline-flex h-3 w-3 rounded-full bg-[#7B1F34]" />
     </span>
     <span className="font-medium">Elaborazione in corso...</span>
   </div>
@@ -153,8 +153,8 @@ const Loader = () => (
 const StreamingCursor = () => (
   <span className="ml-1 inline-flex items-center align-middle">
     <span className="relative flex h-2.5 w-2.5">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2f9aa7]/60 opacity-75" />
-      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#2f9aa7]" />
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7B1F34]/60 opacity-75" />
+      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#7B1F34]" />
     </span>
   </span>
 )
@@ -163,7 +163,7 @@ const StreamingCursor = () => (
 const DEBUG_CHAT = true
 const chatLog = (label, data) => {
   if (!DEBUG_CHAT) return
-  console.log(`%c[ChatMessage] ${label}`, 'color: #2f9aa7; font-weight: bold', data || '')
+  console.log(`%c[ChatMessage] ${label}`, 'color: #7B1F34; font-weight: bold', data || '')
 }
 
 export default function ChatMessage({ message, conversationId, onEditMessage }) {
@@ -396,7 +396,7 @@ export default function ChatMessage({ message, conversationId, onEditMessage }) 
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
                   onKeyDown={handleEditKeyDown}
-                  className="w-full resize-none border-none bg-transparent p-0 outline-none caret-[#2f9aa7] text-inherit font-inherit leading-relaxed"
+                  className="w-full resize-none border-none bg-transparent p-0 outline-none caret-[#7B1F34] text-inherit font-inherit leading-relaxed"
                   style={{ 
                     minHeight: '1.5em',
                     height: 'auto',
@@ -487,7 +487,7 @@ export default function ChatMessage({ message, conversationId, onEditMessage }) 
                           console.error('Impossibile copiare il testo:', error)
                         }
                       }}
-                      className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-[#2f9aa7] hover:bg-[#2f9aa7] hover:text-white hover:shadow-md"
+                      className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-[#7B1F34] hover:bg-[#7B1F34] hover:text-white hover:shadow-md"
                     >
                       {didCopy ? (
                         <>
@@ -523,7 +523,7 @@ export default function ChatMessage({ message, conversationId, onEditMessage }) 
                 <button
                   type="button"
                   onClick={handleStartEdit}
-                  className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 opacity-0 shadow-lg transition-all group-hover:opacity-100 hover:border-[#2f9aa7] hover:bg-[#2f9aa7] hover:text-white hover:shadow-xl"
+                  className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 opacity-0 shadow-lg transition-all group-hover:opacity-100 hover:border-[#7B1F34] hover:bg-[#7B1F34] hover:text-white hover:shadow-xl"
                   aria-label="Modifica messaggio"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3 w-3 sm:h-3.5 sm:w-3.5">
@@ -546,10 +546,10 @@ export default function ChatMessage({ message, conversationId, onEditMessage }) 
               type="button"
               onClick={() => setShowFilesDropdown(!showFilesDropdown)}
               className={`inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow ${
-                showFilesDropdown ? 'border-[#2f9aa7] ring-1 ring-[#2f9aa7]/20' : ''
+                showFilesDropdown ? 'border-[#7B1F34] ring-1 ring-[#7B1F34]/20' : ''
               }`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-[#2f9aa7]">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-[#7B1F34]">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
               </svg>
               <span>

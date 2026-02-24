@@ -61,7 +61,7 @@ export async function createCategory({ name, description, icon, color }) {
       name,
       description: description || '',
       icon: icon || 'document',
-      color: color || '#4fb3c1',
+      color: color || '#8C2B42',
     })
     .select()
     .single()

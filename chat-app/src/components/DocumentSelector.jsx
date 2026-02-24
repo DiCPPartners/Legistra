@@ -79,7 +79,7 @@ export default function DocumentSelector({
                   onSelect(doc, index)
                   onClose()
                 }}
-                className="group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:border-[#4fb3c1] hover:bg-[#f0f7f9] hover:shadow-md"
+                className="group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:border-[#8C2B42] hover:bg-[#f0f7f9] hover:shadow-md"
               >
                 {/* PDF Icon */}
                 <span className="flex-shrink-0 rounded-xl bg-red-50 p-3 text-red-500 group-hover:bg-red-100">
@@ -90,7 +90,7 @@ export default function DocumentSelector({
                 
                 {/* Document Info */}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium text-slate-800 group-hover:text-[#2f9aa7]">
+                  <p className="truncate font-medium text-slate-800 group-hover:text-[#7B1F34]">
                     {doc.name}
                   </p>
                   <p className="mt-0.5 text-sm text-slate-500">
@@ -99,7 +99,7 @@ export default function DocumentSelector({
                 </div>
 
                 {/* Arrow */}
-                <span className="flex-shrink-0 text-slate-400 transition group-hover:translate-x-1 group-hover:text-[#4fb3c1]">
+                <span className="flex-shrink-0 text-slate-400 transition group-hover:translate-x-1 group-hover:text-[#8C2B42]">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                   </svg>
@@ -117,7 +117,7 @@ export default function DocumentSelector({
               onSelect(null, -1) // null indica "tutti i documenti"
               onClose()
             }}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-4 text-slate-600 transition hover:border-[#4fb3c1] hover:bg-[#f0f7f9] hover:text-[#2f9aa7]"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-4 text-slate-600 transition hover:border-[#8C2B42] hover:bg-[#f0f7f9] hover:text-[#7B1F34]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />

@@ -14,7 +14,7 @@ export default function ModeSelector({ options, selectedMode, onChange, disabled
             onClick={() => handleModeChange(option.id)}
             className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${
               isActive
-                ? 'border-[#4fb3c1] bg-[#e1eff2] text-[#308f9d] shadow-[0_12px_32px_rgba(79,179,193,0.2)]'
+                ? 'border-[#8C2B42] bg-[#e1eff2] text-[#308f9d] shadow-[0_12px_32px_rgba(79,179,193,0.2)]'
                 : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-100 hover:text-slate-700'
             } disabled:cursor-not-allowed disabled:opacity-60`}
             disabled={disabled}

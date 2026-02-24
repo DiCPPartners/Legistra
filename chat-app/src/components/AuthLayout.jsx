@@ -154,7 +154,7 @@ export default function AuthLayout({ onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="fixed left-6 top-6 z-50 inline-flex items-center gap-2 rounded-xl border border-[#2f9aa7] bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] px-4 py-2 text-sm font-medium text-white shadow-sm shadow-[#2f9aa7]/30 transition-all hover:shadow-md hover:shadow-[#2f9aa7]/40 hover:scale-105"
+          className="fixed left-6 top-6 z-50 inline-flex items-center gap-2 rounded-xl border border-[#7B1F34] bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-4 py-2 text-sm font-medium text-white shadow-sm shadow-[#7B1F34]/30 transition-all hover:shadow-md hover:shadow-[#7B1F34]/40 hover:scale-105"
           disabled={isSubmitting}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
@@ -168,7 +168,7 @@ export default function AuthLayout({ onBack }) {
         {/* Card principale con glassmorphism */}
         <div className="relative overflow-hidden rounded-2xl border border-slate-200/50 bg-white/90 p-10 shadow-2xl backdrop-blur-sm">
           {/* Decorative gradient overlay */}
-          <div className="absolute right-0 top-0 h-64 w-64 bg-gradient-to-br from-[#2f9aa7]/5 to-transparent blur-3xl" />
+          <div className="absolute right-0 top-0 h-64 w-64 bg-gradient-to-br from-[#7B1F34]/5 to-transparent blur-3xl" />
           
           {/* Logo e header migliorati */}
           <div className="relative mb-8 flex flex-col items-center">
@@ -193,7 +193,7 @@ export default function AuthLayout({ onBack }) {
                     id="firstName"
                     name="firstName"
                     type="text"
-                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#2f9aa7] focus:ring-2 focus:ring-[#2f9aa7]/20"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#7B1F34] focus:ring-2 focus:ring-[#7B1F34]/20"
                     placeholder="Mario"
                     value={formValues.firstName}
                     onChange={(event) => handleChange('firstName', event.target.value)}
@@ -209,7 +209,7 @@ export default function AuthLayout({ onBack }) {
                     id="lastName"
                     name="lastName"
                     type="text"
-                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#2f9aa7] focus:ring-2 focus:ring-[#2f9aa7]/20"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#7B1F34] focus:ring-2 focus:ring-[#7B1F34]/20"
                     placeholder="Rossi"
                     value={formValues.lastName}
                     onChange={(event) => handleChange('lastName', event.target.value)}
@@ -229,7 +229,7 @@ export default function AuthLayout({ onBack }) {
                 name="email"
                 type="email"
                 autoComplete="email"
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#2f9aa7] focus:ring-2 focus:ring-[#2f9aa7]/20"
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#7B1F34] focus:ring-2 focus:ring-[#7B1F34]/20"
                 placeholder="nome@esempio.com"
                 value={formValues.email}
                 onChange={(event) => handleChange('email', event.target.value)}
@@ -248,7 +248,7 @@ export default function AuthLayout({ onBack }) {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-sm text-slate-900 outline-none transition-all focus:border-[#2f9aa7] focus:ring-2 focus:ring-[#2f9aa7]/20"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-sm text-slate-900 outline-none transition-all focus:border-[#7B1F34] focus:ring-2 focus:ring-[#7B1F34]/20"
                   placeholder="Almeno 8 caratteri"
                   value={formValues.password}
                   onChange={(event) => handleChange('password', event.target.value)}
@@ -280,7 +280,7 @@ export default function AuthLayout({ onBack }) {
                 <label className="flex items-start gap-3 text-left">
                   <input
                     type="checkbox"
-                    className="mt-1 h-4 w-4 rounded border-slate-300 text-[#2f9aa7] focus:ring-[#2f9aa7]"
+                    className="mt-1 h-4 w-4 rounded border-slate-300 text-[#7B1F34] focus:ring-[#7B1F34]"
                     checked={formValues.acceptTerms}
                     onChange={(event) => handleChange('acceptTerms', event.target.checked)}
                     disabled={isSubmitting}
@@ -288,7 +288,7 @@ export default function AuthLayout({ onBack }) {
                   />
                   <span>
                     Accetto i{' '}
-                    <a href="/termini-e-condizioni" className="font-semibold text-[#2f9aa7] underline-offset-4 hover:text-[#21707a] transition" target="_blank" rel="noreferrer">
+                    <a href="/termini-e-condizioni" className="font-semibold text-[#7B1F34] underline-offset-4 hover:text-[#21707a] transition" target="_blank" rel="noreferrer">
                       Termini e condizioni d'uso
                     </a>
                   </span>
@@ -296,7 +296,7 @@ export default function AuthLayout({ onBack }) {
                 <label className="flex items-start gap-3 text-left">
                   <input
                     type="checkbox"
-                    className="mt-1 h-4 w-4 rounded border-slate-300 text-[#2f9aa7] focus:ring-[#2f9aa7]"
+                    className="mt-1 h-4 w-4 rounded border-slate-300 text-[#7B1F34] focus:ring-[#7B1F34]"
                     checked={formValues.acceptPrivacy}
                     onChange={(event) => handleChange('acceptPrivacy', event.target.checked)}
                     disabled={isSubmitting}
@@ -304,7 +304,7 @@ export default function AuthLayout({ onBack }) {
                   />
                   <span>
                     Confermo di aver letto la{' '}
-                    <a href="/privacy-policy" className="font-semibold text-[#2f9aa7] underline-offset-4 hover:text-[#21707a] transition" target="_blank" rel="noreferrer">
+                    <a href="/privacy-policy" className="font-semibold text-[#7B1F34] underline-offset-4 hover:text-[#21707a] transition" target="_blank" rel="noreferrer">
                       Privacy Policy
                     </a>
                   </span>
@@ -312,7 +312,7 @@ export default function AuthLayout({ onBack }) {
                 <label className="flex items-start gap-3 text-left">
                   <input
                     type="checkbox"
-                    className="mt-1 h-4 w-4 rounded border-slate-300 text-[#2f9aa7] focus:ring-[#2f9aa7]"
+                    className="mt-1 h-4 w-4 rounded border-slate-300 text-[#7B1F34] focus:ring-[#7B1F34]"
                     checked={formValues.acceptCookies}
                     onChange={(event) => handleChange('acceptCookies', event.target.checked)}
                     disabled={isSubmitting}
@@ -320,7 +320,7 @@ export default function AuthLayout({ onBack }) {
                   />
                   <span>
                     Accetto l'utilizzo dei cookie secondo la{' '}
-                    <a href="/cookie-policy" className="font-semibold text-[#2f9aa7] underline-offset-4 hover:text-[#21707a] transition" target="_blank" rel="noreferrer">
+                    <a href="/cookie-policy" className="font-semibold text-[#7B1F34] underline-offset-4 hover:text-[#21707a] transition" target="_blank" rel="noreferrer">
                       Cookie Policy
                     </a>
                   </span>
@@ -352,7 +352,7 @@ export default function AuthLayout({ onBack }) {
 
             <button
               type="submit"
-              className="group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#2f9aa7]/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-[#2f9aa7]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2f9aa7] disabled:cursor-not-allowed disabled:opacity-70"
+              className="group relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#7B1F34]/30 transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-[#7B1F34]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7B1F34] disabled:cursor-not-allowed disabled:opacity-70"
               disabled={isSubmitting}
             >
               <span className="relative z-10">
@@ -368,7 +368,7 @@ export default function AuthLayout({ onBack }) {
                   mode === 'signin' ? 'Accedi' : 'Crea Account'
                 )}
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-[#3eb8a8] to-[#2f9aa7] opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#9E3A50] to-[#7B1F34] opacity-0 transition-opacity group-hover:opacity-100" />
             </button>
           </form>
 
@@ -376,7 +376,7 @@ export default function AuthLayout({ onBack }) {
             {mode === 'signin' ? 'Non hai un account?' : 'Hai già un account?'}{' '}
             <button
               type="button"
-              className="font-semibold text-[#2f9aa7] underline-offset-4 transition hover:text-[#21707a]"
+              className="font-semibold text-[#7B1F34] underline-offset-4 transition hover:text-[#21707a]"
               onClick={toggleMode}
               disabled={isSubmitting}
             >

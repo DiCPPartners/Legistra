@@ -90,7 +90,7 @@ export default function ExportMenu({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         disabled={isExporting}
-        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-[#2f9aa7] hover:bg-[#2f9aa7] hover:text-white hover:shadow-md disabled:opacity-50"
+        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-[#7B1F34] hover:bg-[#7B1F34] hover:text-white hover:shadow-md disabled:opacity-50"
         title="Esporta"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">

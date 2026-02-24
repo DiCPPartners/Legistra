@@ -90,7 +90,7 @@ function ChangeEmailDialog({ isOpen, onClose, currentEmail, onEmailUpdated }) {
             <input
               id="new-email"
               type="email"
-              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#4fb3c1] focus:ring-0"
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#8C2B42] focus:ring-0"
               value={newEmail}
               onChange={(event) => setNewEmail(event.target.value)}
               disabled={isSaving}
@@ -117,7 +117,7 @@ function ChangeEmailDialog({ isOpen, onClose, currentEmail, onEmailUpdated }) {
             </button>
             <button
               type="submit"
-              className="rounded-full bg-gradient-to-br from-[#4fb3c1] via-[#4cc2bc] to-[#48d1b5] px-5 py-2 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4fb3c1] disabled:cursor-not-allowed disabled:opacity-70"
+              className="rounded-full bg-gradient-to-br from-[#8C2B42] via-[#A5435A] to-[#B85468] px-5 py-2 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C2B42] disabled:cursor-not-allowed disabled:opacity-70"
               disabled={isSaving}
             >
               {isSaving ? 'Invio in corso…' : 'Invia conferme'}
@@ -221,7 +221,7 @@ function ChangePasswordDialog({ isOpen, onClose, currentEmail }) {
           <button
             type="button"
             onClick={handleSendLink}
-            className="rounded-full bg-gradient-to-br from-[#4fb3c1] via-[#4cc2bc] to-[#48d1b5] px-5 py-2 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4fb3c1] disabled:cursor-not-allowed disabled:opacity-70"
+            className="rounded-full bg-gradient-to-br from-[#8C2B42] via-[#A5435A] to-[#B85468] px-5 py-2 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C2B42] disabled:cursor-not-allowed disabled:opacity-70"
             disabled={isSending}
           >
             {isSending ? 'Invio…' : 'Invia link di reset'}
@@ -399,7 +399,7 @@ export default function ProfileDialog({ isOpen, onClose, profile, onProfileUpdat
               <input
                 id="profile-first-name"
                 type="text"
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#4fb3c1] focus:ring-0"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#8C2B42] focus:ring-0"
                 value={formValues.firstName}
                 onChange={(event) => handleChange('firstName', event.target.value)}
                 disabled={isSaving}
@@ -413,7 +413,7 @@ export default function ProfileDialog({ isOpen, onClose, profile, onProfileUpdat
               <input
                 id="profile-last-name"
                 type="text"
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#4fb3c1] focus:ring-0"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#8C2B42] focus:ring-0"
                 value={formValues.lastName}
                 onChange={(event) => handleChange('lastName', event.target.value)}
                 disabled={isSaving}
@@ -500,7 +500,7 @@ export default function ProfileDialog({ isOpen, onClose, profile, onProfileUpdat
           <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-br from-[#4fb3c1] via-[#4cc2bc] to-[#48d1b5] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4fb3c1] disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-br from-[#8C2B42] via-[#A5435A] to-[#B85468] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C2B42] disabled:cursor-not-allowed disabled:opacity-70"
               disabled={isSaving}
             >
               {isSaving ? 'Salvataggio…' : 'Salva modifiche'}

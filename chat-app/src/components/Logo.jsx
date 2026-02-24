@@ -2,7 +2,7 @@
 export default function Logo({ className = "h-6 w-6", color = "white" }) {
   const isWhite = color === "white"
   const scaleColor = isWhite ? "white" : color
-  const primaryColor = "#2f9aa7"
+  const primaryColor = "#7B1F34"
   
   return (
     <svg

@@ -349,7 +349,7 @@ Genera il memo legale completo, in italiano.`
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#7B1F34] to-[#9E3A50]">
               <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="h-5 w-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z" />
               </svg>
@@ -378,12 +378,12 @@ Genera il memo legale completo, in italiano.`
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Cerca norme: es. responsabilità contrattuale, art. 2043 c.c...."
-              className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#2f9aa7] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#2f9aa7]"
+              className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#7B1F34] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#7B1F34]"
             />
             <button
               type="submit"
               disabled={isSearching || !query.trim()}
-              className="rounded-xl bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:shadow-md disabled:opacity-50"
+              className="rounded-xl bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:shadow-md disabled:opacity-50"
             >
               {isSearching ? (
                 <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -399,7 +399,7 @@ Genera il memo legale completo, in italiano.`
         {articleText && (
           <div className="border-b border-slate-200 bg-slate-50 px-6 py-3">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-[#2f9aa7]">{articleText.codice?.toUpperCase()} — Art. {articleText.articolo}</span>
+              <span className="text-xs font-semibold text-[#7B1F34]">{articleText.codice?.toUpperCase()} — Art. {articleText.articolo}</span>
               <button onClick={() => setArticleText(null)} className="text-xs text-slate-400 hover:text-slate-600">Chiudi</button>
             </div>
             <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto">{articleText.text}</p>
@@ -437,7 +437,7 @@ Genera il memo legale completo, in italiano.`
               <button
                 onClick={handleGenerateReview}
                 disabled={isGenerating}
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:shadow-md disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:shadow-md disabled:opacity-50"
               >
                 {isGenerating ? (
                   <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -500,7 +500,7 @@ Genera il memo legale completo, in italiano.`
                     Generazione in corso...
                   </div>
                 )}
-                {isGenerating && <span className="inline-block w-1 h-4 bg-[#2f9aa7] animate-pulse ml-0.5" />}
+                {isGenerating && <span className="inline-block w-1 h-4 bg-[#7B1F34] animate-pulse ml-0.5" />}
               </div>
             </div>
           )}
@@ -516,7 +516,7 @@ Genera il memo legale completo, in italiano.`
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-semibold text-[#2f9aa7] hover:underline leading-snug"
+                  className="text-sm font-semibold text-[#7B1F34] hover:underline leading-snug"
                 >
                   {article.title}
                 </a>
@@ -529,7 +529,7 @@ Genera il memo legale completo, in italiano.`
                 </p>
 
                 {article.articles && (
-                  <p className="mt-1 text-xs text-[#2f9aa7] font-medium">{article.articles}</p>
+                  <p className="mt-1 text-xs text-[#7B1F34] font-medium">{article.articles}</p>
                 )}
                 {article.summary && (
                   <p className="mt-2 text-xs text-slate-600 leading-relaxed">{article.summary}</p>
@@ -539,7 +539,7 @@ Genera il memo legale completo, in italiano.`
                 <div className="mt-3 flex items-center gap-2">
                   <button
                     onClick={() => handleCopyCitation(article)}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-[#2f9aa7] hover:text-[#2f9aa7]"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-[#7B1F34] hover:text-[#7B1F34]"
                   >
                     {copiedId === article.id ? (
                       <>
@@ -562,7 +562,7 @@ Genera il memo legale completo, in italiano.`
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-[#2f9aa7] hover:text-[#2f9aa7]"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-[#7B1F34] hover:text-[#7B1F34]"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
                       <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />

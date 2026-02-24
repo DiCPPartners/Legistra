@@ -67,7 +67,7 @@ export default function SubscriptionPlans({ onBack }) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-[#3eb8a8]" />
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-[#9E3A50]" />
           <p className="text-slate-500">Caricamento...</p>
         </div>
       </div>
@@ -90,7 +90,7 @@ export default function SubscriptionPlans({ onBack }) {
           </button>
           
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#3eb8a8] to-[#2f9aa7] shadow-lg shadow-teal-500/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#9E3A50] to-[#7B1F34] shadow-lg shadow-rose-900/20">
               <Logo className="h-6 w-6" color="white" />
             </div>
             <span className="text-xl font-bold text-slate-800" style={{ fontFamily: "'Inter', sans-serif", letterSpacing: '-0.01em' }}>Legistra</span>
@@ -161,13 +161,13 @@ export default function SubscriptionPlans({ onBack }) {
                 key={plan.id}
                 className={`relative overflow-hidden rounded-3xl border-2 bg-white p-8 transition-all duration-300 ${
                   plan.popular
-                    ? 'border-[#3eb8a8] shadow-2xl shadow-teal-500/20 ring-4 ring-teal-500/10'
+                    ? 'border-[#9E3A50] shadow-2xl shadow-rose-900/20 ring-4 ring-rose-900/10'
                     : 'border-slate-200 hover:border-slate-300 hover:shadow-xl'
                 }`}
               >
                 {/* Popular Badge */}
                 {plan.popular && (
-                  <div className="absolute -right-12 top-6 rotate-45 bg-gradient-to-r from-[#3eb8a8] to-[#2f9aa7] px-12 py-1.5 text-sm font-semibold text-white shadow-lg">
+                  <div className="absolute -right-12 top-6 rotate-45 bg-gradient-to-r from-[#9E3A50] to-[#7B1F34] px-12 py-1.5 text-sm font-semibold text-white shadow-lg">
                     Più popolare
                   </div>
                 )}
@@ -186,7 +186,7 @@ export default function SubscriptionPlans({ onBack }) {
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-3">
                       <div className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full ${
-                        plan.popular ? 'bg-[#3eb8a8]' : 'bg-slate-200'
+                        plan.popular ? 'bg-[#9E3A50]' : 'bg-slate-200'
                       }`}>
                         <svg className={`h-3 w-3 ${plan.popular ? 'text-white' : 'text-slate-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -205,7 +205,7 @@ export default function SubscriptionPlans({ onBack }) {
                     isCurrentPlan
                       ? 'cursor-default bg-emerald-100 text-emerald-700'
                       : plan.popular
-                        ? 'bg-gradient-to-r from-[#3eb8a8] to-[#2f9aa7] text-white shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 disabled:opacity-50'
+                        ? 'bg-gradient-to-r from-[#9E3A50] to-[#7B1F34] text-white shadow-lg shadow-rose-900/30 hover:shadow-xl hover:shadow-rose-900/40 disabled:opacity-50'
                         : plan.active
                           ? 'bg-slate-900 text-white hover:bg-slate-800 disabled:opacity-50'
                           : 'cursor-not-allowed bg-slate-100 text-slate-400'
@@ -262,7 +262,7 @@ export default function SubscriptionPlans({ onBack }) {
         <div className="mt-16 text-center">
           <p className="text-slate-600">
             Hai bisogno di un piano personalizzato?{' '}
-            <a href="mailto:info@legistra.app" className="font-semibold text-[#3eb8a8] hover:underline">
+            <a href="mailto:info@legistra.app" className="font-semibold text-[#9E3A50] hover:underline">
               Contattaci
             </a>
           </p>

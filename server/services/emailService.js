@@ -16,7 +16,7 @@ const FROM_EMAIL = process.env.EMAIL_FROM || 'Legistra <onboarding@resend.dev>'
 const APP_NAME = 'Legistra'
 const APP_URL = process.env.APP_URL || 'http://localhost:5173'
 
-const BRAND_COLOR = '#2f9aa7'
+const BRAND_COLOR = '#7B1F34'
 
 function baseTemplate(content) {
   return `<!DOCTYPE html>

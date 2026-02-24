@@ -431,8 +431,8 @@ export default function DocumentTemplates({ onClose }) {
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
           <div className="mx-4 w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-2xl">
             <div className="mb-6 text-center">
-              <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#2f9aa7]/10 to-[#3eb8a8]/10">
-                <svg className="h-8 w-8 animate-spin text-[#2f9aa7]" fill="none" viewBox="0 0 24 24">
+              <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#7B1F34]/10 to-[#9E3A50]/10">
+                <svg className="h-8 w-8 animate-spin text-[#7B1F34]" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
@@ -451,7 +451,7 @@ export default function DocumentTemplates({ onClose }) {
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] transition-all duration-300 ease-out"
+                  className="h-full rounded-full bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] transition-all duration-300 ease-out"
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>
@@ -490,7 +490,7 @@ export default function DocumentTemplates({ onClose }) {
               <button
                 type="button"
                 onClick={() => setShowNewCategoryForm(true)}
-                className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:border-[#4fb3c1] hover:bg-[#f0f7f9] hover:text-[#2f9aa7]"
+                className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:border-[#8C2B42] hover:bg-[#f0f7f9] hover:text-[#7B1F34]"
                 title="Nuova categoria"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
@@ -506,20 +506,20 @@ export default function DocumentTemplates({ onClose }) {
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
                   placeholder="Nome categoria"
-                  className="mb-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#4fb3c1]"
+                  className="mb-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#8C2B42]"
                 />
                 <input
                   type="text"
                   value={newCategoryDescription}
                   onChange={(e) => setNewCategoryDescription(e.target.value)}
                   placeholder="Descrizione (opzionale)"
-                  className="mb-3 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#4fb3c1]"
+                  className="mb-3 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#8C2B42]"
                 />
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={handleCreateCategory}
-                    className="flex-1 rounded-xl bg-[#4fb3c1] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#3d9fae]"
+                    className="flex-1 rounded-xl bg-[#8C2B42] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#3d9fae]"
                   >
                     Crea
                   </button>
@@ -622,7 +622,7 @@ export default function DocumentTemplates({ onClose }) {
                   <p className="text-sm text-slate-500">{selectedCategory.description}</p>
                 </div>
                 <label
-                  className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-[#4fb3c1] via-[#4cc2bc] to-[#48d1b5] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(72,209,181,0.4)] transition cursor-pointer hover:scale-105 ${
+                  className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-[#8C2B42] via-[#A5435A] to-[#B85468] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(72,209,181,0.4)] transition cursor-pointer hover:scale-105 ${
                     isUploading ? 'opacity-60 cursor-not-allowed' : ''
                   }`}
                 >
@@ -671,7 +671,7 @@ export default function DocumentTemplates({ onClose }) {
                     <p className="mb-6 max-w-md text-sm text-slate-500">
                       Trascina qui i tuoi documenti PDF o Word, oppure usa il pulsante "Carica documento" per aggiungere esempi del tuo stile di scrittura.
                     </p>
-                    <label className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-slate-300 px-6 py-3 text-sm font-semibold text-slate-600 transition cursor-pointer hover:border-[#4fb3c1] hover:bg-[#f0f7f9] hover:text-[#2f9aa7]">
+                    <label className="inline-flex items-center gap-2 rounded-full border-2 border-dashed border-slate-300 px-6 py-3 text-sm font-semibold text-slate-600 transition cursor-pointer hover:border-[#8C2B42] hover:bg-[#f0f7f9] hover:text-[#7B1F34]">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                       </svg>

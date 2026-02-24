@@ -130,7 +130,7 @@ export default function MessageComposer({
   return (
     <div
       className={`sticky bottom-0 left-0 right-0 border-t border-slate-200/50 bg-gradient-to-t from-white via-white/95 to-white/90 pb-safe backdrop-blur-lg transition-all duration-300 ${
-        isDragActive ? 'bg-gradient-to-t from-[#2f9aa7]/5 via-[#2f9aa7]/5 to-transparent border-[#2f9aa7]/30 shadow-[0_-8px_30px_rgba(47,154,167,0.1)]' : 'shadow-[0_-4px_20px_rgba(0,0,0,0.03)]'
+        isDragActive ? 'bg-gradient-to-t from-[#7B1F34]/5 via-[#7B1F34]/5 to-transparent border-[#7B1F34]/30 shadow-[0_-8px_30px_rgba(47,154,167,0.1)]' : 'shadow-[0_-4px_20px_rgba(0,0,0,0.03)]'
       }`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
@@ -158,7 +158,7 @@ export default function MessageComposer({
                     className={`group relative flex flex-shrink-0 items-center gap-3 rounded-xl border bg-white/90 px-4 py-2.5 text-sm text-slate-700 shadow-md backdrop-blur-sm transition-all ${
                       isReady 
                         ? 'border-emerald-200 hover:border-emerald-300 hover:shadow-lg' 
-                        : 'border-slate-200/50 hover:border-[#2f9aa7]/30 hover:shadow-lg'
+                        : 'border-slate-200/50 hover:border-[#7B1F34]/30 hover:shadow-lg'
                     }`}
                     style={{ minWidth: '220px', maxWidth: '280px' }}
                   >
@@ -166,7 +166,7 @@ export default function MessageComposer({
                     <span className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border ${
                       isReady
                         ? 'border-emerald-200 bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600'
-                        : 'border-slate-200/50 bg-gradient-to-br from-[#2f9aa7]/10 to-[#3eb8a8]/10 text-[#2f9aa7]'
+                        : 'border-slate-200/50 bg-gradient-to-br from-[#7B1F34]/10 to-[#9E3A50]/10 text-[#7B1F34]'
                     }`}>
                       {isReady ? (
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
@@ -213,18 +213,18 @@ export default function MessageComposer({
           <div
             className={`relative flex flex-col gap-3 rounded-2xl border bg-white p-4 shadow-xl transition-all duration-300 ${
               isDragActive 
-                ? 'border-[#2f9aa7] bg-gradient-to-br from-[#2f9aa7]/5 to-[#3eb8a8]/5 shadow-[#2f9aa7]/20' 
+                ? 'border-[#7B1F34] bg-gradient-to-br from-[#7B1F34]/5 to-[#9E3A50]/5 shadow-[#7B1F34]/20' 
                 : 'border-slate-200 hover:border-slate-300 hover:shadow-2xl'
             } ${isSending ? 'opacity-60' : ''}`}
           >
             {/* Gradient glow effect */}
-            <div className="pointer-events-none absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-[#2f9aa7]/20 via-transparent to-[#3eb8a8]/20 opacity-0 blur transition-opacity group-hover:opacity-100" />
+            <div className="pointer-events-none absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-[#7B1F34]/20 via-transparent to-[#9E3A50]/20 opacity-0 blur transition-opacity group-hover:opacity-100" />
             
             <div className="relative flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => onOpenActionsModal?.()}
-                className="group/btn inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition-all duration-200 hover:border-[#2f9aa7] hover:bg-[#2f9aa7] hover:text-white hover:shadow-lg hover:shadow-[#2f9aa7]/25 disabled:cursor-not-allowed disabled:opacity-60"
+                className="group/btn inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition-all duration-200 hover:border-[#7B1F34] hover:bg-[#7B1F34] hover:text-white hover:shadow-lg hover:shadow-[#7B1F34]/25 disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={isSending}
                 aria-label="Azioni medico-legali"
               >
@@ -246,7 +246,7 @@ export default function MessageComposer({
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="group/upload inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition-all duration-200 hover:border-[#2f9aa7] hover:bg-[#2f9aa7] hover:text-white hover:shadow-lg hover:shadow-[#2f9aa7]/25 disabled:cursor-not-allowed disabled:opacity-60"
+                className="group/upload inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition-all duration-200 hover:border-[#7B1F34] hover:bg-[#7B1F34] hover:text-white hover:shadow-lg hover:shadow-[#7B1F34]/25 disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={isSending}
                 title="Carica PDF o Word"
               >
@@ -261,7 +261,7 @@ export default function MessageComposer({
                 id="message"
                 name="message"
                 rows={1}
-                className="flex-1 resize-none rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none ring-1 ring-slate-200 transition-all duration-200 placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-[#2f9aa7] disabled:cursor-not-allowed"
+                className="flex-1 resize-none rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none ring-1 ring-slate-200 transition-all duration-200 placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-[#7B1F34] disabled:cursor-not-allowed"
                 placeholder="Scrivi un messaggio o carica documenti..."
                 value={text}
                 onChange={(event) => onTextChange(event.target.value)}
@@ -274,7 +274,7 @@ export default function MessageComposer({
                 className={`group/send relative inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl text-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   isSending 
                     ? 'bg-gradient-to-r from-red-500 to-red-600 shadow-red-500/30 hover:shadow-red-500/40 focus-visible:outline-red-500' 
-                    : 'bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] shadow-[#2f9aa7]/30 hover:shadow-[#2f9aa7]/40 focus-visible:outline-[#2f9aa7]'
+                    : 'bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] shadow-[#7B1F34]/30 hover:shadow-[#7B1F34]/40 focus-visible:outline-[#7B1F34]'
                 }`}
                 aria-label={isSending ? "Annulla elaborazione" : "Invia messaggio"}
                 title={isSending ? "Clicca per annullare l'elaborazione" : "Invia messaggio"}
@@ -282,7 +282,7 @@ export default function MessageComposer({
                 <div className={`absolute inset-0 opacity-0 transition-opacity group-hover/send:opacity-100 ${
                   isSending 
                     ? 'bg-gradient-to-r from-red-600 to-red-500' 
-                    : 'bg-gradient-to-r from-[#3eb8a8] to-[#2f9aa7]'
+                    : 'bg-gradient-to-r from-[#9E3A50] to-[#7B1F34]'
                 }`} />
                 {isSending ? (
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="relative h-5 w-5">

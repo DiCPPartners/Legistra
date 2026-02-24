@@ -211,7 +211,7 @@ export default function ResetPassword({ onComplete }) {
 
         {isVerifying ? (
           <div className="flex flex-col items-center gap-3 text-sm text-slate-500">
-            <span className="inline-flex h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-[#4fb3c1]" />
+            <span className="inline-flex h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-[#8C2B42]" />
             <p>Verifica token in corso…</p>
           </div>
         ) : error ? (
@@ -225,7 +225,7 @@ export default function ResetPassword({ onComplete }) {
               <input
                 id="new-password"
                 type="password"
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#4fb3c1] focus:ring-0"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#8C2B42] focus:ring-0"
                 placeholder="Almeno 8 caratteri"
                 value={password}
                 onChange={(event) => {
@@ -254,7 +254,7 @@ export default function ResetPassword({ onComplete }) {
               <input
                 id="confirm-password"
                 type="password"
-                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#4fb3c1] focus:ring-0"
+                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#8C2B42] focus:ring-0"
                 placeholder="Ripeti la password"
                 value={confirmPassword}
                 onChange={(event) => {
@@ -278,7 +278,7 @@ export default function ResetPassword({ onComplete }) {
 
             <button
               type="submit"
-              className="flex w-full items-center justify-center rounded-full bg-gradient-to-br from-[#4fb3c1] via-[#4cc2bc] to-[#48d1b5] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4fb3c1] disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex w-full items-center justify-center rounded-full bg-gradient-to-br from-[#8C2B42] via-[#A5435A] to-[#B85468] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(72,209,181,0.4)] transition hover:scale-[1.01] hover:shadow-[0_20px_45px_rgba(72,209,181,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C2B42] disabled:cursor-not-allowed disabled:opacity-70"
               disabled={isSaving}
             >
               {isSaving ? 'Aggiornamento…' : 'Aggiorna password'}

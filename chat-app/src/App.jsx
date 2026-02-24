@@ -3369,7 +3369,7 @@ function App() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(47,154,167,0.08),transparent_50%)]" />
         </div>
         <div className="flex flex-col items-center gap-3">
-          <span className="inline-flex h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-[#2f9aa7]" />
+          <span className="inline-flex h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-[#7B1F34]" />
           <p className="text-sm">Verifica della sessione in corso…</p>
         </div>
       </div>
@@ -3404,7 +3404,7 @@ function App() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(47,154,167,0.08),transparent_50%)]" />
         </div>
         <div className="flex flex-col items-center gap-3">
-          <span className="inline-flex h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-[#2f9aa7]" />
+          <span className="inline-flex h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-[#7B1F34]" />
           <p className="text-sm">Caricamento delle conversazioni in corso…</p>
         </div>
       </div>
@@ -3452,7 +3452,7 @@ function App() {
               <button
                 type="button"
                 onClick={handleNewConversation}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-[#2f9aa7] hover:bg-white hover:text-[#2f9aa7] hover:shadow-md"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-[#7B1F34] hover:bg-white hover:text-[#7B1F34] hover:shadow-md"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m7-7H5" />
@@ -3462,7 +3462,7 @@ function App() {
               <button
                 type="button"
                 onClick={handleProfileClick}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-500 shadow-sm transition-all hover:border-[#2f9aa7] hover:bg-white hover:text-[#2f9aa7] hover:shadow-md"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-500 shadow-sm transition-all hover:border-[#7B1F34] hover:bg-white hover:text-[#7B1F34] hover:shadow-md"
                 title="Profilo"
               >
                 <svg
@@ -3488,7 +3488,7 @@ function App() {
                   onClick={() => handleSelectConversation(conversation.id)}
                   className={`whitespace-nowrap rounded-xl px-4 py-2 text-xs font-semibold transition-all ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] text-white shadow-lg shadow-[#2f9aa7]/30'
+                      ? 'bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] text-white shadow-lg shadow-[#7B1F34]/30'
                       : 'bg-white/90 text-slate-600 shadow-sm hover:bg-white hover:text-slate-800 hover:shadow-md'
                   }`}
                 >
@@ -3507,11 +3507,11 @@ function App() {
           {isDragOverChat && (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm border-2 border-dashed border-teal-400 rounded-xl m-2 pointer-events-none">
               <div className="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto h-12 w-12 text-teal-500 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto h-12 w-12 text-rose-900 mb-3">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>
                 <p className="text-lg font-semibold text-teal-700">Rilascia i file qui</p>
-                <p className="text-sm text-teal-500 mt-1">PDF, Word o immagini</p>
+                <p className="text-sm text-rose-900 mt-1">PDF, Word o immagini</p>
               </div>
             </div>
           )}

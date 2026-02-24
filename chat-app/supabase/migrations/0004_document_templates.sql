@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS template_categories (
   name VARCHAR(255) NOT NULL,
   description TEXT,
   icon VARCHAR(50) DEFAULT 'document',
-  color VARCHAR(20) DEFAULT '#4fb3c1',
+  color VARCHAR(20) DEFAULT '#8C2B42',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, name)

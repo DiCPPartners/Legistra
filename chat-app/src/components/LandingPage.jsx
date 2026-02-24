@@ -131,7 +131,7 @@ export default function LandingPage() {
           </div>
           <button
             onClick={() => setShowAuth(true)}
-            className="w-[150px] h-[50px] rounded-full bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#2f9aa7]/25 transition-all hover:shadow-xl hover:scale-105"
+            className="w-[150px] h-[50px] rounded-full bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#7B1F34]/25 transition-all hover:shadow-xl hover:scale-105"
           >
             Accedi
           </button>
@@ -144,10 +144,10 @@ export default function LandingPage() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 mb-8 shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
             <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2f9aa7] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2f9aa7]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7B1F34] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#7B1F34]"></span>
             </span>
-            <span className="text-sm text-[#2f9aa7] font-medium">Intelligenza artificiale per professionisti legali</span>
+            <span className="text-sm text-[#7B1F34] font-medium">Intelligenza artificiale per professionisti legali</span>
           </div>
 
           {/* Main headline */}
@@ -155,7 +155,7 @@ export default function LandingPage() {
             <span className="text-slate-900">Genera</span>
             <br />
             <span 
-              className={`inline-block bg-gradient-to-r from-[#2f9aa7] via-[#3eb8a8] to-[#2f9aa7] bg-clip-text text-transparent transition-all duration-200 ${
+              className={`inline-block bg-gradient-to-r from-[#7B1F34] via-[#9E3A50] to-[#7B1F34] bg-clip-text text-transparent transition-all duration-200 ${
                 isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
               }`}
             >
@@ -175,7 +175,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <button
               onClick={() => setShowAuth(true)}
-              className="group relative w-full sm:w-auto overflow-hidden rounded-full bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] px-8 py-4 text-base font-semibold text-white shadow-[0_8px_30px_rgba(47,154,167,0.4)] transition-all hover:shadow-[0_12px_40px_rgba(47,154,167,0.5)] hover:scale-105"
+              className="group relative w-full sm:w-auto overflow-hidden rounded-full bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-8 py-4 text-base font-semibold text-white shadow-[0_8px_30px_rgba(47,154,167,0.4)] transition-all hover:shadow-[0_12px_40px_rgba(47,154,167,0.5)] hover:scale-105"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 Prova Gratis
@@ -183,11 +183,11 @@ export default function LandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-[#3eb8a8] to-[#2f9aa7] opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#9E3A50] to-[#7B1F34] opacity-0 transition-opacity group-hover:opacity-100" />
             </button>
             <button
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              className="w-full sm:w-auto rounded-full border-2 border-slate-200 bg-white px-8 py-4 text-base font-semibold text-slate-700 shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-all hover:border-[#2f9aa7] hover:text-[#2f9aa7] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+              className="w-full sm:w-auto rounded-full border-2 border-slate-200 bg-white px-8 py-4 text-base font-semibold text-slate-700 shadow-[0_4px_20px_rgba(0,0,0,0.1)] transition-all hover:border-[#7B1F34] hover:text-[#7B1F34] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
             >
               Scopri le funzionalità
             </button>
@@ -196,17 +196,17 @@ export default function LandingPage() {
           {/* Stats */}
           <div className="inline-flex items-center gap-6 sm:gap-10 rounded-2xl bg-white border border-slate-200 px-8 py-5 shadow-[0_8px_40px_rgba(0,0,0,0.12)]">
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-[#2f9aa7]">3</div>
+              <div className="text-2xl sm:text-3xl font-bold text-[#7B1F34]">3</div>
               <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">AI Models</div>
             </div>
             <div className="h-10 w-px bg-slate-200" />
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-[#2f9aa7]">99.7%</div>
+              <div className="text-2xl sm:text-3xl font-bold text-[#7B1F34]">99.7%</div>
               <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">Accuratezza</div>
             </div>
             <div className="h-10 w-px bg-slate-200" />
             <div className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold text-[#2f9aa7]">&lt;30s</div>
+              <div className="text-2xl sm:text-3xl font-bold text-[#7B1F34]">&lt;30s</div>
               <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">Per Analisi</div>
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 rounded-full bg-[#2f9aa7]/10 text-[#2f9aa7] text-sm font-semibold mb-4">
+            <span className="inline-block px-4 py-2 rounded-full bg-[#7B1F34]/10 text-[#7B1F34] text-sm font-semibold mb-4">
               Guida all'utilizzo
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
@@ -232,7 +232,7 @@ export default function LandingPage() {
           {/* Step 1 */}
           <div className="mb-16">
             <div className="flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 shadow-lg">
-              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7B1F34] to-[#9E3A50] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                 1
               </div>
               <div className="flex-1">
@@ -246,7 +246,7 @@ export default function LandingPage() {
                   {/* Metodo 1: Pulsante + */}
                   <div className="p-5 rounded-xl bg-slate-100 border-2 border-slate-300">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 rounded-xl bg-[#2f9aa7] flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                      <div className="w-12 h-12 rounded-xl bg-[#7B1F34] flex items-center justify-center text-white text-2xl font-bold shadow-md">
                         +
                       </div>
                       <span className="text-lg font-bold text-slate-900">Pulsante "+"</span>
@@ -255,9 +255,9 @@ export default function LandingPage() {
                   </div>
                   
                   {/* Metodo 2: Drag & Drop */}
-                  <div className="p-5 rounded-xl bg-[#2f9aa7]/10 border-2 border-[#2f9aa7]/30 border-dashed">
+                  <div className="p-5 rounded-xl bg-[#7B1F34]/10 border-2 border-[#7B1F34]/30 border-dashed">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 rounded-xl bg-[#2f9aa7] flex items-center justify-center shadow-md">
+                      <div className="w-12 h-12 rounded-xl bg-[#7B1F34] flex items-center justify-center shadow-md">
                         <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                         </svg>
@@ -269,7 +269,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* Illustrazione Drop Zone */}
-                <div className="relative p-6 rounded-2xl bg-gradient-to-br from-[#2f9aa7]/5 to-[#3eb8a8]/5 border-2 border-dashed border-[#2f9aa7]/40">
+                <div className="relative p-6 rounded-2xl bg-gradient-to-br from-[#7B1F34]/5 to-[#9E3A50]/5 border-2 border-dashed border-[#7B1F34]/40">
                   <div className="flex items-center justify-center gap-6">
                     {/* Icona file che viene trascinato */}
                     <div className="relative">
@@ -281,21 +281,21 @@ export default function LandingPage() {
                       </div>
                       {/* Animazione freccia */}
                       <div className="absolute -right-4 top-1/2 -translate-y-1/2">
-                        <svg className="h-8 w-8 text-[#2f9aa7] animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg className="h-8 w-8 text-[#7B1F34] animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
                       </div>
                     </div>
                     
                     {/* Drop zone simulata */}
-                    <div className="w-48 h-24 rounded-xl border-2 border-dashed border-[#2f9aa7] bg-white flex flex-col items-center justify-center">
-                      <svg className="h-10 w-10 text-[#2f9aa7] mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <div className="w-48 h-24 rounded-xl border-2 border-dashed border-[#7B1F34] bg-white flex flex-col items-center justify-center">
+                      <svg className="h-10 w-10 text-[#7B1F34] mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3" />
                       </svg>
-                      <span className="text-sm font-medium text-[#2f9aa7]">Rilascia qui</span>
+                      <span className="text-sm font-medium text-[#7B1F34]">Rilascia qui</span>
                     </div>
                   </div>
-                  <p className="text-center text-[#2f9aa7] font-medium mt-4 text-lg">
+                  <p className="text-center text-[#7B1F34] font-medium mt-4 text-lg">
                     I file vengono elaborati automaticamente dopo il caricamento.
                   </p>
                 </div>
@@ -306,7 +306,7 @@ export default function LandingPage() {
           {/* Step 2 */}
           <div className="mb-16">
             <div className="flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 shadow-lg">
-              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7B1F34] to-[#9E3A50] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                 2
               </div>
               <div className="flex-1">
@@ -378,12 +378,12 @@ export default function LandingPage() {
 
           {/* Step 3 - EMULAZIONE (evidenziato) */}
           <div className="mb-16">
-            <div className="relative flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-[#2f9aa7]/10 to-[#3eb8a8]/10 border-2 border-[#2f9aa7] shadow-xl">
+            <div className="relative flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-[#7B1F34]/10 to-[#9E3A50]/10 border-2 border-[#7B1F34] shadow-xl">
               {/* Badge speciale */}
-              <div className="absolute -top-4 left-8 px-4 py-1 rounded-full bg-[#2f9aa7] text-white text-sm font-bold shadow-lg">
+              <div className="absolute -top-4 left-8 px-4 py-1 rounded-full bg-[#7B1F34] text-white text-sm font-bold shadow-lg">
                 ⭐ FUNZIONE SPECIALE
               </div>
-              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7B1F34] to-[#9E3A50] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                 3
               </div>
               <div className="flex-1 pt-2">
@@ -395,7 +395,7 @@ export default function LandingPage() {
                 {/* Sub-steps per emulazione */}
                 <div className="space-y-4 mb-6">
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#2f9aa7] flex items-center justify-center text-white font-bold">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#7B1F34] flex items-center justify-center text-white font-bold">
                       A
                     </div>
                     <div>
@@ -405,7 +405,7 @@ export default function LandingPage() {
                   </div>
                   
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#2f9aa7] flex items-center justify-center text-white font-bold">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#7B1F34] flex items-center justify-center text-white font-bold">
                       B
                     </div>
                     <div>
@@ -415,7 +415,7 @@ export default function LandingPage() {
                   </div>
                   
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#2f9aa7] flex items-center justify-center text-white font-bold">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#7B1F34] flex items-center justify-center text-white font-bold">
                       C
                     </div>
                     <div>
@@ -425,9 +425,9 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-5 rounded-xl bg-white border-2 border-[#2f9aa7]/30 shadow-md">
+                <div className="flex items-center gap-4 p-5 rounded-xl bg-white border-2 border-[#7B1F34]/30 shadow-md">
                   <div className="flex-shrink-0">
-                    <svg className="h-16 w-16 text-[#2f9aa7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                    <svg className="h-16 w-16 text-[#7B1F34]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                     </svg>
                   </div>
@@ -443,7 +443,7 @@ export default function LandingPage() {
           {/* Step 4 - Legislazione */}
           <div className="mb-16">
             <div className="flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 shadow-lg">
-              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7B1F34] to-[#9E3A50] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                 4
               </div>
               <div className="flex-1">
@@ -453,7 +453,7 @@ export default function LandingPage() {
                 </p>
                 <div className="space-y-4 mb-4">
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#2f9aa7] flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#7B1F34] flex items-center justify-center">
                       <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                       </svg>
@@ -464,7 +464,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#2f9aa7] flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#7B1F34] flex items-center justify-center">
                       <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.98 1.804a1 1 0 00-1.96 0l-.24 1.192a1 1 0 01-.784.785l-1.192.238a1 1 0 000 1.962l1.192.238a1 1 0 01.785.785l.238 1.192a1 1 0 001.962 0l.238-1.192a1 1 0 01.785-.785l1.192-.238a1 1 0 000-1.962l-1.192-.238a1 1 0 01-.785-.785l-.238-1.192z" />
                       </svg>
@@ -475,7 +475,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#2f9aa7] flex items-center justify-center">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#7B1F34] flex items-center justify-center">
                       <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                       </svg>
@@ -493,7 +493,7 @@ export default function LandingPage() {
           {/* Step 5 */}
           <div className="mb-8">
             <div className="flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 shadow-lg">
-              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#7B1F34] to-[#9E3A50] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                 5
               </div>
               <div className="flex-1">
@@ -530,7 +530,7 @@ export default function LandingPage() {
       </section>
 
       {/* Cosa puoi fare */}
-      <section className="relative px-6 py-20 lg:px-8 bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] shadow-[0_-20px_60px_rgba(0,0,0,0.15),0_20px_60px_rgba(0,0,0,0.15)]">
+      <section className="relative px-6 py-20 lg:px-8 bg-gradient-to-br from-[#7B1F34] to-[#9E3A50] shadow-[0_-20px_60px_rgba(0,0,0,0.15),0_20px_60px_rgba(0,0,0,0.15)]">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -595,7 +595,7 @@ export default function LandingPage() {
           <div className="grid sm:grid-cols-3 gap-6">
             {SECURITY_FEATURES.map((feature, idx) => (
               <div key={idx} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-[0_8px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.15)] transition-all">
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#2f9aa7]/10 to-[#3eb8a8]/10 text-[#2f9aa7] mb-4">
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-[#7B1F34]/10 to-[#9E3A50]/10 text-[#7B1F34] mb-4">
                   {feature.icon}
                 </div>
                 <h3 className="font-bold text-slate-900 mb-2">{feature.title}</h3>
@@ -617,7 +617,7 @@ export default function LandingPage() {
           </h2>
           <button
             onClick={() => setShowAuth(true)}
-            className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#2f9aa7] to-[#3eb8a8] px-10 py-5 text-lg font-semibold text-white shadow-[0_10px_40px_rgba(47,154,167,0.4)] transition-all hover:shadow-[0_16px_60px_rgba(47,154,167,0.5)] hover:scale-105"
+            className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-10 py-5 text-lg font-semibold text-white shadow-[0_10px_40px_rgba(47,154,167,0.4)] transition-all hover:shadow-[0_16px_60px_rgba(47,154,167,0.5)] hover:scale-105"
           >
             Crea Account Gratuito
             <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -629,7 +629,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="relative border-t border-slate-200 bg-slate-50 px-6 py-12 lg:px-8 shadow-[inset_0_10px_30px_-10px_rgba(0,0,0,0.1)]">
-        <div className="absolute inset-x-0 inset-y-0 bg-gradient-to-t from-[#2f9aa7]/5 via-transparent to-transparent shadow-[0_4px_12px_rgba(0,0,0,0.15)]" />
+        <div className="absolute inset-x-0 inset-y-0 bg-gradient-to-t from-[#7B1F34]/5 via-transparent to-transparent shadow-[0_4px_12px_rgba(0,0,0,0.15)]" />
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 mb-8">
             <div>
@@ -641,9 +641,9 @@ export default function LandingPage() {
               </p>
             </div>
             <ul className="flex flex-wrap gap-6 text-sm text-slate-600">
-              <li><a href="/termini-e-condizioni" className="hover:text-[#2f9aa7] transition-colors">Termini di servizio</a></li>
-              <li><a href="/privacy-policy" className="hover:text-[#2f9aa7] transition-colors">Privacy Policy</a></li>
-              <li><a href="/cookie-policy" className="hover:text-[#2f9aa7] transition-colors">Cookie Policy</a></li>
+              <li><a href="/termini-e-condizioni" className="hover:text-[#7B1F34] transition-colors">Termini di servizio</a></li>
+              <li><a href="/privacy-policy" className="hover:text-[#7B1F34] transition-colors">Privacy Policy</a></li>
+              <li><a href="/cookie-policy" className="hover:text-[#7B1F34] transition-colors">Cookie Policy</a></li>
             </ul>
           </div>
           <div className="pt-8 border-t border-slate-200 text-center text-sm text-slate-500">

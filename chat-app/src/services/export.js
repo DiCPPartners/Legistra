@@ -21,7 +21,7 @@ const PDF_CONFIG_DEFAULT = {
     small: 8
   },
   colors: {
-    primary: [47, 154, 167], // #2f9aa7
+    primary: [123, 31, 52], // #7B1F34
     dark: [30, 41, 59],      // slate-800
     muted: [100, 116, 139]   // slate-500
   },

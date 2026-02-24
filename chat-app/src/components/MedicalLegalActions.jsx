@@ -67,8 +67,8 @@ const LEGAL_ACTIONS = [
 ]
 
 const CATEGORIES = {
-  'azioni-ai': { label: 'Azioni AI', color: 'bg-[#e1eff2] text-[#2f9aa7]' },
-  personalizzate: { label: 'Categorie Personalizzate', color: 'bg-gradient-to-r from-[#4fb3c1] to-[#48d1b5] text-white' },
+  'azioni-ai': { label: 'Azioni AI', color: 'bg-[#e1eff2] text-[#7B1F34]' },
+  personalizzate: { label: 'Categorie Personalizzate', color: 'bg-gradient-to-r from-[#8C2B42] to-[#B85468] text-white' },
 }
 
 export default function MedicalLegalActions({ isOpen, onClose, onActionSelect, isSending }) {
@@ -172,13 +172,13 @@ export default function MedicalLegalActions({ isOpen, onClose, onActionSelect, i
                         onClose()
                       }}
                       disabled={isSending}
-                      className="group flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:border-[#4fb3c1] hover:bg-[#f0f7f9] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                      className="group flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:border-[#8C2B42] hover:bg-[#f0f7f9] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                      <span className={`mt-0.5 flex-shrink-0 ${action.iconColor || 'bg-[#e1eff2] text-[#2f9aa7]'} rounded-lg p-2`}>
+                      <span className={`mt-0.5 flex-shrink-0 ${action.iconColor || 'bg-[#e1eff2] text-[#7B1F34]'} rounded-lg p-2`}>
                         {action.icon}
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-slate-800 group-hover:text-[#2f9aa7]">{action.label}</p>
+                        <p className="font-semibold text-slate-800 group-hover:text-[#7B1F34]">{action.label}</p>
                         <p className="mt-1 text-xs text-slate-500">{action.description}</p>
                       </div>
                     </button>
@@ -205,15 +205,15 @@ export default function MedicalLegalActions({ isOpen, onClose, onActionSelect, i
                       onClose()
                     }}
                     disabled={isSending || isLoadingCategories}
-                    className="group flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:border-[#4fb3c1] hover:bg-[#f0f7f9] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                    className="group flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:border-[#8C2B42] hover:bg-[#f0f7f9] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <span className="mt-0.5 flex-shrink-0 rounded-lg p-2" style={{ backgroundColor: category.color || '#4fb3c1', color: 'white' }}>
+                    <span className="mt-0.5 flex-shrink-0 rounded-lg p-2" style={{ backgroundColor: category.color || '#8C2B42', color: 'white' }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="font-semibold text-slate-800 group-hover:text-[#2f9aa7]">{category.name}</p>
+                      <p className="font-semibold text-slate-800 group-hover:text-[#7B1F34]">{category.name}</p>
                       <p className="mt-1 text-xs text-slate-500">{category.description || 'Genera documento con il tuo stile'}</p>
                     </div>
                   </button>
