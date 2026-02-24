@@ -253,10 +253,10 @@ export default function Sidebar({
             <div className="flex items-center gap-3">
               <span className="inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-slate-100 to-slate-200 text-slate-500 shadow-sm">
                 <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-11 w-11">
-                  <rect x="2" y="2" width="60" height="60" rx="30" fill="#e0f2f1" />
+                  <rect x="2" y="2" width="60" height="60" rx="30" fill="#f5e6ea" />
                   <path
                     d="M32 31c4.694 0 8.5-3.806 8.5-8.5S36.694 14 32 14s-8.5 3.806-8.5 8.5S27.306 31 32 31Z"
-                    fill="#2c7a7b"
+                    fill="#7B1F34"
                   />
                   <path
                     d="M21.6 38.4c0-2.43 1.97-4.4 4.4-4.4h12c2.43 0 4.4 1.97 4.4 4.4V46a4 4 0 01-4 4H25.6a4 4 0 01-4-4v-7.6Z"

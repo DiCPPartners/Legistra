@@ -129,7 +129,7 @@ export default function ChatHistory({ messages, activeConversationId, onEditMess
       {showScrollButton && (
         <button
           onClick={scrollToBottom}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border-2 border-rose-900 hover:bg-teal-50 transition-all duration-200 hover:shadow-xl"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border-2 border-rose-900 hover:bg-rose-50 transition-all duration-200 hover:shadow-xl"
           aria-label="Vai in fondo alla chat"
           title="Vai in fondo alla chat"
         >
@@ -141,7 +141,7 @@ export default function ChatHistory({ messages, activeConversationId, onEditMess
             strokeWidth="2" 
             strokeLinecap="round" 
             strokeLinejoin="round" 
-            className="h-5 w-5 text-teal-600"
+            className="h-5 w-5 text-rose-900"
           >
             <path d="M12 5v14M5 12l7 7 7-7"/>
           </svg>

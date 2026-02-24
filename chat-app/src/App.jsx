@@ -3505,12 +3505,12 @@ function App() {
           onDrop={(e) => { e.preventDefault(); setIsDragOverChat(false); if (e.dataTransfer.files?.length) handleFilesAdd(Array.from(e.dataTransfer.files)) }}
         >
           {isDragOverChat && (
-            <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm border-2 border-dashed border-teal-400 rounded-xl m-2 pointer-events-none">
+            <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm border-2 border-dashed border-rose-700 rounded-xl m-2 pointer-events-none">
               <div className="text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto h-12 w-12 text-rose-900 mb-3">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>
-                <p className="text-lg font-semibold text-teal-700">Rilascia i file qui</p>
+                <p className="text-lg font-semibold text-rose-900">Rilascia i file qui</p>
                 <p className="text-sm text-rose-900 mt-1">PDF, Word o immagini</p>
               </div>
             </div>

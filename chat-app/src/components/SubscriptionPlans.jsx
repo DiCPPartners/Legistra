@@ -112,7 +112,7 @@ export default function SubscriptionPlans({ onBack }) {
 
         {/* Current Subscription Banner */}
         {subscription && subscription.status === 'active' && (
-          <div className="mb-12 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-6">
+          <div className="mb-12 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-rose-50 p-6">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">

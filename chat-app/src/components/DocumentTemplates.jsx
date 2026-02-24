@@ -720,7 +720,7 @@ export default function DocumentTemplates({ onClose }) {
                           {template.original_content && (
                             <>
                               <span>•</span>
-                              <span className="font-semibold text-teal-600">{countWords(template.original_content)} parole</span>
+                              <span className="font-semibold text-rose-800">{countWords(template.original_content)} parole</span>
                             </>
                           )}
                         </div>
