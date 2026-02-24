@@ -192,6 +192,10 @@ app.use('/api/documents', documentRoutes)
 const normattivaRoutes = (await import('./routes/normattiva.js')).default
 app.use('/api/normattiva', normattivaRoutes)
 
+// Database legislazione locale (ricerca istantanea)
+const legislationRoutes = (await import('./routes/legislation.js')).default
+app.use('/api/legislation', legislationRoutes)
+
 // Email routes
 app.post('/api/email/welcome', async (req, res) => {
   try {

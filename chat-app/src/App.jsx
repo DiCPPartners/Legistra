@@ -2244,7 +2244,7 @@ function App() {
         
         let legalContext = ''
         try {
-          const legalResult = await searchLegislationForContext(processingPrompt, OPENAI_API_KEY)
+          const legalResult = await searchLegislationForContext(processingPrompt)
           if (legalResult?.text) legalContext = '\n\n' + legalResult.text
         } catch (e) { /* non bloccante */ }
         
@@ -2712,7 +2712,7 @@ function App() {
         
         let legalExtra = ''
         try {
-          const legalResult = await searchLegislationForContext(processingPrompt, OPENAI_API_KEY)
+          const legalResult = await searchLegislationForContext(processingPrompt)
           if (legalResult?.text) legalExtra = '\n\n' + legalResult.text
         } catch (e) { /* non bloccante */ }
         
