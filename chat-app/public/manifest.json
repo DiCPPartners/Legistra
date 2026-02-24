@@ -1,7 +1,7 @@
 {
-  "name": "MyMED - Assistente Medico-Legale",
-  "short_name": "MyMED",
-  "description": "Assistente AI per analisi medico-legali, trascrizioni e gestione pratiche",
+  "name": "Legistra - Assistente Legale AI",
+  "short_name": "Legistra",
+  "description": "Assistente AI per analisi giuridiche, trascrizioni e gestione pratiche legali",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -9,7 +9,7 @@
   "theme_color": "#2f9aa7",
   "scope": "/",
   "lang": "it",
-  "categories": ["medical", "productivity", "business"],
+  "categories": ["legal", "productivity", "business"],
   "icons": [
     {
       "src": "/icons/icon-72.png",
@@ -66,14 +66,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "MyMED Desktop"
+      "label": "Legistra Desktop"
     },
     {
       "src": "/screenshots/mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "MyMED Mobile"
+      "label": "Legistra Mobile"
     }
   ],
   "shortcuts": [

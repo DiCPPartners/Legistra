@@ -437,7 +437,7 @@ export default function ChatMessage({ message, conversationId, onEditMessage }) 
                         ul: ({children}) => <ul className="my-2 pl-4 space-y-1">{children}</ul>,
                         ol: ({children}) => <ol className="my-2 pl-4 space-y-1 list-decimal">{children}</ol>,
                         li: ({children}) => <li className="text-slate-700 marker:text-slate-500">{children}</li>,
-                        // Blocca completamente le <hr> - nel contesto medico-legale sono quasi sempre artefatti
+                        // Blocca completamente le <hr> - nel contesto legale sono quasi sempre artefatti
                         hr: () => null,
                         // Blocca rendering tabelle spurie
                         table: ({children}) => <div className="my-2">{children}</div>,
@@ -509,7 +509,7 @@ export default function ChatMessage({ message, conversationId, onEditMessage }) 
                     {/* Pulsante Esporta */}
                     <ExportMenu 
                       content={renderedText}
-                      title="Report MyMED"
+                      title="Report Legistra"
                       position="top-right"
                       customStyles={exportStyles}
                     />

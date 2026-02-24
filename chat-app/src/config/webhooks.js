@@ -18,25 +18,25 @@ export const MODE_OPTIONS = [
     webhook: WEBHOOK_URLS.trascrizione,
   },
   {
-    id: 'analisi-medico-legale',
-    label: 'Sintesi Clinica',
-    description: 'Analisi medico-legale completa con cronologia e valutazione.',
+    id: 'analisi-giuridica',
+    label: 'Analisi Giuridica',
+    description: 'Analisi giuridica completa con valutazione e parere.',
     webhook: WEBHOOK_URLS.storia,
   },
   {
     id: 'timeline-eventi',
-    label: 'Cronologia Clinica',
-    description: 'Crea la cronologia temporale degli eventi clinici',
+    label: 'Cronologia Processuale',
+    description: 'Crea la cronologia temporale degli eventi processuali',
   },
   {
     id: 'analisi-coerenza',
     label: 'Coerenza Documentale',
-    description: 'Verifica coerenza tra diagnosi, procedure e documenti',
+    description: 'Verifica coerenza tra atti, provvedimenti e documenti',
   },
   {
     id: 'responsabilita-professionale',
     label: 'Malpractice Preliminare',
-    description: 'Valuta aderenza a linee guida e standard di cura',
+    description: 'Valuta aderenza a norme professionali e deontologiche',
   },
 ]
 

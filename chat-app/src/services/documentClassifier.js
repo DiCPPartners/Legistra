@@ -1,90 +1,90 @@
 /**
- * Servizio per classificazione automatica documenti medico-legali
+ * Servizio per classificazione automatica documenti legali
  */
 
 // Tipi di documento riconosciuti
 export const DOCUMENT_TYPES = {
-  cartella_clinica: {
-    label: 'Cartella Clinica',
-    description: 'Cartella clinica ospedaliera completa',
-    suggestedActions: ['trascrizione', 'analisi-medico-legale', 'timeline-eventi', 'estrazione-dati'],
-    icon: 'folder-medical',
+  atto_citazione: {
+    label: 'Atto di Citazione',
+    description: 'Atto di citazione in giudizio',
+    suggestedActions: ['trascrizione', 'analisi-giuridica', 'timeline-eventi', 'estrazione-dati'],
+    icon: 'document-legal',
     color: '#3b82f6'
   },
-  referto_pronto_soccorso: {
-    label: 'Referto Pronto Soccorso',
-    description: 'Verbale o referto di Pronto Soccorso',
+  comparsa_risposta: {
+    label: 'Comparsa di Risposta',
+    description: 'Comparsa di costituzione e risposta',
     suggestedActions: ['trascrizione', 'estrazione-dati', 'timeline-eventi'],
-    icon: 'emergency',
+    icon: 'document',
     color: '#ef4444'
   },
-  referto_radiologico: {
-    label: 'Referto Radiologico',
-    description: 'Referto di esami radiologici (RX, TAC, RM)',
-    suggestedActions: ['trascrizione', 'estrazione-dati'],
-    icon: 'scan',
+  sentenza: {
+    label: 'Sentenza',
+    description: 'Sentenza di primo grado, appello o Cassazione',
+    suggestedActions: ['trascrizione', 'analisi-giuridica', 'elementi-critici'],
+    icon: 'gavel',
     color: '#8b5cf6'
   },
-  referto_laboratorio: {
-    label: 'Esami di Laboratorio',
-    description: 'Esami del sangue, urine, etc.',
+  ordinanza: {
+    label: 'Ordinanza',
+    description: 'Ordinanza del giudice',
     suggestedActions: ['trascrizione', 'estrazione-dati'],
-    icon: 'test-tube',
+    icon: 'gavel',
     color: '#10b981'
   },
-  certificato_medico: {
-    label: 'Certificato Medico',
-    description: 'Certificato medico generico o specialistico',
-    suggestedActions: ['trascrizione', 'estrazione-dati'],
-    icon: 'certificate',
+  contratto: {
+    label: 'Contratto',
+    description: 'Contratto o accordo tra le parti',
+    suggestedActions: ['trascrizione', 'analisi-contrattuale', 'estrazione-dati'],
+    icon: 'document',
     color: '#f59e0b'
   },
   perizia_ctu: {
     label: 'Perizia CTU',
-    description: 'Perizia di Consulente Tecnico d\'Ufficio',
-    suggestedActions: ['analisi-medico-legale', 'analisi-coerenza', 'elementi-critici'],
+    description: "Perizia di Consulente Tecnico d'Ufficio",
+    suggestedActions: ['analisi-giuridica', 'analisi-coerenza', 'elementi-critici'],
     icon: 'gavel',
     color: '#6366f1'
   },
   perizia_ctp: {
     label: 'Perizia CTP',
     description: 'Perizia di Consulente Tecnico di Parte',
-    suggestedActions: ['analisi-medico-legale', 'analisi-coerenza', 'confronto-documenti'],
+    suggestedActions: ['analisi-giuridica', 'analisi-coerenza', 'confronto-documenti'],
     icon: 'document-legal',
     color: '#ec4899'
   },
-  verbale_commissione: {
-    label: 'Verbale Commissione',
-    description: 'Verbale commissione invalidità',
-    suggestedActions: ['trascrizione', 'invalidita-civile', 'estrazione-dati'],
-    icon: 'users',
+  memoria_difensiva: {
+    label: 'Memoria Difensiva',
+    description: 'Memoria difensiva o di replica',
+    suggestedActions: ['trascrizione', 'analisi-giuridica', 'estrazione-dati'],
+    icon: 'document',
     color: '#14b8a6'
   },
-  lettera_dimissione: {
-    label: 'Lettera di Dimissione',
-    description: 'Lettera di dimissione ospedaliera',
+  verbale_udienza: {
+    label: 'Verbale di Udienza',
+    description: 'Verbale di udienza',
     suggestedActions: ['trascrizione', 'timeline-eventi', 'estrazione-dati'],
-    icon: 'logout',
+    icon: 'document',
     color: '#0ea5e9'
   },
-  referto_specialistico: {
-    label: 'Referto Specialistico',
-    description: 'Referto visita specialistica',
+  decreto_ingiuntivo: {
+    label: 'Decreto Ingiuntivo',
+    description: 'Decreto ingiuntivo o ingiunzione di pagamento',
     suggestedActions: ['trascrizione', 'estrazione-dati'],
-    icon: 'stethoscope',
+    icon: 'gavel',
     color: '#22c55e'
   },
-  denuncia_infortunio: {
-    label: 'Denuncia Infortunio',
-    description: 'Denuncia di infortunio sul lavoro',
-    suggestedActions: ['trascrizione', 'infortunistica', 'timeline-eventi'],
+  denuncia_querela: {
+    label: 'Denuncia/Querela',
+    description: 'Denuncia o querela',
+    suggestedActions: ['trascrizione', 'diritto-penale', 'timeline-eventi'],
     icon: 'warning',
     color: '#f97316'
   },
-  polizza_assicurativa: {
-    label: 'Polizza Assicurativa',
-    description: 'Documentazione assicurativa',
-    suggestedActions: ['trascrizione', 'analisi-legale-assicurativa'],
+  procura: {
+    label: 'Procura alle Liti',
+    description: 'Procura alle liti o mandato professionale',
+    suggestedActions: ['trascrizione', 'estrazione-dati'],
     icon: 'shield',
     color: '#64748b'
   },
@@ -98,21 +98,21 @@ export const DOCUMENT_TYPES = {
 }
 
 // Prompt per classificazione AI
-const CLASSIFICATION_PROMPT = `Sei un classificatore di documenti medico-legali. Analizza il seguente testo estratto da un documento e classificalo.
+const CLASSIFICATION_PROMPT = `Sei un classificatore di documenti legali. Analizza il seguente testo estratto da un documento e classificalo.
 
 TIPI POSSIBILI:
-- cartella_clinica: Cartella clinica ospedaliera (diario clinico, anamnesi, esami obiettivi)
-- referto_pronto_soccorso: Verbale o referto di Pronto Soccorso (triage, accesso, dimissione PS)
-- referto_radiologico: Referto di esami radiologici (RX, TAC, RM, ecografia)
-- referto_laboratorio: Esami del sangue, urine, markers tumorali, etc.
-- certificato_medico: Certificato medico generico o specialistico
+- atto_citazione: Atto di citazione in giudizio (domanda giudiziale, vocatio in ius, attore, convenuto)
+- comparsa_risposta: Comparsa di costituzione e risposta (eccezioni, domanda riconvenzionale)
+- sentenza: Sentenza (primo grado, appello, Cassazione, P.Q.M., dispositivo)
+- ordinanza: Ordinanza del giudice (provvedimento interlocutorio, cautelare)
+- contratto: Contratto o accordo tra le parti (clausole, obblighi, corrispettivo)
 - perizia_ctu: Perizia di Consulente Tecnico d'Ufficio (nominato dal giudice)
 - perizia_ctp: Perizia di Consulente Tecnico di Parte
-- verbale_commissione: Verbale commissione invalidità (INPS, ASL)
-- lettera_dimissione: Lettera di dimissione ospedaliera (SDO, lettera fine ricovero)
-- referto_specialistico: Referto visita specialistica (ortopedico, neurologico, etc.)
-- denuncia_infortunio: Denuncia di infortunio sul lavoro (INAIL)
-- polizza_assicurativa: Documentazione assicurativa
+- memoria_difensiva: Memoria difensiva o di replica (ex art. 183 c.p.c.)
+- verbale_udienza: Verbale di udienza (comparizione parti, rinvio)
+- decreto_ingiuntivo: Decreto ingiuntivo o ingiunzione di pagamento
+- denuncia_querela: Denuncia o querela (reato, persona offesa)
+- procura: Procura alle liti o mandato professionale
 - altro: Tipo documento non riconosciuto
 
 Rispondi SOLO con un JSON valido nel formato:
@@ -125,44 +125,37 @@ Rispondi SOLO con un JSON valido nel formato:
 
 // Pattern per classificazione euristica (fallback)
 const HEURISTIC_PATTERNS = {
-  referto_pronto_soccorso: [
-    /pronto soccorso/i,
-    /verbale.*ps/i,
-    /triage/i,
-    /codice\s*(rosso|giallo|verde|bianco)/i,
-    /accesso\s*ps/i,
-    /dimissione.*ps/i
+  atto_citazione: [
+    /atto di citazione/i,
+    /citazione in giudizio/i,
+    /attore/i,
+    /convenuto/i,
+    /R\.?G\.?\s*\d/i
   ],
-  cartella_clinica: [
-    /cartella clinica/i,
-    /diario clinico/i,
-    /anamnesi/i,
-    /esame obiettivo/i,
-    /diario infermieristico/i
+  comparsa_risposta: [
+    /comparsa.*risposta/i,
+    /costituzione e risposta/i,
+    /eccepisce/i,
+    /in via riconvenzionale/i
   ],
-  referto_radiologico: [
-    /referto\s*radiologico/i,
-    /rx\s|tac\s|rm\s|rmn\s/i,
-    /risonanza magnetica/i,
-    /tomografia/i,
-    /ecografia/i,
-    /esame radiografico/i
+  sentenza: [
+    /sentenza/i,
+    /in nome del popolo/i,
+    /P\.Q\.M/i,
+    /il giudice/i,
+    /il tribunale/i
   ],
-  referto_laboratorio: [
-    /esami\s*di\s*laboratorio/i,
-    /emocromo/i,
-    /glicemia/i,
-    /creatinina/i,
-    /transaminasi/i,
-    /esame\s*urine/i,
-    /valori\s*ematici/i
+  ordinanza: [
+    /ordinanza/i,
+    /il giudice ordina/i,
+    /provvedimento/i
   ],
-  lettera_dimissione: [
-    /lettera\s*di\s*dimissione/i,
-    /dimissione\s*ospedaliera/i,
-    /si\s*dimette/i,
-    /sdo/i,
-    /scheda\s*di\s*dimissione/i
+  contratto: [
+    /contratto/i,
+    /tra le parti/i,
+    /clausol[ae]/i,
+    /obblighi/i,
+    /corrispettivo/i
   ],
   perizia_ctu: [
     /consulente\s*tecnico\s*d'ufficio/i,
@@ -177,36 +170,34 @@ const HEURISTIC_PATTERNS = {
     /parte\s*attrice/i,
     /parte\s*convenuta/i
   ],
-  verbale_commissione: [
-    /commissione\s*(medica|invalidità)/i,
-    /accertamento\s*invalidità/i,
-    /inps/i,
-    /handicap/i,
-    /legge\s*104/i
+  memoria_difensiva: [
+    /memoria\s*(difensiva|di replica|autorizzata)/i,
+    /ex\s*art\.\s*183/i,
+    /termine\s*perentorio/i
   ],
-  certificato_medico: [
-    /si\s*certifica/i,
-    /certifico/i,
-    /certificato\s*medico/i,
-    /il\s*sottoscritto\s*medico/i
+  verbale_udienza: [
+    /verbale.*udienza/i,
+    /udienza\s*del/i,
+    /il giudice\s*dà atto/i,
+    /rinvia.*udienza/i
   ],
-  denuncia_infortunio: [
-    /denuncia\s*infortunio/i,
-    /inail/i,
-    /infortunio\s*sul\s*lavoro/i,
-    /causa\s*di\s*servizio/i
+  decreto_ingiuntivo: [
+    /decreto\s*ingiuntivo/i,
+    /ingiunzione/i,
+    /pagamento\s*della\s*somma/i
   ],
-  polizza_assicurativa: [
-    /polizza/i,
-    /assicurazione/i,
-    /massimale/i,
-    /franchigia/i,
-    /sinistro/i
+  denuncia_querela: [
+    /denuncia/i,
+    /querela/i,
+    /persona offesa/i,
+    /reato/i,
+    /fatto.*reato/i
   ],
-  referto_specialistico: [
-    /visita\s*(ortopedica|neurologica|cardiologica|fisiatrica)/i,
-    /esame\s*specialistico/i,
-    /consulenza\s*specialistica/i
+  procura: [
+    /procura\s*alle\s*liti/i,
+    /mandato/i,
+    /conferisco\s*mandato/i,
+    /delegare/i
   ]
 }
 
@@ -280,7 +271,7 @@ export async function classifyDocumentAI(text, apiKey) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini', // Modello veloce ed economico
+        model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: CLASSIFICATION_PROMPT },
           { role: 'user', content: `Classifica questo documento:\n\n${truncatedText}` }

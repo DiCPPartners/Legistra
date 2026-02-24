@@ -69,7 +69,7 @@ if (isProduction) {
 // Crea logger
 const logger = winston.createLogger({
   level: isProduction ? 'info' : 'debug',
-  defaultMeta: { service: 'mymd-server' },
+  defaultMeta: { service: 'legistra-server' },
   transports
 })
 

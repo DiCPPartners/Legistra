@@ -39,7 +39,7 @@ export const SUBSCRIPTION_PLANS = [
     priceId: import.meta.env.VITE_STRIPE_PRICE_PROFESSIONAL, // Attivo
     features: [
       'Tutte le funzioni Starter',
-      'Analisi medico-legale completa',
+      'Analisi giuridica completa',
       '200 documenti/mese',
       'Template documenti',
       'Emulazione stile',

@@ -225,20 +225,21 @@ export async function getVersionStats(conversationId) {
  */
 export const ACTION_TYPE_LABELS = {
   'trascrizione': 'Trascrizione',
-  'analisi-medico-legale': 'Analisi Medico-Legale',
+  'analisi-giuridica': 'Analisi Giuridica',
   'estrazione-dati': 'Estrazione Dati',
   'timeline-eventi': 'Timeline Eventi',
   'analisi-coerenza': 'Analisi Coerenza',
   'nesso-causale': 'Nesso Causale',
   'completezza-documentale': 'Completezza Documentale',
   'responsabilita-professionale': 'Responsabilità Professionale',
-  'invalidita-civile': 'Invalidità Civile',
-  'infortunistica': 'Infortunistica',
+  'diritto-civile': 'Diritto Civile',
+  'diritto-penale': 'Diritto Penale',
+  'contrattualistica': 'Contrattualistica',
   'malpractice': 'Malpractice',
   'report-strutturato': 'Report Strutturato',
   'confronto-documenti': 'Confronto Documenti',
   'elementi-critici': 'Elementi Critici',
-  'analisi-legale-assicurativa': 'Analisi Legale/Assicurativa'
+  'analisi-contrattuale': 'Analisi Contrattuale'
 }
 
 export function getActionTypeLabel(actionType) {

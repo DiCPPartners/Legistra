@@ -76,12 +76,14 @@ const SECURITY_FEATURES = [
 
 // Cosa puoi fare
 const CAPABILITIES = [
-  'Estrarre dati clinici da cartelle sanitarie',
-  'Ricostruire cronologie mediche complete',
-  'Identificare nessi causali e responsabilità',
-  'Calcolare danno biologico e invalidità',
-  'Generare perizie medico-legali strutturate',
-  'Analizzare referti e esami diagnostici',
+  'Estrarre dati rilevanti da fascicoli processuali',
+  'Ricostruire cronologie processuali complete',
+  'Identificare profili di responsabilità e criticità',
+  'Analizzare contratti e clausole contrattuali',
+  'Generare pareri legali strutturati',
+  'Analizzare atti giudiziari e provvedimenti',
+  'Cercare nella giurisprudenza e nella dottrina',
+  'Generare memo legali in stile professionale',
 ]
 
 export default function LandingPage() {
@@ -125,7 +127,7 @@ export default function LandingPage() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
           <div className="flex items-center gap-3">
-            <span className="text-xl font-black text-black" style={{ fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif', fontSize: '40px', fontWeight: '900', backgroundClip: 'unset', WebkitBackgroundClip: 'unset', color: 'rgba(0, 0, 0, 1)' }}>myMD.</span>
+            <span className="text-xl font-black text-black" style={{ fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif', fontSize: '40px', fontWeight: '900', backgroundClip: 'unset', WebkitBackgroundClip: 'unset', color: 'rgba(0, 0, 0, 1)' }}>Legistra</span>
           </div>
           <button
             onClick={() => setShowAuth(true)}
@@ -145,7 +147,7 @@ export default function LandingPage() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2f9aa7] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2f9aa7]"></span>
             </span>
-            <span className="text-sm text-[#2f9aa7] font-medium">Intelligenza artificiale per professionisti medico legali</span>
+            <span className="text-sm text-[#2f9aa7] font-medium">Intelligenza artificiale per professionisti legali</span>
           </div>
 
           {/* Main headline */}
@@ -165,8 +167,8 @@ export default function LandingPage() {
 
           {/* Subtitle */}
           <p className="text-lg sm:text-xl text-neutral-900 max-w-3xl mx-auto mb-10 leading-relaxed">
-            L'assistente AI progettato per <strong>medici legali</strong>. 
-            Carica documenti medici, ottieni analisi professionali istantanee.
+            L'assistente AI progettato per <strong>avvocati</strong>. 
+            Carica documenti legali, ottieni analisi professionali istantanee.
           </p>
 
           {/* CTA */}
@@ -217,13 +219,13 @@ export default function LandingPage() {
           {/* Header */}
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-2 rounded-full bg-[#2f9aa7]/10 text-[#2f9aa7] text-sm font-semibold mb-4">
-              Guida Passo Passo
+              Guida all'utilizzo
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-              Come usare myMD
+              Come funziona Legistra
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Segui questi semplici passaggi per iniziare ad usare il tuo assistente
+              Cinque passaggi per ottenere il massimo dalla piattaforma
             </p>
           </div>
 
@@ -234,9 +236,9 @@ export default function LandingPage() {
                 1
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Carica i tuoi documenti</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">Carica la documentazione</h3>
                 <p className="text-lg text-slate-600 mb-4 leading-relaxed">
-                  Puoi caricare cartelle cliniche, referti, esami diagnostici e qualsiasi documento medico in <strong>due modi</strong>:
+                  Per iniziare, inserisci i documenti del caso: atti giudiziari, contratti, sentenze o qualsiasi altro documento legale. Sono disponibili due modalita:
                 </p>
                 
                 {/* Due metodi di caricamento */}
@@ -247,9 +249,9 @@ export default function LandingPage() {
                       <div className="w-12 h-12 rounded-xl bg-[#2f9aa7] flex items-center justify-center text-white text-2xl font-bold shadow-md">
                         +
                       </div>
-                      <span className="text-lg font-bold text-slate-900">Clicca sul pulsante "+"</span>
+                      <span className="text-lg font-bold text-slate-900">Pulsante "+"</span>
                     </div>
-                    <p className="text-slate-600">Nella barra in basso della chat, clicca sul pulsante <strong>"+"</strong> per aprire la finestra di selezione file</p>
+                    <p className="text-slate-600">Nella barra in basso, premere il pulsante <strong>"+"</strong> per selezionare i file dal proprio dispositivo.</p>
                   </div>
                   
                   {/* Metodo 2: Drag & Drop */}
@@ -260,9 +262,9 @@ export default function LandingPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                         </svg>
                       </div>
-                      <span className="text-lg font-bold text-slate-900">Trascina i file</span>
+                      <span className="text-lg font-bold text-slate-900">Trascinamento diretto</span>
                     </div>
-                    <p className="text-slate-600">Prendi i file PDF dal tuo computer e <strong>trascinali direttamente</strong> nella finestra della chat</p>
+                    <p className="text-slate-600">In alternativa, trascinare i file PDF direttamente nella finestra della chat.</p>
                   </div>
                 </div>
 
@@ -294,7 +296,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <p className="text-center text-[#2f9aa7] font-medium mt-4 text-lg">
-                    Trascina i file dal desktop direttamente sulla chat!
+                    I file vengono elaborati automaticamente dopo il caricamento.
                   </p>
                 </div>
               </div>
@@ -308,9 +310,9 @@ export default function LandingPage() {
                 2
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Scegli l'azione da eseguire</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">Seleziona l'elaborazione</h3>
                 <p className="text-lg text-slate-600 mb-4 leading-relaxed">
-                  Clicca sul pulsante <strong>"Azioni AI"</strong> e scegli cosa vuoi fare con i tuoi documenti:
+                  Dopo il caricamento, premere <strong>"Azioni AI"</strong> per scegliere il tipo di elaborazione desiderata:
                 </p>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
@@ -321,8 +323,8 @@ export default function LandingPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900">Trascrizione Documentale</p>
-                      <p className="text-sm text-slate-500">Estrae il testo dai PDF</p>
+                      <p className="font-bold text-slate-900">Trascrizione</p>
+                      <p className="text-sm text-slate-500">Estrazione del testo dai documenti</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-green-50 border border-green-200">
@@ -332,8 +334,8 @@ export default function LandingPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900">Sintesi Clinica</p>
-                      <p className="text-sm text-slate-500">Analisi completa del caso</p>
+                      <p className="font-bold text-slate-900">Analisi Giuridica</p>
+                      <p className="text-sm text-slate-500">Analisi giuridica completa</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-orange-50 border border-orange-200">
@@ -343,8 +345,8 @@ export default function LandingPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900">Cronologia Clinica</p>
-                      <p className="text-sm text-slate-500">Timeline degli eventi</p>
+                      <p className="font-bold text-slate-900">Cronologia Processuale</p>
+                      <p className="text-sm text-slate-500">Ricostruzione temporale degli eventi</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-purple-50 border border-purple-200">
@@ -355,7 +357,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <p className="font-bold text-slate-900">Coerenza Documentale</p>
-                      <p className="text-sm text-slate-500">Verifica coerenza documenti</p>
+                      <p className="text-sm text-slate-500">Verifica delle incongruenze</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-200">
@@ -365,8 +367,8 @@ export default function LandingPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900">Malpractice Preliminare</p>
-                      <p className="text-sm text-slate-500">Valuta linee guida e standard</p>
+                      <p className="font-bold text-slate-900">Resp. Professionale</p>
+                      <p className="text-sm text-slate-500">Valutazione aderenza agli standard</p>
                     </div>
                   </div>
                 </div>
@@ -385,9 +387,9 @@ export default function LandingPage() {
                 3
               </div>
               <div className="flex-1 pt-2">
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Emula i tuoi pareri</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">Genera documenti nel tuo stile</h3>
                 <p className="text-lg text-slate-600 mb-6 leading-relaxed">
-                  <strong>Vuoi che l'AI scriva nello stesso stile dei tuoi pareri?</strong> Ecco come fare:
+                  La funzione principale di Legistra: l'intelligenza artificiale apprende il vostro stile di scrittura e genera nuovi documenti indistinguibili dai vostri.
                 </p>
                 
                 {/* Sub-steps per emulazione */}
@@ -397,8 +399,8 @@ export default function LandingPage() {
                       A
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900 mb-1">Vai nella sezione "Templates"</p>
-                      <p className="text-slate-600">Clicca su <strong>"Templates"</strong> nel menu in basso a sinistra della schermata principale</p>
+                      <p className="font-bold text-slate-900 mb-1">Accedere alla sezione Templates</p>
+                      <p className="text-slate-600">Nel menu a sinistra, selezionare <strong>"Templates"</strong>. Questa sezione consente di caricare i propri documenti di riferimento.</p>
                     </div>
                   </div>
                   
@@ -407,8 +409,8 @@ export default function LandingPage() {
                       B
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900 mb-1">Carica un tuo parere già scritto</p>
-                      <p className="text-slate-600">Scegli una categoria (es. "RC Auto" o "Malpractice") e carica un PDF di un tuo parere precedente. L'AI analizzerà il tuo stile di scrittura.</p>
+                      <p className="font-bold text-slate-900 mb-1">Caricare un documento di esempio</p>
+                      <p className="text-slate-600">Selezionare una categoria (ad esempio "Diritto Civile" o "Diritto Penale") e caricare un PDF di un proprio parere precedente. Il sistema analizzerà struttura, linguaggio e stile.</p>
                     </div>
                   </div>
                   
@@ -417,8 +419,8 @@ export default function LandingPage() {
                       C
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900 mb-1">Usa la categoria nelle Azioni AI</p>
-                      <p className="text-slate-600">Quando scegli un'azione AI, seleziona la categoria personalizzata. <strong>L'AI scriverà imitando il tuo stile!</strong></p>
+                      <p className="font-bold text-slate-900 mb-1">Generare il documento</p>
+                      <p className="text-slate-600">Nelle Azioni AI, selezionare la categoria personalizzata. Il sistema produrra un nuovo documento <strong>con la stessa struttura, lo stesso linguaggio e lo stesso stile</strong> del modello caricato.</p>
                     </div>
                   </div>
                 </div>
@@ -431,23 +433,73 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="font-bold text-slate-900 text-lg">Risultato</p>
-                    <p className="text-slate-600">I nuovi pareri generati avranno la <strong>stessa struttura</strong>, lo <strong>stesso linguaggio</strong> e lo <strong>stesso stile</strong> dei tuoi documenti originali!</p>
+                    <p className="text-slate-600">Il documento generato sara indistinguibile per struttura e stile da quelli prodotti personalmente. Maggiore e' il numero di template caricati, migliore sara la qualita dell'emulazione.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Step 4 */}
-          <div className="mb-8">
+          {/* Step 4 - PubMed */}
+          <div className="mb-16">
             <div className="flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 shadow-lg">
               <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                 4
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Copia o Esporta il risultato</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">Consulta giurisprudenza e dottrina</h3>
                 <p className="text-lg text-slate-600 mb-4 leading-relaxed">
-                  Una volta ottenuta la risposta, puoi:
+                  L'integrazione con le <strong>banche dati giuridiche</strong> consente di accedere alla giurisprudenza e alla dottrina direttamente dalla piattaforma.
+                </p>
+                <div className="space-y-4 mb-4">
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#2f9aa7] flex items-center justify-center">
+                      <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900 mb-1">Ricerca articoli</p>
+                      <p className="text-slate-600">Selezionare <strong>"Giurisprudenza"</strong> nel menu a sinistra. E' possibile cercare per materia, articolo di legge, giudice o parola chiave.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#2f9aa7] flex items-center justify-center">
+                      <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.98 1.804a1 1 0 00-1.96 0l-.24 1.192a1 1 0 01-.784.785l-1.192.238a1 1 0 000 1.962l1.192.238a1 1 0 01.785.785l.238 1.192a1 1 0 001.962 0l.238-1.192a1 1 0 01.785-.785l1.192-.238a1 1 0 000-1.962l-1.192-.238a1 1 0 01-.785-.785l-.238-1.192z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900 mb-1">Generazione review</p>
+                      <p className="text-slate-600">Il pulsante <strong>"Genera Memo"</strong> produce un memo legale basato sulla giurisprudenza trovata, completo di riferimenti.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#2f9aa7] flex items-center justify-center">
+                      <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900 mb-1">Supporto automatico in chat</p>
+                      <p className="text-slate-600">Durante le conversazioni, il sistema <strong>consulta automaticamente le banche dati giuridiche</strong> per fornire risposte basate sugli orientamenti giurisprudenziali piu' recenti.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 5 */}
+          <div className="mb-8">
+            <div className="flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 shadow-lg">
+              <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                5
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">Esporta il risultato</h3>
+                <p className="text-lg text-slate-600 mb-4 leading-relaxed">
+                  Ogni documento generato puo essere esportato nei formati professionali:
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-3 px-6 py-4 rounded-xl bg-slate-100 border border-slate-300">
@@ -457,7 +509,7 @@ export default function LandingPage() {
                     </svg>
                     <div>
                       <p className="font-bold text-slate-900">Copia</p>
-                      <p className="text-sm text-slate-500">Copia il testo negli appunti</p>
+                      <p className="text-sm text-slate-500">Negli appunti, pronto per essere incollato</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 px-6 py-4 rounded-xl bg-slate-100 border border-slate-300">
@@ -466,7 +518,7 @@ export default function LandingPage() {
                     </svg>
                     <div>
                       <p className="font-bold text-slate-900">Esporta</p>
-                      <p className="text-sm text-slate-500">Scarica come PDF o Word</p>
+                      <p className="text-sm text-slate-500">Formato Word o PDF, con impaginazione professionale</p>
                     </div>
                   </div>
                 </div>
@@ -508,14 +560,14 @@ export default function LandingPage() {
                 <div className="p-5 space-y-4">
                   <div className="flex justify-end">
                     <div className="rounded-xl bg-white/20 px-4 py-6 max-w-[80%]">
-                      <p className="text-sm text-white/90">Analizza questa cartella clinica</p>
+                      <p className="text-sm text-white/90">Analizza questo fascicolo processuale</p>
                     </div>
                   </div>
                   <div className="flex gap-3">
                     <div className="h-8 w-8 rounded-full bg-white/30 flex-shrink-0" />
                     <div className="flex-1 rounded-xl bg-white/10 border border-white/20 px-4 py-7">
                       <p className="text-sm text-white/90 leading-relaxed">
-                        <span className="font-semibold">Analisi completata.</span> Ho identificato 3 criticità nel percorso diagnostico e ricostruito la cronologia completa degli eventi...
+                        <span className="font-semibold">Analisi completata.</span> Ho identificato 3 criticità nel procedimento e ricostruito la cronologia completa degli atti...
                       </p>
                     </div>
                   </div>
@@ -537,7 +589,7 @@ export default function LandingPage() {
             Sicurezza e conformità
           </h2>
           <p className="text-lg text-slate-600 mb-12">
-            I tuoi documenti sono al sicuro. myMD rispetta i più alti standard di sicurezza e privacy.
+            I tuoi documenti sono al sicuro. Legistra rispetta i più alti standard di sicurezza e privacy.
           </p>
 
           <div className="grid sm:grid-cols-3 gap-6">
@@ -582,10 +634,10 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-xl font-black text-black" style={{ fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif', fontSize: '40px', fontWeight: '900', backgroundClip: 'unset', WebkitBackgroundClip: 'unset', color: 'rgba(0, 0, 0, 1)' }}>myMD.</span>
+                <span className="text-xl font-black text-black" style={{ fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif', fontSize: '40px', fontWeight: '900', backgroundClip: 'unset', WebkitBackgroundClip: 'unset', color: 'rgba(0, 0, 0, 1)' }}>Legistra</span>
               </div>
               <p className="text-slate-600 max-w-sm">
-                L'assistente AI per professionisti medico-legali. Analizza, comprende e genera documenti in pochi secondi.
+                L'assistente AI per professionisti legali. Analizza, comprende e genera documenti in pochi secondi.
               </p>
             </div>
             <ul className="flex flex-wrap gap-6 text-sm text-slate-600">
@@ -595,7 +647,7 @@ export default function LandingPage() {
             </ul>
           </div>
           <div className="pt-8 border-t border-slate-200 text-center text-sm text-slate-500">
-            © {new Date().getFullYear()} myMD. Tutti i diritti riservati.
+            © {new Date().getFullYear()} Legistra. Tutti i diritti riservati.
           </div>
         </div>
       </footer>

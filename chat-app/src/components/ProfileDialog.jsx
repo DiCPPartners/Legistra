@@ -162,6 +162,14 @@ function ChangePasswordDialog({ isOpen, onClose, currentEmail }) {
       if (resetError) {
         throw resetError
       }
+      // Invia email personalizzata con Resend
+      try {
+        await fetch('/api/email/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: currentEmail, resetLink: redirectTo }),
+        })
+      } catch (e) { /* non bloccante */ }
       setMessage('Abbiamo inviato un’email al tuo indirizzo con il link per aggiornare la password.')
     } catch (sendError) {
       setError(sendError instanceof Error ? sendError.message : 'Impossibile inviare il link di reset.')

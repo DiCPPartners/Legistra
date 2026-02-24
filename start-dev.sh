@@ -1,8 +1,8 @@
 #!/bin/bash
-# Script per avviare myMD in modalità sviluppo
+# Script per avviare Legistra in modalità sviluppo
 # Avvia sia il backend che il frontend
 
-echo "🚀 Avvio myMD Development Environment"
+echo "🚀 Avvio Legistra Development Environment"
 echo "======================================"
 
 # Colori per output

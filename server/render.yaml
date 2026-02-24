@@ -1,7 +1,7 @@
 # Render.com configuration
 services:
   - type: web
-    name: mymd-server
+    name: legistra-server
     env: node
     plan: starter
     buildCommand: npm ci

@@ -93,7 +93,7 @@ export default function SubscriptionPlans({ onBack }) {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#3eb8a8] to-[#2f9aa7] shadow-lg shadow-teal-500/20">
               <Logo className="h-6 w-6" color="white" />
             </div>
-            <span className="text-xl font-bold text-slate-800" style={{ fontFamily: "'Inter', sans-serif", letterSpacing: '-0.01em' }}>myMD</span>
+            <span className="text-xl font-bold text-slate-800" style={{ fontFamily: "'Inter', sans-serif", letterSpacing: '-0.01em' }}>Legistra</span>
           </div>
         </div>
       </header>
@@ -106,7 +106,7 @@ export default function SubscriptionPlans({ onBack }) {
             Scegli il piano perfetto per te
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-slate-600">
-            Accedi a strumenti avanzati per l'analisi medico-legale. Annulla quando vuoi.
+            Accedi a strumenti avanzati per l'analisi giuridica. Annulla quando vuoi.
           </p>
         </div>
 
@@ -262,7 +262,7 @@ export default function SubscriptionPlans({ onBack }) {
         <div className="mt-16 text-center">
           <p className="text-slate-600">
             Hai bisogno di un piano personalizzato?{' '}
-            <a href="mailto:info@mymd.it" className="font-semibold text-[#3eb8a8] hover:underline">
+            <a href="mailto:info@legistra.app" className="font-semibold text-[#3eb8a8] hover:underline">
               Contattaci
             </a>
           </p>

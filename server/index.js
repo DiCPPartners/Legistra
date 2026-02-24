@@ -1,5 +1,5 @@
 /**
- * myMD Backend Server - Production Ready
+ * Legistra Backend Server - Production Ready
  * Gestisce elaborazione documenti in background con WebSocket real-time
  */
 
@@ -188,6 +188,54 @@ app.set('io', io)
 
 app.use('/api/documents', documentRoutes)
 
+// Email routes
+app.post('/api/email/welcome', async (req, res) => {
+  try {
+    const { to, firstName } = req.body
+    if (!to) return res.status(400).json({ error: 'Email destinatario mancante' })
+    const { sendWelcomeEmail } = await import('./services/emailService.js')
+    const result = await sendWelcomeEmail({ to, firstName })
+    res.json({ success: true, id: result.data?.id })
+  } catch (error) {
+    log.error('Email welcome error', { error: error.message })
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/email/reset-password', async (req, res) => {
+  try {
+    const { to, resetLink, firstName } = req.body
+    if (!to || !resetLink) return res.status(400).json({ error: 'Email e link mancanti' })
+    const { sendPasswordResetEmail } = await import('./services/emailService.js')
+    const result = await sendPasswordResetEmail({ to, resetLink, firstName })
+    res.json({ success: true, id: result.data?.id })
+  } catch (error) {
+    log.error('Email reset-password error', { error: error.message })
+    res.status(500).json({ error: error.message })
+  }
+})
+
+app.post('/api/email/update', async (req, res) => {
+  try {
+    const { recipients, version, features } = req.body
+    if (!recipients?.length || !features?.length) return res.status(400).json({ error: 'Destinatari e features richiesti' })
+    const { sendUpdateEmail } = await import('./services/emailService.js')
+    const results = []
+    for (const r of recipients) {
+      try {
+        const result = await sendUpdateEmail({ to: r.email, firstName: r.firstName, version, features })
+        results.push({ email: r.email, success: true, id: result.data?.id })
+      } catch (err) {
+        results.push({ email: r.email, success: false, error: err.message })
+      }
+    }
+    res.json({ success: true, sent: results.filter(r => r.success).length, total: recipients.length, results })
+  } catch (error) {
+    log.error('Email update error', { error: error.message })
+    res.status(500).json({ error: error.message })
+  }
+})
+
 // Health check avanzato
 app.get('/api/health', async (req, res) => {
   const health = {
@@ -263,7 +311,7 @@ const server = httpServer.listen(PORT, () => {
     environment: NODE_ENV,
     corsOrigins: CORS_ORIGINS
   })
-  console.log(`\nmyMD Server running on http://localhost:${PORT}`)
+  console.log(`\nLegistra Server running on http://localhost:${PORT}`)
   console.log(`WebSocket ready for real-time updates`)
   console.log(`Security: Helmet, Rate Limiting, CORS configured`)
   console.log(`Environment: ${NODE_ENV}`)

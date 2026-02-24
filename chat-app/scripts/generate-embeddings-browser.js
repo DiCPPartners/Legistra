@@ -2,7 +2,7 @@
  * Script da eseguire nella console del browser per generare embeddings
  * 
  * ISTRUZIONI:
- * 1. Apri l'app MyMED nel browser
+ * 1. Apri l'app Legistra nel browser
  * 2. Accedi con il tuo account
  * 3. Apri la console del browser (F12 → Console)
  * 4. Copia e incolla tutto questo codice nella console

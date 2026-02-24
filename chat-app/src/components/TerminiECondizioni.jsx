@@ -49,10 +49,10 @@ export default function TerminiECondizioni() {
             <section>
               <h2 className="mb-3 text-xl font-semibold text-slate-800">2. Oggetto</h2>
               <p>
-                Il Sito offre agli utenti l'accesso a una piattaforma di automazione e intelligenza artificiale per l'elaborazione di pareri informativi in ambito medico e sviluppo software personalizzato.
+                Il Sito offre agli utenti l'accesso a una piattaforma di automazione e intelligenza artificiale per l'elaborazione di pareri informativi in ambito legale e sviluppo software personalizzato.
               </p>
               <p className="mt-2">
-                Il servizio fornito ha esclusivamente finalità informative e di supporto tecnologico e non costituisce in alcun modo consulenza medica, diagnosi, prescrizione o trattamento sanitario.
+                Il servizio fornito ha esclusivamente finalità informative e di supporto tecnologico e non costituisce in alcun modo consulenza legale vincolante, parere professionale o rappresentanza in giudizio.
               </p>
             </section>
 
@@ -62,20 +62,20 @@ export default function TerminiECondizioni() {
                 AI Disclosure: Il contenuto generato è prodotto da un sistema automatizzato di intelligenza artificiale e non da un professionista umano.
               </p>
               <ul className="ml-6 list-disc space-y-2">
-                <li>Le informazioni generate dall'intelligenza artificiale sono automatiche e non verificate da personale medico.</li>
-                <li>L'elaborazione può contenere errori o bias e nessuna decisione medica, legale o assicurativa deve essere basata su tali risultati.</li>
+                <li>Le informazioni generate dall'intelligenza artificiale sono automatiche e non verificate da un professionista legale.</li>
+                <li>L'elaborazione può contenere errori o bias e nessuna decisione legale, processuale o contrattuale deve essere basata su tali risultati.</li>
                 <li>DiCP&Partners non assume alcuna responsabilità per decisioni, comportamenti o azioni intraprese dagli utenti sulla base delle informazioni fornite dal Sito.</li>
-                <li>Il servizio non sostituisce in alcun modo il parere di un medico qualificato. L'utente è invitato a rivolgersi sempre a professionisti sanitari per diagnosi o trattamenti.</li>
+                <li>Il servizio non sostituisce in alcun modo il parere di un avvocato qualificato. L'utente è invitato a rivolgersi sempre a professionisti legali abilitati per consulenza o rappresentanza.</li>
                 <li>Le risposte generate dal sistema possono variare nel tempo a seguito di aggiornamenti del modello di intelligenza artificiale e non rappresentano verità clinica o giuridica assoluta.</li>
               </ul>
               <p className="mt-4">
-                Le informazioni di natura sanitaria o medica fornite dal sistema non devono essere interpretate come diagnosi o raccomandazioni cliniche.
+                Le informazioni di natura giuridica o legale fornite dal sistema non devono essere interpretate come pareri legali vincolanti.
               </p>
               <p className="mt-2">
-                L'utente deve sempre consultare un medico o un professionista sanitario qualificato per qualsiasi decisione riguardante la salute.
+                L'utente deve sempre consultare un avvocato o un professionista legale abilitato per qualsiasi decisione giuridica.
               </p>
               <p className="mt-2">
-                Non inviare né condividere informazioni che possano identificare la tua persona o rivelare dati sanitari, genetici o sensibili.
+                Non inviare né condividere informazioni che possano identificare persone terze o rivelare dati sensibili senza autorizzazione.
               </p>
               <p className="mt-4 font-semibold">
                 DiCP&Partners e i suoi affiliati non saranno responsabili per perdite, danni o conseguenze derivanti dall'affidamento, totale o parziale, sui contenuti generati dai modelli di intelligenza artificiale.
@@ -89,10 +89,10 @@ export default function TerminiECondizioni() {
               <h2 className="mb-3 text-xl font-semibold text-slate-800">4. Uso vietato del servizio</h2>
               <p>Il Sito non è progettato né inteso per il trattamento di dati personali di natura sanitaria o sensibile.</p>
               <p className="mt-2">
-                È vietato inserire o caricare sul Sito informazioni relative a patologie, sintomi, referti medici, o dati che possano rivelare lo stato di salute dell'utente o di terzi.
+                È vietato inserire o caricare sul Sito dati personali sensibili di terzi senza autorizzazione.
               </p>
               <p className="mt-2">
-                In caso di caricamento accidentale di documenti medici o dati sensibili, tali contenuti vengono eliminati automaticamente e non sono oggetto di trattamento ulteriore, ai sensi dell'art. 17 GDPR (diritto alla cancellazione).
+                In caso di caricamento accidentale di dati sensibili non autorizzati, tali contenuti vengono eliminati automaticamente e non sono oggetto di trattamento ulteriore, ai sensi dell'art. 17 GDPR (diritto alla cancellazione).
               </p>
               <p className="mt-2">
                 L'eventuale invio di tali dati avviene sotto la piena responsabilità dell'utente, esonerando il Titolare da qualsiasi responsabilità o obbligo di trattamento ai sensi dell'art. 9 GDPR.

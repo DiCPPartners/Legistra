@@ -298,7 +298,7 @@ export function generateSpecializedAnalysis({ apiKey, transcription, actionId, u
  * Il documento generato deve essere indistinguibile dall'autore dei documenti di riferimento.
  */
 
-const TEMPLATE_ANALYSIS_PROMPT = `Sei un analista esperto di documenti medico-legali. Analizza il template fornito e identifica:
+const TEMPLATE_ANALYSIS_PROMPT = `Sei un analista esperto di documenti legali. Analizza il template fornito e identifica:
 
 1. STRUTTURA SEZIONI
 Per ogni sezione del documento, identifica:
@@ -319,7 +319,7 @@ Rispondi in formato JSON strutturato.`
  * Prompt per generare il prompt personalizzato di una categoria
  * Questo viene usato per creare istruzioni specifiche basate sui template caricati
  */
-const CATEGORY_PROMPT_GENERATOR = `Sei un esperto di prompt engineering specializzato in documenti medico-legali italiani.
+const CATEGORY_PROMPT_GENERATOR = `Sei un esperto di prompt engineering specializzato in documenti legali italiani.
 
 Analizza i template di esempio forniti e genera un PROMPT SPECIFICO che catturi lo stile, la struttura e le caratteristiche uniche di questa categoria di documenti.
 
@@ -719,7 +719,7 @@ const stripLeakedInstructions = (text) => {
     /^tono[\s:]+[^\n]{5,80}\.?\s*\n/i,
     // "Registro: clinico-descrittivo"
     /^registro[\s:]+[^\n]{5,80}\.?\s*\n/i,
-    // "Formato: perizia medico-legale"
+    // "Formato: parere legale"
     /^formato[\s:]+[^\n]{5,80}\.?\s*\n/i,
     // "Ecco il documento generato:" / "Ecco il documento revisionato:"
     /^ecco\s+(il|la)\s+[^\n]{5,80}:?\s*\n/i,
@@ -983,7 +983,7 @@ ${caseData.length > 50000 ? '\n[...troncato per limiti di contesto...]' : ''}
 export async function analyzeDocumentFormatting({ text, apiKey }) {
   if (!text || text.trim().length < 50) return null
 
-  const prompt = `Analizza questo documento medico-legale e restituisci un JSON con gli stili di formattazione.
+  const prompt = `Analizza questo documento legale e restituisci un JSON con gli stili di formattazione.
 
 <documento>
 ${text.slice(0, 8000)}
@@ -1511,7 +1511,7 @@ export async function transcribeWithFallback({ text, fileName = '', apiKey, onCh
 // ===== OCR FUNCTIONS =====
 
 // Prompt ottimizzato per OCR di documenti medico-legali
-const OCR_SYSTEM_PROMPT = `Sei un sistema OCR di precisione professionale specializzato in documenti medico-legali.
+const OCR_SYSTEM_PROMPT = `Sei un sistema OCR di precisione professionale specializzato in documenti legali.
 
 ISTRUZIONI:
 1. Estrai TUTTO il testo visibile dall'immagine con la massima accuratezza

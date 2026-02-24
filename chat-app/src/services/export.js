@@ -212,7 +212,7 @@ function extractSections(text) {
  * @returns {Promise<Blob>} PDF blob
  */
 export async function exportToPDF({
-  title = 'Report Medico-Legale',
+  title = 'Report Legale',
   subtitle = '',
   content,
   messages = [],
@@ -250,7 +250,7 @@ export async function exportToPDF({
     // Logo/Titolo app
     doc.setFontSize(fontSize.small)
     doc.setTextColor(...colors.primary)
-    doc.text('MyMED', margin, y)
+    doc.text('Legistra', margin, y)
     
     // Data
     doc.setTextColor(...colors.muted)
@@ -406,7 +406,7 @@ export async function exportToPDF({
         { align: 'center' }
       )
       doc.text(
-        'Generato con MyMED - Assistente Medico-Legale',
+        'Generato con Legistra - Assistente Legale AI',
         pageWidth / 2,
         295,
         { align: 'center' }
@@ -418,7 +418,7 @@ export async function exportToPDF({
   const pdfBlob = doc.output('blob')
   
   if (download) {
-    const fileName = filename || `mymed_report_${Date.now()}.pdf`
+    const fileName = filename || `legistra_report_${Date.now()}.pdf`
     saveAs(pdfBlob, fileName)
   }
   
@@ -433,7 +433,7 @@ export async function exportToPDF({
  * questi vengono usati per replicare l'aspetto originale del template.
  */
 export async function exportToWord({
-  title = 'Report Medico-Legale',
+  title = 'Report Legale',
   subtitle = '',
   content,
   messages = [],
@@ -573,7 +573,7 @@ export async function exportToWord({
       new Paragraph({
         children: [
           new TextRun({
-            text: 'Generato con MyMED',
+            text: 'Generato con Legistra',
             size: smallSize,
             color: '999999',
             italics: true,
@@ -611,7 +611,7 @@ export async function exportToWord({
   const docBlob = await Packer.toBlob(doc)
   
   if (download) {
-    const fileName = filename || `mymed_report_${Date.now()}.docx`
+    const fileName = filename || `legistra_report_${Date.now()}.docx`
     saveAs(docBlob, fileName)
   }
   

@@ -331,7 +331,7 @@ const detectRequestedMode = (input) => {
     containsAll(['analizza', 'documento']) ||
     containsAll(['analisi', 'cartella'])
   ) {
-    return 'analisi-medico-legale'
+    return 'analisi-giuridica'
   }
 
   return null
@@ -525,7 +525,7 @@ function App() {
   // Ref per tracciare elaborazioni attive (persiste tra re-render E in localStorage per refresh)
   const activeProcessingRef = useRef((() => {
     try {
-      const stored = localStorage.getItem('mymed_active_processing')
+      const stored = localStorage.getItem('legistra_active_processing')
       return stored ? JSON.parse(stored) : null
     } catch {
       return null
@@ -537,9 +537,9 @@ function App() {
     activeProcessingRef.current = data
     try {
       if (data) {
-        localStorage.setItem('mymed_active_processing', JSON.stringify(data))
+        localStorage.setItem('legistra_active_processing', JSON.stringify(data))
       } else {
-        localStorage.removeItem('mymed_active_processing')
+        localStorage.removeItem('legistra_active_processing')
       }
     } catch (e) {
       console.warn('Errore salvataggio stato elaborazione:', e)
@@ -679,7 +679,7 @@ function App() {
       // 3. Web Locks API - previene la sospensione della tab
       try {
         if ('locks' in navigator) {
-          webLockPromise = navigator.locks.request('mymd-processing', { mode: 'exclusive' }, () => {
+          webLockPromise = navigator.locks.request('legistra-processing', { mode: 'exclusive' }, () => {
             // Mantieni il lock finché l'elaborazione è in corso
             return new Promise((resolve) => {
               // Questo lock verrà rilasciato quando stopKeepAlive viene chiamato
@@ -963,14 +963,14 @@ function App() {
     
     const checkSavedProcessing = async () => {
       try {
-        const stored = localStorage.getItem('mymed_active_processing')
+        const stored = localStorage.getItem('legistra_active_processing')
         if (!stored) return
         
         const savedProcessing = JSON.parse(stored)
         const { batchId, loaderId, conversationId, totalFiles } = savedProcessing
         
         if (!batchId) {
-          localStorage.removeItem('mymed_active_processing')
+          localStorage.removeItem('legistra_active_processing')
           return
         }
         
@@ -1019,7 +1019,7 @@ function App() {
         }
       } catch (e) {
         console.warn('Errore recupero stato elaborazione:', e)
-        localStorage.removeItem('mymed_active_processing')
+        localStorage.removeItem('legistra_active_processing')
       }
     }
     
@@ -1446,8 +1446,8 @@ function App() {
       // Mostra sempre un messaggio descrittivo per le azioni AI
       if (effectiveMode?.id === 'trascrizione') {
         userDisplayText = 'Esegui trascrizione'
-      } else if (effectiveMode?.id === 'analisi-medico-legale') {
-        userDisplayText = 'Genera storia clinica'
+      } else if (effectiveMode?.id === 'analisi-giuridica') {
+        userDisplayText = 'Genera analisi giuridica'
       } else if (effectiveMode?.id === 'genera-documento-stile') {
         userDisplayText = `Genera documento: ${queuedWorkflow?.categoryName || 'Personalizzato'}`
       } else if (effectiveMode?.label) {
@@ -1728,7 +1728,7 @@ function App() {
           usingPendingAction = true
           processingPrompt = pendingAction.prompt
           if (pendingAction.mode === 'analysis') {
-            requestedModeId = 'analisi-medico-legale'
+            requestedModeId = 'analisi-giuridica'
           } else if (pendingAction.mode === 'transcription') {
             requestedModeId = 'trascrizione'
           } else {
@@ -2200,7 +2200,7 @@ function App() {
             batchId: referencedBatch.id,
             prompt: processingPrompt,
             mode:
-              effectiveMode?.id === 'analisi-medico-legale'
+              effectiveMode?.id === 'analisi-giuridica'
                 ? 'analysis'
                 : effectiveMode?.id === 'trascrizione'
                   ? 'transcription'
@@ -2218,8 +2218,8 @@ function App() {
             ? `Richiesta individuata: "${processingPrompt}".`
             : 'Richiesta individuata: nessuna istruzione testuale specifica.'
           const actionLine = (() => {
-            if (effectiveMode?.id === 'analisi-medico-legale') {
-              return 'Azione prevista: analisi medico-legale.'
+            if (effectiveMode?.id === 'analisi-giuridica') {
+              return 'Azione prevista: analisi giuridica.'
             }
             if (effectiveMode?.id === 'trascrizione') {
               return 'Azione prevista: trascrizione completa.'
@@ -2235,7 +2235,7 @@ function App() {
       }
 
       const wantsTranscription = effectiveMode?.id === 'trascrizione'
-      const wantsAnalysis = effectiveMode?.id === 'analisi-medico-legale'
+      const wantsAnalysis = effectiveMode?.id === 'analisi-giuridica'
       const hasContext = Boolean(targetBatch)
 
       if (!hasContext && processingPrompt) {
@@ -2287,7 +2287,7 @@ function App() {
         // Documenti già trascritti automaticamente, mostra conferma professionale
         const fileCount = filesToSend.length
         finalize({
-          text: `Elaborazione completata.\n\n${fileCount === 1 ? 'Il documento è stato analizzato' : `I ${fileCount} documenti sono stati analizzati`} e il contenuto testuale è stato estratto con successo.\n\nSono a disposizione per qualsiasi richiesta: analisi medico-legale, estrazione dati strutturati, timeline degli eventi, valutazione del nesso causale, o qualsiasi domanda specifica sul contenuto.`,
+          text: `Elaborazione completata.\n\n${fileCount === 1 ? 'Il documento è stato analizzato' : `I ${fileCount} documenti sono stati analizzati`} e il contenuto testuale è stato estratto con successo.\n\nSono a disposizione per qualsiasi richiesta: analisi giuridica, estrazione dati strutturati, timeline degli eventi, valutazione dei profili di responsabilità, o qualsiasi domanda specifica sul contenuto.`,
         })
         setDraftText('')
         return
@@ -2408,7 +2408,7 @@ function App() {
               if (!transcription) throw new Error('Trascrizione non disponibile')
               return transcription
             })(),
-            processingPrompt || 'Genera un’analisi medico-legale dettagliata dei documenti forniti.',
+            processingPrompt || 'Genera un’analisi giuridica dettagliata dei documenti forniti.',
           ))
         const idx = findBatchIndex(targetBatch.id)
         if (idx !== -1) {
@@ -2427,22 +2427,23 @@ function App() {
         return
       }
 
-      // Gestione di tutte le azioni specializzate (tranne trascrizione e analisi-medico-legale già gestite)
+      // Gestione di tutte le azioni specializzate (tranne trascrizione e analisi-giuridica già gestite)
       const specializedActions = [
-        'analisi-medico-legale',
+        'analisi-giuridica',
         'estrazione-dati',
         'timeline-eventi',
         'analisi-coerenza',
         'nesso-causale',
         'completezza-documentale',
         'responsabilita-professionale',
-        'invalidita-civile',
-        'infortunistica',
+        'diritto-civile',
+        'diritto-penale',
+        'contrattualistica',
         'malpractice',
         'report-strutturato',
         'confronto-documenti',
         'elementi-critici',
-        'analisi-legale-assicurativa',
+        'analisi-contrattuale',
       ]
 
       if (effectiveMode?.id && specializedActions.includes(effectiveMode.id)) {
@@ -2593,7 +2594,7 @@ function App() {
         
         try {
           // Determina il tipo di documento dalla categoria o dalla richiesta dell'utente
-          const documentType = queuedWorkflow?.categoryName || processingPrompt || 'Perizia Medico-Legale'
+          const documentType = queuedWorkflow?.categoryName || processingPrompt || 'Parere Legale'
           
           // Usa categoryId se disponibile (per ricerca vettoriale), altrimenti usa il nome
           const categoryIdentifier = queuedWorkflow?.categoryId || documentType
@@ -2922,7 +2923,7 @@ function App() {
     
     // Pulisci anche localStorage
     try {
-      localStorage.removeItem('mymed_active_processing')
+      localStorage.removeItem('legistra_active_processing')
     } catch (e) {
       console.warn('Errore pulizia localStorage:', e)
     }

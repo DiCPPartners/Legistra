@@ -135,7 +135,7 @@ async function main() {
   if (authError || !user) {
     console.error('❌ Errore: Devi essere autenticato per eseguire questo script')
     console.log('\n💡 Soluzione:')
-    console.log('   1. Accedi all\'app MyMED nel browser')
+    console.log('   1. Accedi all\'app Legistra nel browser')
     console.log('   2. Apri la console del browser (F12)')
     console.log('   3. Copia il token di sessione da localStorage')
     console.log('   4. Oppure usa questo script solo per template nuovi (che generano automaticamente l\'embedding)')

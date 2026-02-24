@@ -117,9 +117,17 @@ export default function AuthLayout({ onBack }) {
           }
 
           if (signUpData?.user) {
-            setMessage('Registrazione completata! Controlla la tua casella email per ulteriori istruzioni.')
+            // Invia email di benvenuto tramite backend
+            try {
+              await fetch('/api/email/welcome', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ to: email, firstName }),
+              })
+            } catch (e) { /* non bloccante */ }
+            setMessage('Registrazione completata! Controlla la tua casella email.')
           } else {
-            setMessage('Registrazione completata! Controlla la tua casella email per ulteriori istruzioni.')
+            setMessage('Registrazione completata! Controlla la tua casella email.')
           }
         }
       } catch (submitError) {

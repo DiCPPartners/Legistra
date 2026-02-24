@@ -166,7 +166,7 @@ class RedisCache {
     if (!this.redis) return
     
     // Usa pattern per cancellare solo chiavi dell'app
-    const keys = await this.redis.keys('mymd:*')
+    const keys = await this.redis.keys('legistra:*')
     if (keys.length > 0) {
       await this.redis.del(...keys)
     }
@@ -218,11 +218,11 @@ export function getCache() {
  * Cache keys helpers
  */
 export const CacheKeys = {
-  transcription: (hash) => `mymd:transcription:${hash}`,
-  ocr: (hash) => `mymd:ocr:${hash}`,
-  analysis: (batchId) => `mymd:analysis:${batchId}`,
-  userTemplates: (userId) => `mymd:templates:${userId}`,
-  documentMeta: (docId) => `mymd:doc:${docId}`
+  transcription: (hash) => `legistra:transcription:${hash}`,
+  ocr: (hash) => `legistra:ocr:${hash}`,
+  analysis: (batchId) => `legistra:analysis:${batchId}`,
+  userTemplates: (userId) => `legistra:templates:${userId}`,
+  documentMeta: (docId) => `legistra:doc:${docId}`
 }
 
 /**

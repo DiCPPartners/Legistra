@@ -1,10 +1,8 @@
-// Logo SVG per myMD - stetoscopio professionale, ottimizzato per piccole dimensioni
+// Logo SVG per Legistra - bilancia della giustizia professionale, ottimizzato per piccole dimensioni
 export default function Logo({ className = "h-6 w-6", color = "white" }) {
   const isWhite = color === "white"
-  // Quando color="white", usa il colore bianco direttamente
-  const stethColor = isWhite ? "white" : color
+  const scaleColor = isWhite ? "white" : color
   const primaryColor = "#2f9aa7"
-  const secondaryColor = "#3eb8a8"
   
   return (
     <svg
@@ -13,83 +11,99 @@ export default function Logo({ className = "h-6 w-6", color = "white" }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Stetoscopio - parte superiore (testa/diaframma) - più grande e visibile */}
-      <ellipse
+      {/* Pilastro centrale */}
+      <path
+        d="M 20 6 L 20 34"
+        stroke={scaleColor}
+        strokeWidth="3"
+        strokeLinecap="round"
+        opacity={isWhite ? "1" : "0.95"}
+      />
+      
+      {/* Base */}
+      <path
+        d="M 13 34 L 27 34"
+        stroke={scaleColor}
+        strokeWidth="3"
+        strokeLinecap="round"
+        opacity={isWhite ? "1" : "0.95"}
+      />
+      
+      {/* Braccio orizzontale */}
+      <path
+        d="M 8 12 L 32 12"
+        stroke={scaleColor}
+        strokeWidth="3"
+        strokeLinecap="round"
+        opacity={isWhite ? "1" : "0.95"}
+      />
+      
+      {/* Piatto sinistro - catene */}
+      <path
+        d="M 8 12 L 5 22"
+        stroke={scaleColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity={isWhite ? "0.8" : "0.75"}
+      />
+      <path
+        d="M 8 12 L 11 22"
+        stroke={scaleColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity={isWhite ? "0.8" : "0.75"}
+      />
+      
+      {/* Piatto sinistro */}
+      <path
+        d="M 3 22 Q 8 26 13 22"
+        stroke={scaleColor}
+        strokeWidth="2.5"
+        fill="none"
+        strokeLinecap="round"
+        opacity={isWhite ? "1" : "0.95"}
+      />
+      
+      {/* Piatto destro - catene */}
+      <path
+        d="M 32 12 L 29 22"
+        stroke={scaleColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity={isWhite ? "0.8" : "0.75"}
+      />
+      <path
+        d="M 32 12 L 35 22"
+        stroke={scaleColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity={isWhite ? "0.8" : "0.75"}
+      />
+      
+      {/* Piatto destro */}
+      <path
+        d="M 27 22 Q 32 26 37 22"
+        stroke={scaleColor}
+        strokeWidth="2.5"
+        fill="none"
+        strokeLinecap="round"
+        opacity={isWhite ? "1" : "0.95"}
+      />
+      
+      {/* Cerchio superiore */}
+      <circle
         cx="20"
-        cy="10"
-        rx="6"
-        ry="5"
-        fill={stethColor}
-        opacity={isWhite ? "1" : "0.95"}
-      />
-      
-      {/* Tubo principale che scende - più spesso */}
-      <path
-        d="M 20 15 L 20 25"
-        stroke={stethColor}
-        strokeWidth="4"
-        fill="none"
-        strokeLinecap="round"
-        opacity={isWhite ? "1" : "0.95"}
-      />
-      
-      {/* Biforcazione del tubo - più semplice e visibile */}
-      <path
-        d="M 20 25 L 14 30"
-        stroke={stethColor}
-        strokeWidth="3.5"
-        fill="none"
-        strokeLinecap="round"
-        opacity={isWhite ? "1" : "0.95"}
-      />
-      <path
-        d="M 20 25 L 26 30"
-        stroke={stethColor}
-        strokeWidth="3.5"
-        fill="none"
-        strokeLinecap="round"
-        opacity={isWhite ? "1" : "0.95"}
-      />
-      
-      {/* Cuffia sinistra - più grande */}
-      <circle
-        cx="14"
-        cy="30"
-        r="5"
-        fill={stethColor}
-        opacity={isWhite ? "1" : "0.95"}
-      />
-      <circle
-        cx="14"
-        cy="30"
+        cy="8"
         r="3"
-        fill={isWhite ? "#2f9aa7" : "white"}
-        opacity={isWhite ? "0.3" : "0.6"}
-      />
-      
-      {/* Cuffia destra - più grande */}
-      <circle
-        cx="26"
-        cy="30"
-        r="5"
-        fill={stethColor}
+        fill={scaleColor}
         opacity={isWhite ? "1" : "0.95"}
       />
-      <circle
-        cx="26"
-        cy="30"
-        r="3"
-        fill={isWhite ? "#2f9aa7" : "white"}
-        opacity={isWhite ? "0.3" : "0.6"}
-      />
-      
-      {/* Connettore centrale - più visibile */}
       <circle
         cx="20"
-        cy="25"
-        r="2.5"
-        fill={stethColor}
-        opacity={isWhite ? "1" : "0.95"}
+        cy="8"
+        r="1.5"
+        fill={isWhite ? primaryColor : "white"}
+        opacity={isWhite ? "0.3" : "0.6"}
       />
     </svg>
   )

@@ -1,10 +1,10 @@
 /**
- * Service Worker per MyMED PWA
+ * Service Worker per Legistra PWA
  */
 
-const CACHE_NAME = 'mymed-cache-v1'
-const STATIC_CACHE = 'mymed-static-v1'
-const DYNAMIC_CACHE = 'mymed-dynamic-v1'
+const CACHE_NAME = 'legistra-cache-v1'
+const STATIC_CACHE = 'legistra-static-v1'
+const DYNAMIC_CACHE = 'legistra-dynamic-v1'
 
 // Risorse da cachare subito
 const STATIC_ASSETS = [
@@ -197,7 +197,7 @@ self.addEventListener('push', (event) => {
   }
   
   event.waitUntil(
-    self.registration.showNotification(data.title || 'MyMED', options)
+    self.registration.showNotification(data.title || 'Legistra', options)
   )
 })
 

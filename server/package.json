@@ -1,5 +1,5 @@
 {
-  "name": "mymd-server",
+  "name": "legistra-server",
   "version": "1.0.0",
   "type": "module",
   "engines": {
@@ -28,6 +28,7 @@
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "^3.11.174",
+    "resend": "^6.9.2",
     "sharp": "^0.33.5",
     "socket.io": "^4.7.5",
     "uuid": "^10.0.0",

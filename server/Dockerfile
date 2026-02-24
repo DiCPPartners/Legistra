@@ -1,4 +1,4 @@
-# myMD Server - Production Dockerfile
+# Legistra Server - Production Dockerfile
 FROM node:20-alpine
 
 # Installa dipendenze di sistema per canvas/pdf processing

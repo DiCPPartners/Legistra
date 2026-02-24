@@ -22,11 +22,11 @@ export default defineConfig({
         ws: true,
       },
       // Webhook esterni
-      '/api/mymed': {
-        target: 'https://n8n.srv1103066.hstgr.cloud/webhook/mymed',
+      '/api/legistra': {
+        target: 'https://n8n.srv1103066.hstgr.cloud/webhook/legistra',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api\/mymed/, ''),
+        rewrite: (path) => path.replace(/^\/api\/legistra/, ''),
       },
       '/api/trascrizione': {
         target: 'https://n8n.srv1103066.hstgr.cloud/webhook/trascrizione',

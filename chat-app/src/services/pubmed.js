@@ -4,8 +4,8 @@
  */
 
 const BASE_URL = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils'
-const TOOL_NAME = 'mymed-app'
-const TOOL_EMAIL = 'support@mymed.app'
+const TOOL_NAME = 'legistra-app'
+const TOOL_EMAIL = 'support@legistra.app'
 
 function buildParams(extra = {}) {
   const params = new URLSearchParams({
