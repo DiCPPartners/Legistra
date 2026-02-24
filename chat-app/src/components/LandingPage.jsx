@@ -440,7 +440,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Step 4 - PubMed */}
+          {/* Step 4 - Legislazione */}
           <div className="mb-16">
             <div className="flex items-start gap-6 p-8 rounded-3xl bg-gradient-to-r from-slate-50 to-white border-2 border-slate-200 shadow-lg">
               <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8] flex items-center justify-center text-white text-3xl font-bold shadow-lg">

@@ -4,7 +4,7 @@ import MessageComposer from './components/MessageComposer'
 import Sidebar from './components/Sidebar'
 import MedicalLegalActions from './components/MedicalLegalActions'
 import DocumentTemplates from './components/DocumentTemplates'
-import PubMedSearch from './components/PubMedSearch'
+import LegislationSearch from './components/LegislationSearch'
 // STRIPE_DISABLED: Import SubscriptionPlans commentato temporaneamente
 // import SubscriptionPlans from './components/SubscriptionPlans'
 import DocumentSelector from './components/DocumentSelector'
@@ -41,7 +41,7 @@ import {
   performOCRWithGemini,
   isGeminiVisionAvailable,
 } from './services/openai'
-import { searchPubMedForContext } from './services/pubmed'
+import { searchLegislationForContext } from './services/legislation'
 import { 
   indexMultipleDocuments, 
   buildRAGContext, 
@@ -508,7 +508,7 @@ function App() {
   const [isActionsModalOpen, setIsActionsModalOpen] = useState(false)
   const [isDragOverChat, setIsDragOverChat] = useState(false)
   const [isTemplatesOpen, setIsTemplatesOpen] = useState(false)
-  const [isPubMedOpen, setIsPubMedOpen] = useState(false)
+  const [isLegislationOpen, setIsLegislationOpen] = useState(false)
   const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false)
   const [isDocumentSelectorOpen, setIsDocumentSelectorOpen] = useState(false)
   const [pendingTranscriptionFiles, setPendingTranscriptionFiles] = useState([])
@@ -2242,17 +2242,16 @@ function App() {
         const previousMessages = messages.filter((msg) => msg.id !== loaderId && msg.id !== userMessage.id)
         const conversationHistory = convertMessagesToOpenAIFormat(previousMessages)
         
-        // Cerca su PubMed in parallelo (non blocca se fallisce)
-        let pubmedContext = ''
+        let legalContext = ''
         try {
-          const pubmedResult = await searchPubMedForContext(processingPrompt, OPENAI_API_KEY)
-          if (pubmedResult?.text) pubmedContext = '\n\n' + pubmedResult.text
+          const legalResult = await searchLegislationForContext(processingPrompt, OPENAI_API_KEY)
+          if (legalResult?.text) legalContext = '\n\n' + legalResult.text
         } catch (e) { /* non bloccante */ }
         
         const answer = await generateChatCompletionStreaming({
           apiKey: OPENAI_API_KEY,
           question: processingPrompt,
-          transcription: pubmedContext,
+          transcription: legalContext,
           conversationHistory,
           onChunk: (chunk, fullText) => updateStreamingText(fullText),
         })
@@ -2711,18 +2710,17 @@ function App() {
           }
         }
         
-        // Arricchisci con letteratura PubMed (non bloccante)
-        let pubmedExtra = ''
+        let legalExtra = ''
         try {
-          const pubmedResult = await searchPubMedForContext(processingPrompt, OPENAI_API_KEY)
-          if (pubmedResult?.text) pubmedExtra = '\n\n' + pubmedResult.text
+          const legalResult = await searchLegislationForContext(processingPrompt, OPENAI_API_KEY)
+          if (legalResult?.text) legalExtra = '\n\n' + legalResult.text
         } catch (e) { /* non bloccante */ }
         
         if (useRAG && ragContext) {
           answer = await generateChatWithRAG({
             apiKey: OPENAI_API_KEY,
             question: processingPrompt,
-            ragContext: ragContext + pubmedExtra,
+            ragContext: ragContext + legalExtra,
             conversationHistory,
             onChunk: (chunk, fullText) => updateStreamingText(fullText),
           })
@@ -2730,7 +2728,7 @@ function App() {
           answer = await generateChatCompletionStreaming({
             apiKey: OPENAI_API_KEY,
             question: processingPrompt,
-            transcription: contextForAnswer + pubmedExtra,
+            transcription: contextForAnswer + legalExtra,
             conversationHistory,
             onChunk: (chunk, fullText) => updateStreamingText(fullText),
           })
@@ -3441,7 +3439,7 @@ function App() {
         userName={userProfile.firstName || userProfile.email?.split('@')[0] || ''}
         onProfileClick={handleProfileClick}
         onTemplatesClick={() => setIsTemplatesOpen(true)}
-        onPubMedClick={() => setIsPubMedOpen(true)}
+        onLegislationClick={() => setIsLegislationOpen(true)}
       />
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <div className="border-b border-slate-200/50 bg-white/80 backdrop-blur-sm px-4 py-4 md:hidden">
@@ -3561,8 +3559,8 @@ function App() {
       {isTemplatesOpen && (
         <DocumentTemplates onClose={() => setIsTemplatesOpen(false)} />
       )}
-      {isPubMedOpen && (
-        <PubMedSearch onClose={() => setIsPubMedOpen(false)} />
+      {isLegislationOpen && (
+        <LegislationSearch onClose={() => setIsLegislationOpen(false)} />
       )}
       {/* STRIPE_DISABLED: Modale abbonamenti nascosta temporaneamente */}
       {/* {isSubscriptionOpen && (

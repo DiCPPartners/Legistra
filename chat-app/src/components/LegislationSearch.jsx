@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { searchPubMed } from '../services/pubmed'
+import { searchLegislation } from '../services/legislation'
 import { exportToWord } from '../services/export'
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY ?? ''
@@ -35,10 +35,10 @@ function formatReviewHtml(text) {
     }
 
     // Summary and Recommendations block
-    if (trimmed === 'SUMMARY AND RECOMMENDATIONS' || trimmed.startsWith('SUMMARY AND RECOMMENDATIONS')) {
+    if (trimmed === 'SINTESI E RACCOMANDAZIONI' || trimmed.startsWith('SINTESI E RACCOMANDAZIONI')) {
       inSummary = true
       html += `<div style="background:#eaf2f8;border-left:4px solid #1a5276;padding:1em 1.2em;margin:1em 0;border-radius:0 6px 6px 0">`
-      html += `<div style="font-weight:700;color:#1a5276;font-size:0.95rem;margin-bottom:0.6em">SUMMARY AND RECOMMENDATIONS</div>`
+      html += `<div style="font-weight:700;color:#1a5276;font-size:0.95rem;margin-bottom:0.6em">SINTESI E RACCOMANDAZIONI</div>`
       continue
     }
 
@@ -48,8 +48,7 @@ function formatReviewHtml(text) {
         inSummary = false
       } else {
         const bullet = trimmed.startsWith('●') ? trimmed : (trimmed.startsWith('-') ? '●' + trimmed.slice(1) : trimmed)
-        const withGrade = bullet.replace(/\(Grade\s+(\d[A-C])\)/g, '<span style="background:#1a5276;color:white;padding:1px 6px;border-radius:3px;font-size:0.75rem;font-weight:600;margin-left:4px">Grade $1</span>')
-        const withBold = withGrade.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        const withBold = bullet.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
         html += `<div style="margin:0.4em 0;padding-left:0.5em;line-height:1.6;font-size:0.88rem">${withBold}</div>`
         continue
       }
@@ -63,7 +62,7 @@ function formatReviewHtml(text) {
     }
 
     if (inReferences) {
-      const withLinks = trimmed.replace(/PMID:\s*(\d+)/g, '<a href="https://pubmed.ncbi.nlm.nih.gov/$1/" target="_blank" rel="noopener noreferrer" style="color:#1a5276;text-decoration:none">PMID: $1</a>')
+      const withLinks = trimmed.replace(/((?:Legge|D\.Lgs\.|D\.L\.|DPR|L\.)\s*(?:n\.\s*)?\d+\/\d+)/g, '<strong style="color:#1a5276">$1</strong>')
       html += `<div style="font-size:0.8rem;color:#555;margin:0.25em 0;line-height:1.5;padding-left:1.5em;text-indent:-1.5em">${withLinks}</div>`
       continue
     }
@@ -104,13 +103,12 @@ function formatReviewHtml(text) {
   return html
 }
 
-export default function PubMedSearch({ onClose }) {
+export default function LegislationSearch({ onClose }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [isSearching, setIsSearching] = useState(false)
   const [error, setError] = useState(null)
-  const [expandedAbstract, setExpandedAbstract] = useState(null)
   const [copiedId, setCopiedId] = useState(null)
   const [reviewText, setReviewText] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -138,13 +136,13 @@ export default function PubMedSearch({ onClose }) {
     setResults([])
 
     try {
-      const { articles, totalCount: total } = await searchPubMed(query.trim(), 20)
+      const { articles, totalCount: total } = await searchLegislation(query.trim(), OPENAI_API_KEY, 20)
       setResults(articles)
       setTotalCount(total)
       if (articles.length === 0) setError('Nessun risultato trovato.')
     } catch (err) {
       setError('Errore nella ricerca. Riprova.')
-      console.error('PubMed search error:', err)
+      console.error('Legislation search error:', err)
     } finally {
       setIsSearching(false)
     }
@@ -158,55 +156,52 @@ export default function PubMedSearch({ onClose }) {
     setReviewText('')
 
     const articlesContext = results.slice(0, 15).map((a, i) =>
-      `[${i + 1}] ${a.authorsShort} (${a.year}). "${a.title}" ${a.journal}. PMID: ${a.pmid}` +
-      (a.abstract ? `\n${a.abstract}` : '')
+      `[${i + 1}] ${a.citation}` +
+      (a.summary ? `\nRilevanza: ${a.summary}` : '') +
+      (a.articles ? `\nArticoli: ${a.articles}` : '')
     ).join('\n\n---\n\n')
 
-    const systemPrompt = `Sei un editor di UpToDate. Scrivi topic review nello stile ESATTO di UpToDate.
+    const systemPrompt = `Sei un giurista esperto. Scrivi un memo legale strutturato e professionale.
 
 Lingua: ITALIANO.
 
-FORMATO UPTODATE (segui questo schema rigidamente):
+FORMATO MEMO LEGALE (segui questo schema):
 
-1. Inizia con: TOPIC_TITLE: [titolo argomento]
+1. Inizia con: TOPIC_TITLE: [titolo dell'argomento giuridico]
 
-2. Subito dopo, scrivi un blocco SUMMARY AND RECOMMENDATIONS:
-   - Inizia con "SUMMARY AND RECOMMENDATIONS"
+2. Subito dopo, scrivi un blocco SINTESI E RACCOMANDAZIONI:
+   - Inizia con "SINTESI E RACCOMANDAZIONI"
    - Elenca i punti chiave come bullet points con il simbolo ●
-   - Ogni raccomandazione clinica deve avere un GRADE: (Grade 1A), (Grade 1B), (Grade 2B), (Grade 2C) ecc.
-   - Usa "We recommend" (Grade 1) o "We suggest" (Grade 2) per le raccomandazioni
+   - Evidenzia le norme fondamentali e gli orientamenti giurisprudenziali
 
-3. Poi le sezioni del topic, ciascuna con titolo in MAIUSCOLO:
-   - INTRODUCTION
-   - EPIDEMIOLOGY (se rilevante)
-   - PATHOGENESIS / ETIOLOGY
-   - CLINICAL MANIFESTATIONS
-   - DIAGNOSIS / EVALUATION
-   - DIFFERENTIAL DIAGNOSIS (se rilevante)
-   - MANAGEMENT / TREATMENT
-   - PROGNOSIS AND OUTCOMES
-   - SOCIETY GUIDELINE LINKS (se applicabile)
+3. Poi le sezioni del memo, ciascuna con titolo in MAIUSCOLO:
+   - QUADRO NORMATIVO
+   - EVOLUZIONE LEGISLATIVA (se rilevante)
+   - GIURISPRUDENZA DI RIFERIMENTO
+   - DOTTRINA
+   - APPLICAZIONE PRATICA
+   - PROFILI CRITICI
+   - ORIENTAMENTI RECENTI
 
-4. Stile UpToDate:
-   - Ogni sezione puo avere sottosezioni con titolo in Title Case
-   - Il testo e' clinico, diretto, orientato alla decisione
+4. Stile memo legale:
+   - Ogni sezione può avere sottosezioni con titolo in Title Case
+   - Il testo è giuridico, preciso, orientato alla pratica professionale
    - Le citazioni nel testo usano numeri tra parentesi quadre: [1], [2,3], [4-6]
    - I paragrafi sono densi di informazioni ma chiari
-   - Usa "See 'Topic name'" quando fai riferimenti incrociati
-   - Le raccomandazioni si distinguono dal testo descrittivo
+   - Cita sempre articoli di legge specifici (art. 1218 c.c., art. 2043 c.c., ecc.)
 
-5. Alla fine: REFERENCES - Lista numerata [1], [2], ecc.
+5. Alla fine: REFERENCES - Lista numerata [1], [2], ecc. con citazioni complete delle norme
 
-NON inventare dati. Usa SOLO le informazioni dagli articoli forniti.
+NON inventare dati. Usa SOLO le informazioni dalle norme fornite.
 I titoli delle sezioni devono essere in MAIUSCOLO. I titoli delle sottosezioni in Title Case.`
 
-    const userMessage = `Scrivi un topic UpToDate sull'argomento: "${query}"
+    const userMessage = `Scrivi un memo legale sull'argomento: "${query}"
 
-Articoli PubMed di riferimento:
+Norme di riferimento:
 
 ${articlesContext}
 
-Genera il topic completo in formato UpToDate, in italiano.`
+Genera il memo legale completo, in italiano.`
 
     try {
       // Usa Claude se disponibile, altrimenti GPT-4o
@@ -302,7 +297,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
       title: `Review: ${query}`,
       content: reviewText,
       download: true,
-      filename: `review_${query.replace(/\s+/g, '_').slice(0, 30)}.docx`
+      filename: `memo_legale_${query.replace(/\s+/g, '_').slice(0, 30)}.docx`
     })
   }, [reviewText, query])
 
@@ -325,7 +320,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
   const handleCopyCitation = useCallback(async (article) => {
     try {
       await navigator.clipboard.writeText(article.citation)
-      setCopiedId(article.pmid)
+      setCopiedId(article.id)
       setTimeout(() => setCopiedId(null), 2000)
     } catch {
       const ta = document.createElement('textarea')
@@ -336,7 +331,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
       ta.select()
       document.execCommand('copy')
       document.body.removeChild(ta)
-      setCopiedId(article.pmid)
+      setCopiedId(article.id)
       setTimeout(() => setCopiedId(null), 2000)
     }
   }, [])
@@ -352,12 +347,12 @@ Genera il topic completo in formato UpToDate, in italiano.`
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#2f9aa7] to-[#3eb8a8]">
               <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="h-5 w-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z" />
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">PubMed</h2>
-              <p className="text-xs text-slate-500">Cerca nella letteratura scientifica</p>
+              <h2 className="text-lg font-bold text-slate-900">Legislazione</h2>
+              <p className="text-xs text-slate-500">Cerca nelle leggi italiane</p>
             </div>
           </div>
           <button
@@ -378,7 +373,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Cerca articoli: es. spleen trauma management..."
+              placeholder="Cerca norme: es. responsabilità contrattuale, art. 2043 c.c...."
               className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#2f9aa7] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#2f9aa7]"
             />
             <button
@@ -427,7 +422,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
                     <path d="M15.98 1.804a1 1 0 00-1.96 0l-.24 1.192a1 1 0 01-.784.785l-1.192.238a1 1 0 000 1.962l1.192.238a1 1 0 01.785.785l.238 1.192a1 1 0 001.962 0l.238-1.192a1 1 0 01.785-.785l1.192-.238a1 1 0 000-1.962l-1.192-.238a1 1 0 01-.785-.785l-.238-1.192zM6.949 5.684a1 1 0 00-1.898 0l-.683 2.051a1 1 0 01-.633.633l-2.051.683a1 1 0 000 1.898l2.051.684a1 1 0 01.633.632l.683 2.051a1 1 0 001.898 0l.683-2.051a1 1 0 01.633-.633l2.051-.683a1 1 0 000-1.898l-2.051-.683a1 1 0 01-.633-.633L6.95 5.684z" />
                   </svg>
                 )}
-                {isGenerating ? 'Generazione...' : 'Genera Review'}
+                {isGenerating ? 'Generazione...' : 'Genera Memo Legale'}
               </button>
             </div>
           )}
@@ -486,7 +481,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
           <div className="space-y-4">
             {results.map((article) => (
               <div
-                key={article.pmid}
+                key={article.id}
                 className="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-slate-300 hover:shadow-sm"
               >
                 {/* Title */}
@@ -499,43 +494,18 @@ Genera il topic completo in formato UpToDate, in italiano.`
                   {article.title}
                 </a>
 
-                {/* Authors + Journal + Year */}
+                {/* Type + Number + Date */}
                 <p className="mt-1.5 text-xs text-slate-500 leading-relaxed">
-                  {article.authorsShort}
-                  {article.journal && ` — ${article.journal}`}
-                  {article.year && ` (${article.year})`}
+                  <span className="inline-block rounded bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600 mr-1">{article.type}</span>
+                  {article.number && `n. ${article.number}`}
+                  {article.date && ` del ${new Date(article.date).toLocaleDateString('it-IT')}`}
                 </p>
 
-                {/* PMID + DOI */}
-                <div className="mt-1 flex items-center gap-3 text-xs text-slate-400">
-                  <span>PMID: {article.pmid}</span>
-                  {article.doi && (
-                    <a
-                      href={`https://doi.org/${article.doi}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-[#2f9aa7] hover:underline"
-                    >
-                      DOI: {article.doi}
-                    </a>
-                  )}
-                </div>
-
-                {/* Abstract toggle */}
-                {article.abstract && (
-                  <div className="mt-3">
-                    <button
-                      onClick={() => setExpandedAbstract(expandedAbstract === article.pmid ? null : article.pmid)}
-                      className="text-xs font-medium text-slate-500 hover:text-[#2f9aa7] transition"
-                    >
-                      {expandedAbstract === article.pmid ? 'Nascondi abstract' : 'Mostra abstract'}
-                    </button>
-                    {expandedAbstract === article.pmid && (
-                      <p className="mt-2 text-xs text-slate-600 leading-relaxed whitespace-pre-line bg-slate-50 rounded-lg p-3">
-                        {article.abstract}
-                      </p>
-                    )}
-                  </div>
+                {article.articles && (
+                  <p className="mt-1 text-xs text-[#2f9aa7] font-medium">{article.articles}</p>
+                )}
+                {article.summary && (
+                  <p className="mt-2 text-xs text-slate-600 leading-relaxed">{article.summary}</p>
                 )}
 
                 {/* Actions */}
@@ -544,7 +514,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
                     onClick={() => handleCopyCitation(article)}
                     className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-[#2f9aa7] hover:text-[#2f9aa7]"
                   >
-                    {copiedId === article.pmid ? (
+                    {copiedId === article.id ? (
                       <>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5 text-green-500">
                           <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
@@ -571,7 +541,7 @@ Genera il topic completo in formato UpToDate, in italiano.`
                       <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
                       <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
                     </svg>
-                    Apri su PubMed
+                    Apri su Normattiva
                   </a>
                 </div>
               </div>
@@ -586,9 +556,9 @@ Genera il topic completo in formato UpToDate, in italiano.`
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
               </div>
-              <h3 className="text-sm font-semibold text-slate-700">Cerca su PubMed</h3>
+              <h3 className="text-sm font-semibold text-slate-700">Cerca nella Legislazione</h3>
               <p className="mt-1 text-xs text-slate-500 max-w-xs">
-                Cerca articoli scientifici per patologia, trattamento, autore o parola chiave
+                Cerca norme per materia, articolo di legge, codice o parola chiave
               </p>
             </div>
           )}

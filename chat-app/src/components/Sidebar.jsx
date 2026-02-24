@@ -20,7 +20,7 @@ export default function Sidebar({
   onRenameConversation,
   onProfileClick,
   onTemplatesClick,
-  onPubMedClick,
+  onLegislationClick,
   userName,
 }) {
   const items = useMemo(
@@ -224,21 +224,21 @@ export default function Sidebar({
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
-          {/* Pulsante PubMed */}
+          {/* Pulsante Legislazione */}
           <button
             type="button"
-            onClick={onPubMedClick}
+            onClick={onLegislationClick}
             className="group flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm transition-all hover:border-[#2f9aa7] hover:bg-gradient-to-r hover:from-[#2f9aa7]/5 hover:to-[#3eb8a8]/5 hover:text-[#2f9aa7] hover:shadow-md"
           >
             <div className="flex items-center gap-3">
               <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-gradient-to-br from-[#2f9aa7]/10 to-[#3eb8a8]/10 text-[#2f9aa7] shadow-sm transition-all group-hover:from-[#2f9aa7]/20 group-hover:to-[#3eb8a8]/20">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.97zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.97z" />
                 </svg>
               </span>
               <div className="flex flex-col items-start text-left">
-                <span className="font-semibold text-slate-700 group-hover:text-[#2f9aa7] transition-colors">PubMed</span>
-                <span className="text-xs text-slate-400">Letteratura scientifica</span>
+                <span className="font-semibold text-slate-700 group-hover:text-[#2f9aa7] transition-colors">Legislazione</span>
+                <span className="text-xs text-slate-400">Leggi e norme italiane</span>
               </div>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5 text-slate-400 group-hover:text-[#2f9aa7] transition-colors">
