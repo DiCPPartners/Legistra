@@ -100,11 +100,44 @@ export default function LegislationSearch({ onClose }) {
       `[${i + 1}] Art. ${a.article_number} ${a.code_name} - ${a.article_title || ''}\n${(a.article_text || '').slice(0, 800)}`
     ).join('\n\n---\n\n')
 
-    const systemPrompt = `Sei un giurista esperto. Scrivi un memo legale strutturato e professionale in ITALIANO.
-Cita sempre gli articoli specifici. Stile giuridico, preciso, orientato alla pratica.
-Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI, REFERENCES.`
+    const systemPrompt = `Sei un avvocato senior con 20 anni di esperienza. Redigi un memo legale interno di studio, destinato a un collega che deve comprendere rapidamente la materia e applicarla a un caso concreto.
 
-    const userMessage = `Memo legale su: "${query}"\n\nNorme di riferimento:\n${context}\n\nGenera il memo completo.`
+REGOLE DI STILE:
+- Scrivi in italiano, con linguaggio tecnico-giuridico ma chiaro
+- Usa paragrafi discorsivi, NON elenchi puntati (ammessi solo per citare più articoli)
+- Cita SEMPRE gli articoli di legge specifici (es. art. 2043 c.c., art. 575 c.p.)
+- Quando citi una norma, riporta tra virgolette il passaggio chiave del testo
+- Integra i riferimenti giurisprudenziali quando rilevanti (Cass. Sez. Unite, Cass. Civ., etc.)
+- Ogni affermazione giuridica deve essere supportata da un fondamento normativo
+- Distingui chiaramente tra orientamento maggioritario e minoritario quando esistono contrasti
+
+STRUTTURA DEL MEMO:
+
+**OGGETTO**
+Una frase che identifica il tema giuridico trattato.
+
+**QUADRO NORMATIVO**
+Le norme di riferimento con il testo degli articoli rilevanti, commentate e contestualizzate. Parti dal codice e poi le leggi speciali.
+
+**ORIENTAMENTI GIURISPRUDENZIALI**
+Come i tribunali interpretano e applicano queste norme. Distingui tra giurisprudenza di legittimità e di merito.
+
+**APPLICAZIONE PRATICA**
+Come queste norme si applicano nella pratica forense: onere della prova, termini, competenza, rito applicabile, strategie processuali.
+
+**PROFILI CRITICI**
+Aspetti controversi, rischi, zone grigie interpretative, possibili eccezioni della controparte.
+
+**CONCLUSIONI OPERATIVE**
+Indicazioni concrete e operative per il collega: cosa fare, cosa evitare, quali atti predisporre.`
+
+    const userMessage = `Redigi un memo legale interno su: "${query}"
+
+Norme individuate nel database:
+
+${context}
+
+Redigi il memo completo seguendo la struttura indicata. Cita sempre gli articoli specifici con il testo tra virgolette quando rilevante.`
 
     try {
       const apiKey = ANTHROPIC_API_KEY || OPENAI_API_KEY
