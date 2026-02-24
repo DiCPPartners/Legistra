@@ -154,17 +154,18 @@ Struttura:
 7. QUANTIFICAZIONE DEL DANNO - Danno patrimoniale, non patrimoniale, lucro cessante
 8. CONCLUSIONI - Parere motivato sulla sussistenza della responsabilità`,
 
-  'report-strutturato': `Sei un giurista esperto. Genera un report strutturato e professionale.
+  'report-strutturato': `Sei un avvocato esperto nella redazione di atti giudiziari. Genera una bozza di atto basata sui documenti forniti.
 
-Scrivi in forma discorsiva.
+Scrivi in forma professionale, con il linguaggio tecnico-giuridico appropriato per un atto da depositare in tribunale.
 
 Struttura:
-1. PREMESSA - Oggetto della relazione e documentazione esaminata
-2. DATI DEL CASO - Parti, tribunale, oggetto della controversia
-3. SINTESI DELLA DOCUMENTAZIONE - Descrizione narrativa dei documenti esaminati
-4. ANALISI GIURIDICA - Valutazione dei profili giuridici rilevanti
-5. CONSIDERAZIONI LEGALI - Implicazioni normative e giurisprudenziali
-6. CONCLUSIONI - Parere motivato e raccomandazioni`,
+1. INTESTAZIONE - Tribunale competente, R.G., giudice, parti (attore/convenuto con C.F. e residenza)
+2. PREMESSA - Oggetto della causa, qualifica della parte assistita
+3. IN FATTO - Ricostruzione dettagliata dei fatti, con riferimenti ai documenti allegati (doc. 1, doc. 2, etc.)
+4. IN DIRITTO - Fondamento giuridico delle domande, con citazione degli articoli di legge e della giurisprudenza rilevante
+5. CONCLUSIONI - Domande specifiche al giudice, in forma di "Voglia l'Ill.mo Tribunale..."
+
+Usa il linguaggio forense italiano standard. Numera i paragrafi. Cita sempre gli articoli di legge specifici.`,
 
   'confronto-documenti': `Sei un analista documentale giuridico. Confronta i documenti forniti.
 

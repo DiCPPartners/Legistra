@@ -1447,7 +1447,7 @@ function App() {
       if (effectiveMode?.id === 'trascrizione') {
         userDisplayText = 'Esegui trascrizione'
       } else if (effectiveMode?.id === 'analisi-giuridica') {
-        userDisplayText = 'Genera analisi giuridica'
+        userDisplayText = 'Genera parere pro veritate'
       } else if (effectiveMode?.id === 'genera-documento-stile') {
         userDisplayText = `Genera documento: ${queuedWorkflow?.categoryName || 'Personalizzato'}`
       } else if (effectiveMode?.label) {

@@ -1,9 +1,23 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { searchLegislation, getCodes, getArticle, browseCode, getNearbyArticles, quickLookup } from '../services/legislation'
+import { searchLegislation, getCodes, getArticle, getNearbyArticles } from '../services/legislation'
 import { exportToWord } from '../services/export'
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY ?? ''
 const ANTHROPIC_API_KEY = import.meta.env.VITE_ANTHROPIC_API_KEY ?? ''
+
+function formatMemoHtml(text) {
+  if (!text) return ''
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/^#{1,3}\s+(.+)$/gm, '<h3 style="font-weight:700;font-size:0.95rem;color:#1e293b;margin:1.2em 0 0.4em">$1</h3>')
+    .replace(/^---+$/gm, '')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/\n{2,}/g, '</p><p style="margin:0.6em 0;line-height:1.7">')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p style="margin:0.6em 0;line-height:1.7">')
+    .replace(/$/, '</p>')
+}
 
 export default function LegislationSearch({ onClose }) {
   const [query, setQuery] = useState('')
@@ -12,20 +26,17 @@ export default function LegislationSearch({ onClose }) {
   const [error, setError] = useState(null)
   const [codes, setCodes] = useState([])
   const [selectedCode, setSelectedCode] = useState(null)
-  const [selectedArticle, setSelectedArticle] = useState(null)
-  const [loadingArticle, setLoadingArticle] = useState(false)
-  const [copiedId, setCopiedId] = useState(null)
+
+  const [article, setArticle] = useState(null)
   const [nearbyArticles, setNearbyArticles] = useState([])
-  const [browseArticles, setBrowseArticles] = useState([])
-  const [browseTotal, setBrowseTotal] = useState(0)
-  const [browseOffset, setBrowseOffset] = useState(0)
-  const [mode, setMode] = useState('search')
-  const [quickInput, setQuickInput] = useState('')
+  const [loadingArticle, setLoadingArticle] = useState(false)
+
   const [memoText, setMemoText] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [showMemo, setShowMemo] = useState(false)
-  const memoRef = useRef(null)
+
   const inputRef = useRef(null)
+  const articleRef = useRef(null)
 
   useEffect(() => {
     getCodes().then(setCodes).catch(() => {})
@@ -33,10 +44,15 @@ export default function LegislationSearch({ onClose }) {
   }, [])
 
   useEffect(() => {
-    const handleEscape = (e) => { if (e.key === 'Escape') onClose() }
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        if (article) { setArticle(null); return }
+        onClose()
+      }
+    }
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
-  }, [onClose])
+  }, [onClose, article])
 
   const handleSearch = useCallback(async (e) => {
     e?.preventDefault()
@@ -44,94 +60,34 @@ export default function LegislationSearch({ onClose }) {
     setIsSearching(true)
     setError(null)
     setResults([])
-    setSelectedArticle(null)
-    setMode('search')
+    setArticle(null)
 
     try {
       const { results: r } = await searchLegislation(query.trim(), selectedCode, 30)
       setResults(r || [])
       if (!r?.length) setError('Nessun risultato trovato.')
     } catch {
-      setError('Errore nella ricerca. Riprova.')
+      setError('Errore nella ricerca.')
     } finally {
       setIsSearching(false)
     }
   }, [query, isSearching, selectedCode])
 
-  const handleBrowse = useCallback(async (codeId, offset = 0) => {
-    setSelectedCode(codeId)
-    setMode('browse')
-    setBrowseOffset(offset)
-    setSelectedArticle(null)
-    try {
-      const { articles, total } = await browseCode(codeId, { limit: 50, offset })
-      setBrowseArticles(articles || [])
-      setBrowseTotal(total || 0)
-    } catch {
-      setError('Errore nel caricamento.')
-    }
-  }, [])
-
-  const handleViewArticle = useCallback(async (codeId, artNum) => {
+  const openArticle = useCallback(async (codeId, artNum) => {
     setLoadingArticle(true)
     try {
-      const [article, nearby] = await Promise.all([
+      const [art, nearby] = await Promise.all([
         getArticle(codeId, artNum),
         getNearbyArticles(codeId, artNum, 5),
       ])
-      setSelectedArticle(article)
+      setArticle(art)
       setNearbyArticles(nearby || [])
+      articleRef.current?.scrollTo(0, 0)
     } catch {
       setError('Articolo non trovato.')
     } finally {
       setLoadingArticle(false)
     }
-  }, [])
-
-  const handleQuickLookup = useCallback(async (e) => {
-    e?.preventDefault()
-    if (!quickInput.trim()) return
-    setLoadingArticle(true)
-    setError(null)
-    try {
-      const article = await quickLookup(quickInput.trim())
-      if (article) {
-        setSelectedArticle(article)
-        const nearby = await getNearbyArticles(article.code_id, article.article_number, 5)
-        setNearbyArticles(nearby || [])
-      } else {
-        setError('Formato non riconosciuto. Prova: "2043 cc", "art. 575 cp", "42 cost"')
-      }
-    } catch {
-      setError('Articolo non trovato.')
-    } finally {
-      setLoadingArticle(false)
-    }
-  }, [quickInput])
-
-  const formatCitation = useCallback((article) => {
-    const codeMap = { cc: 'c.c.', cp: 'c.p.', cpc: 'c.p.c.', cpp: 'c.p.p.', cost: 'Cost.' }
-    const code = codeMap[article.code_id] || article.code_id
-    let cite = `Art. ${article.article_number} ${code}`
-    if (article.article_title) cite += ` (${article.article_title})`
-    return cite
-  }, [])
-
-  const handleCopy = useCallback(async (text, id) => {
-    try {
-      await navigator.clipboard.writeText(text)
-    } catch {
-      const ta = document.createElement('textarea')
-      ta.value = text
-      ta.style.position = 'fixed'
-      ta.style.left = '-9999px'
-      document.body.appendChild(ta)
-      ta.select()
-      document.execCommand('copy')
-      document.body.removeChild(ta)
-    }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 2000)
   }, [])
 
   const handleGenerateMemo = useCallback(async () => {
@@ -175,34 +131,35 @@ Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
       let full = ''
-
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
-        const chunk = decoder.decode(value, { stream: true })
-        for (const line of chunk.split('\n').filter(l => l.startsWith('data: ') && !l.includes('[DONE]'))) {
+        for (const line of decoder.decode(value, { stream: true }).split('\n').filter(l => l.startsWith('data: ') && !l.includes('[DONE]'))) {
           try {
             const parsed = JSON.parse(line.slice(6))
-            const text = isAnthropic
-              ? (parsed.type === 'content_block_delta' ? parsed.delta?.text : '')
-              : parsed.choices?.[0]?.delta?.content
-            if (text) { full += text; setMemoText(full) }
-          } catch { /* ignore */ }
+            const t = isAnthropic ? (parsed.type === 'content_block_delta' ? parsed.delta?.text : '') : parsed.choices?.[0]?.delta?.content
+            if (t) { full += t; setMemoText(full) }
+          } catch {}
         }
       }
     } catch {
-      setMemoText('Errore durante la generazione. Riprova.')
+      setMemoText('Errore durante la generazione.')
     } finally {
       setIsGenerating(false)
-      setTimeout(() => memoRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
     }
   }, [results, query, isGenerating])
 
-  const codeName = (id) => codes.find(c => c.id === id)?.name || id.toUpperCase()
+  const codeName = (id) => codes.find(c => c.id === id)?.name || id?.toUpperCase()
+
+  // Prev / Next from nearby
+  const currentIdx = nearbyArticles.findIndex(na => na.article_number === article?.article_number)
+  const prevArt = currentIdx > 0 ? nearbyArticles[currentIdx - 1] : null
+  const nextArt = currentIdx >= 0 && currentIdx < nearbyArticles.length - 1 ? nearbyArticles[currentIdx + 1] : null
 
   return (
     <div className="fixed inset-0 z-50 flex bg-slate-900/40 backdrop-blur-sm">
       <div className="relative ml-auto flex h-full w-full max-w-2xl flex-col bg-white shadow-2xl">
+
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
           <div className="flex items-center gap-3">
@@ -213,7 +170,7 @@ Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900">Legislazione</h2>
-              <p className="text-xs text-slate-500">Codici e leggi italiane — ricerca istantanea</p>
+              <p className="text-xs text-slate-500">Codici e leggi italiane</p>
             </div>
           </div>
           <button onClick={onClose} className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
@@ -223,197 +180,220 @@ Struttura: SINTESI, QUADRO NORMATIVO, ANALISI, APPLICAZIONE PRATICA, CONCLUSIONI
           </button>
         </div>
 
-        {/* Search bar */}
-        <form onSubmit={handleSearch} className="border-b border-slate-100 px-6 py-4">
-          <div className="flex gap-2">
-            <input
-              ref={inputRef}
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Cerca: risarcimento danno, art. 2043, contratto..."
-              className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#7B1F34] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#7B1F34]"
-            />
-            <select
-              value={selectedCode || ''}
-              onChange={(e) => setSelectedCode(e.target.value || null)}
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs text-slate-600"
-            >
-              <option value="">Tutti</option>
-              {codes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-            </select>
-            <button type="submit" disabled={isSearching || !query.trim()} className="rounded-xl bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:shadow-md disabled:opacity-50">
-              {isSearching ? <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg> : 'Cerca'}
-            </button>
-          </div>
-        </form>
-
-
-        {/* Article detail viewer */}
-        {selectedArticle && (
-          <div className="border-b border-slate-200 bg-slate-50 px-6 py-4 max-h-[40vh] overflow-y-auto">
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <span className="inline-block rounded bg-[#7B1F34] px-2 py-0.5 text-xs font-medium text-white mr-2">
-                  Art. {selectedArticle.article_number}
-                </span>
-                <span className="text-xs text-slate-500">{selectedArticle.legislation_codes?.name || codeName(selectedArticle.code_id)}</span>
-                {selectedArticle.article_title && (
-                  <p className="mt-1 text-sm font-semibold text-slate-800">{selectedArticle.article_title}</p>
+        {/* =================== ARTICLE VIEW =================== */}
+        {article ? (
+          <div ref={articleRef} className="flex-1 overflow-y-auto">
+            {/* Back + nav bar */}
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-3">
+              <button
+                onClick={() => setArticle(null)}
+                className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-[#7B1F34] transition"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                Risultati
+              </button>
+              <div className="flex items-center gap-1">
+                {prevArt && (
+                  <button onClick={() => openArticle(article.code_id, prevArt.article_number)} className="rounded-lg px-3 py-1.5 text-xs text-slate-500 hover:bg-slate-100 transition">
+                    ← Art. {prevArt.article_number}
+                  </button>
+                )}
+                {nextArt && (
+                  <button onClick={() => openArticle(article.code_id, nextArt.article_number)} className="rounded-lg px-3 py-1.5 text-xs text-slate-500 hover:bg-slate-100 transition">
+                    Art. {nextArt.article_number} →
+                  </button>
                 )}
               </div>
-              <div className="flex gap-1">
-                <button onClick={() => handleCopy(selectedArticle.article_text, 'art-text')} className="rounded-lg px-2 py-1 text-xs text-slate-500 hover:bg-white hover:text-[#7B1F34]">
-                  {copiedId === 'art-text' ? 'Copiato!' : 'Copia'}
-                </button>
-                <button onClick={() => setSelectedArticle(null)} className="rounded-lg px-2 py-1 text-xs text-slate-400 hover:bg-white hover:text-slate-600">Chiudi</button>
-              </div>
             </div>
-            <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{selectedArticle.article_text}</p>
-            {selectedArticle.normattiva_url && (
-              <div className="mt-3">
-                <a href={selectedArticle.normattiva_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-[#7B1F34] hover:underline">
+
+            {/* Article content */}
+            <div className="px-6 py-6">
+              <div className="mb-1 flex items-center gap-2">
+                <span className="inline-block rounded bg-[#7B1F34] px-2.5 py-1 text-xs font-bold text-white">
+                  Art. {article.article_number}
+                </span>
+                <span className="text-xs font-medium text-slate-400 uppercase">{article.legislation_codes?.name || codeName(article.code_id)}</span>
+              </div>
+
+              {article.article_title && (
+                <h3 className="mt-2 text-lg font-bold text-slate-900">{article.article_title}</h3>
+              )}
+
+              {(article.book || article.title) && (
+                <p className="mt-1 text-xs text-slate-400">{article.book}{article.title ? ` › ${article.title}` : ''}{article.chapter ? ` › ${article.chapter}` : ''}</p>
+              )}
+
+              <div className="mt-6 text-[15px] text-slate-700 leading-[1.8] whitespace-pre-line">
+                {article.article_text}
+              </div>
+
+              {article.normattiva_url && (
+                <a href={article.normattiva_url} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-1.5 text-xs text-[#7B1F34] hover:underline">
                   Verifica su Normattiva
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                 </a>
-              </div>
-            )}
+              )}
+            </div>
 
-            {/* Prev / Next navigation */}
-            {nearbyArticles.length > 0 && (() => {
-              const currentIdx = nearbyArticles.findIndex(na => na.article_number === selectedArticle.article_number)
-              const prev = currentIdx > 0 ? nearbyArticles[currentIdx - 1] : null
-              const next = currentIdx < nearbyArticles.length - 1 ? nearbyArticles[currentIdx + 1] : null
-              return (
-                <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
-                  {prev ? (
-                    <button
-                      onClick={() => handleViewArticle(selectedArticle.code_id, prev.article_number)}
-                      className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 transition"
-                    >
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                      <span>Art. {prev.article_number}</span>
-                    </button>
-                  ) : <span />}
-                  {next ? (
-                    <button
-                      onClick={() => handleViewArticle(selectedArticle.code_id, next.article_number)}
-                      className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 transition"
-                    >
-                      <span>Art. {next.article_number}</span>
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                    </button>
-                  ) : <span />}
-                </div>
-              )
-            })()}
+            {/* Bottom nav */}
+            <div className="sticky bottom-0 border-t border-slate-200 bg-white px-6 py-3 flex items-center justify-between">
+              {prevArt ? (
+                <button onClick={() => openArticle(article.code_id, prevArt.article_number)} className="flex items-center gap-2 text-sm text-slate-600 hover:text-[#7B1F34] transition">
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                  <div className="text-left">
+                    <p className="text-xs text-slate-400">Precedente</p>
+                    <p className="font-medium">Art. {prevArt.article_number}</p>
+                  </div>
+                </button>
+              ) : <span />}
+              {nextArt ? (
+                <button onClick={() => openArticle(article.code_id, nextArt.article_number)} className="flex items-center gap-2 text-sm text-slate-600 hover:text-[#7B1F34] transition">
+                  <div className="text-right">
+                    <p className="text-xs text-slate-400">Successivo</p>
+                    <p className="font-medium">Art. {nextArt.article_number}</p>
+                  </div>
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                </button>
+              ) : <span />}
+            </div>
           </div>
-        )}
+        ) : (
+          /* =================== RESULTS VIEW =================== */
+          <>
+            {/* Search bar */}
+            <form onSubmit={handleSearch} className="border-b border-slate-100 px-6 py-4">
+              <div className="flex gap-2">
+                <select
+                  value={selectedCode || ''}
+                  onChange={(e) => setSelectedCode(e.target.value || null)}
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs text-slate-600"
+                >
+                  <option value="">Tutti i codici</option>
+                  {codes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                </select>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Cosa stai cercando?"
+                  className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#7B1F34] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#7B1F34]"
+                />
+                <button type="submit" disabled={isSearching || !query.trim()} className="rounded-xl bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:shadow-md disabled:opacity-50">
+                  {isSearching ? <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg> : 'Cerca'}
+                </button>
+              </div>
+            </form>
 
-        {/* Content area */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          {error && <div className="mb-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-700">{error}</div>}
+            {/* Results */}
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              {error && <div className="mb-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-700">{error}</div>}
 
-          {/* Search results with Genera Memo */}
-          {mode === 'search' && results.length > 0 && (
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-xs text-slate-500">{results.length} risultati</p>
-              <button onClick={handleGenerateMemo} disabled={isGenerating} className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:shadow-md disabled:opacity-50">
-                {isGenerating ? 'Generazione...' : 'Genera Memo Legale'}
-              </button>
-            </div>
-          )}
-
-          {/* Memo viewer */}
-          {showMemo && (
-            <div ref={memoRef} className="mb-6 rounded-xl border border-slate-200 bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-slate-200 bg-[#7B1F34] px-4 py-3 rounded-t-xl">
-                <span className="text-sm font-semibold text-white">{query}</span>
-                <div className="flex gap-1">
-                  {memoText && !isGenerating && (
-                    <>
-                      <button onClick={() => handleCopy(memoText, 'memo')} className="rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white" title="Copia">{copiedId === 'memo' ? 'Copiato!' : '📋'}</button>
-                      <button onClick={() => exportToWord({ title: `Memo: ${query}`, content: memoText, filename: `memo_legale_${query.replace(/\s+/g, '_').slice(0, 30)}.docx` })} className="rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white" title="Word">📄</button>
-                    </>
-                  )}
-                  <button onClick={() => { setShowMemo(false); setMemoText('') }} className="rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white">✕</button>
+              {results.length > 0 && (
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="text-xs text-slate-500">{results.length} risultati</p>
+                  <button onClick={handleGenerateMemo} disabled={isGenerating} className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7B1F34] to-[#9E3A50] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:shadow-md disabled:opacity-50">
+                    {isGenerating ? 'Generazione...' : 'Genera Memo Legale'}
+                  </button>
                 </div>
-              </div>
-              <div className="px-4 py-3 text-sm text-slate-700 leading-relaxed max-h-[50vh] overflow-y-auto whitespace-pre-line">
-                {memoText || <span className="text-slate-400">Generazione in corso...</span>}
-                {isGenerating && <span className="inline-block w-1 h-4 bg-[#7B1F34] animate-pulse ml-0.5" />}
-              </div>
-            </div>
-          )}
+              )}
 
-          {/* Results list */}
-          <div className="space-y-3">
-            {(mode === 'search' ? results : browseArticles).map((article) => (
-              <button
-                key={article.id}
-                type="button"
-                onClick={() => handleViewArticle(article.code_id, article.article_number)}
-                className="w-full rounded-xl border border-slate-200 bg-white p-4 text-left transition hover:border-[#7B1F34]/30 hover:shadow-sm"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="flex-shrink-0 rounded-lg bg-slate-100 px-2 py-1 text-xs font-bold text-slate-700">
-                    Art. {article.article_number}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      {article.code_name && <span className="text-[10px] font-medium text-[#7B1F34] uppercase">{article.code_name}</span>}
-                      {article.article_title && <span className="text-sm font-medium text-slate-800 truncate">{article.article_title}</span>}
+              {/* Memo */}
+              {showMemo && (
+                <div className="mb-6 rounded-xl border border-slate-200 bg-white shadow-sm">
+                  <div className="flex items-center justify-between border-b border-slate-200 bg-[#7B1F34] px-4 py-3 rounded-t-xl">
+                    <span className="text-sm font-semibold text-white">{query}</span>
+                    <div className="flex gap-1">
+                      {memoText && !isGenerating && (
+                        <button onClick={() => exportToWord({ title: `Memo: ${query}`, content: memoText, filename: `memo_legale_${query.replace(/\s+/g, '_').slice(0, 30)}.docx` })} className="rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white text-xs">Esporta Word</button>
+                      )}
+                      <button onClick={() => { setShowMemo(false); setMemoText('') }} className="rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white">✕</button>
                     </div>
-                    {article.book && <p className="mt-0.5 text-[11px] text-slate-400 truncate">{article.book}{article.title ? ` › ${article.title}` : ''}</p>}
-                    {article.article_text && <p className="mt-1.5 text-xs text-slate-500 line-clamp-2">{article.article_text.slice(0, 200)}...</p>}
+                  </div>
+                  <div className="px-4 py-3 text-sm text-slate-700 leading-relaxed max-h-[50vh] overflow-y-auto">
+                    {memoText ? (
+                      <div dangerouslySetInnerHTML={{ __html: formatMemoHtml(memoText) }} />
+                    ) : (
+                      <span className="text-slate-400">Generazione in corso...</span>
+                    )}
+                    {isGenerating && <span className="inline-block w-1 h-4 bg-[#7B1F34] animate-pulse ml-0.5" />}
                   </div>
                 </div>
-              </button>
-            ))}
-          </div>
+              )}
 
-          {/* Browse pagination */}
-          {mode === 'browse' && browseTotal > 50 && (
-            <div className="mt-4 flex items-center justify-center gap-2">
-              <button
-                disabled={browseOffset === 0}
-                onClick={() => handleBrowse(selectedCode, Math.max(0, browseOffset - 50))}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 border border-slate-200 hover:bg-slate-50 disabled:opacity-30"
-              >
-                ← Precedenti
-              </button>
-              <span className="text-xs text-slate-400">{browseOffset + 1}–{Math.min(browseOffset + 50, browseTotal)} di {browseTotal}</span>
-              <button
-                disabled={browseOffset + 50 >= browseTotal}
-                onClick={() => handleBrowse(selectedCode, browseOffset + 50)}
-                className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 border border-slate-200 hover:bg-slate-50 disabled:opacity-30"
-              >
-                Successivi →
-              </button>
-            </div>
-          )}
-
-          {/* Empty state */}
-          {!isSearching && results.length === 0 && browseArticles.length === 0 && !error && (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-8 w-8 text-slate-400">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
+              {/* Article cards */}
+              <div className="space-y-2">
+                {results.map((r) => (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => openArticle(r.code_id, r.article_number)}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left transition hover:border-[#7B1F34]/30 hover:shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="flex-shrink-0 rounded bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-700">
+                        {r.article_number}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-sm font-medium text-slate-800">{r.article_title || `Articolo ${r.article_number}`}</span>
+                        {r.code_name && <span className="ml-2 text-[10px] font-medium text-[#7B1F34] uppercase">{r.code_name}</span>}
+                      </div>
+                      <svg className="h-4 w-4 flex-shrink-0 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    </div>
+                  </button>
+                ))}
               </div>
-              <h3 className="text-sm font-semibold text-slate-700">Cerca nella Legislazione</h3>
-              <p className="mt-1 text-xs text-slate-500 max-w-xs">
-                Cerca per parola chiave o clicca su un codice per navigarlo
-              </p>
-            </div>
-          )}
 
-          {loadingArticle && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-[#7B1F34]" />
+              {/* Empty state with suggestions */}
+              {!isSearching && results.length === 0 && !error && !showMemo && (
+                <div className="py-8">
+                  <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-4">Ricerche frequenti</p>
+                  <div className="space-y-2">
+                    {[
+                      'risarcimento danno',
+                      'inadempimento contrattuale',
+                      'responsabilità extracontrattuale',
+                      'termine prescrizione',
+                      'diritto di recesso',
+                      'licenziamento giusta causa',
+                      'custodia cautelare',
+                      'legittima difesa',
+                    ].map((suggestion) => (
+                      <button
+                        key={suggestion}
+                        type="button"
+                        onClick={async () => {
+                          setQuery(suggestion)
+                          setIsSearching(true)
+                          setError(null)
+                          setResults([])
+                          try {
+                            const { results: r } = await searchLegislation(suggestion, selectedCode, 30)
+                            setResults(r || [])
+                            if (!r?.length) setError('Nessun risultato trovato.')
+                          } catch { setError('Errore nella ricerca.') }
+                          finally { setIsSearching(false) }
+                        }}
+                        className="flex w-full items-center gap-3 rounded-xl border border-slate-100 bg-white px-4 py-3 text-left text-sm text-slate-600 transition hover:border-[#7B1F34]/20 hover:bg-slate-50"
+                      >
+                        <svg className="h-4 w-4 flex-shrink-0 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
+
+        {loadingArticle && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/70">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-[#7B1F34]" />
+          </div>
+        )}
       </div>
       <div className="flex-1" onClick={onClose} />
     </div>
